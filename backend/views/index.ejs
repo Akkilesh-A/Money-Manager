@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>api/v1/ Route</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #000000;
+            background-image: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+            margin: 0;
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .status {
+            margin-top: 10px;
+            color: #ffffff;
+            font-weight: bold;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        .buttons a {
+            text-decoration: none;
+            color: #ffffff;
+            background-color: #333333;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin: 0 10px;
+            transition: background-color 0.3s;
+        }
+        .buttons a:hover {
+            background-color: #555555;
+        }
+        .status {
+            z-index: 100;
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: #333333;
+            padding: 5px;
+            border: 1px solid #555555;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .status-indicator {
+            color: #00ff00;
+            font-size: 20px;
+            font-family: monospace;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        footer a {
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 15px;
+            color: #ffffff;
+
+        }
+        footer a:hover {
+            color: #00ff00;
+        }
+    </style>
+</head>
+<body>
+    <h1><samp>Welcome to Backend</samp></h1>
+    <div class="status">
+        <span class="status-indicator">●</span> ALL SYSTEMS OPERATIONAL
+    </div>
+    <div class="buttons">
+        <a href="http://localhost:5173">Go to Frontend</a>
+        <a href="/swagger">Go to Swagger</a>
+    </div>
+    <footer>
+        <a href="#" class="display: flex;align-items: center;" title="GitHub"><i class="fa fa-github" style="font-size:25px" ></i> <p>GitHub</p></a>
+        <a href="#" class="display: flex;align-items: center;" title="Portfolio"><i class="fa fa-briefcase" style="font-size:25px"></i> <p>Portfolio</p></a>
+    </footer>
+</body>
+</html>
