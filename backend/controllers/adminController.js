@@ -1,5 +1,6 @@
 import zod from 'zod'
 import {Admin} from '../db/connection.js'
+import bcrypt from 'bcrypt'
 
 const signUpBody=zod.object({
     email : zod.string().email().min(7),
@@ -11,6 +12,8 @@ async function signUp(req,res){
     const email= req.body.email
     const name= req.body.name
     const password= req.body.password
+
+    //checking with zod 
     const success = signUpBody.safeParse({email,name,password})
     if(!success.success){
         return res.status(400).json({
@@ -18,6 +21,7 @@ async function signUp(req,res){
         })
     }
 
+    //checking for existing user
     const existingUser= await Admin.findOne({
         email
     })
@@ -27,13 +31,16 @@ async function signUp(req,res){
         })
 
     }
+    //hashing password
+    const hash = await bcrypt.hash(password,10)
+    //creating a new user
     const newUser = await Admin.create({
         email,
         name,
-        password
+        password : hash
     })
     res.status(200).json({
-        message : `Details from form are ${name} , ${email}, ${password} , ${newUser._id}`
+        message : `Details from form are ${name} , ${email}, ${hash} , ${newUser._id}`
     })
 }
 
