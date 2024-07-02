@@ -9,6 +9,7 @@ async function userAuthMiddleware(req,res,next){
     const authorization = req.headers.authorization.split(" ")[1]
 
    try{
+
         const isValid = jwt.verify(authorization,jwtSecret)
         const userId= isValid._id
         const existingUser = User.findById(userId)
