@@ -11,7 +11,6 @@ async function adminAuthMiddleware(req,res,next){
    try{
         const isValid = jwt.verify(authorization,jwtSecret)
         const adminId= isValid._id
-        console.log(isValid._id)
         const existingAdmin = Admin.findById(adminId)
         if(!existingAdmin){
             return res.status(403).json({

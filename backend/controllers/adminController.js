@@ -17,6 +17,11 @@ const signInBody=zod.object({
     password : zod.string().min(6)
 })
 
+const transactionBody=zod.object({
+    to : zod.string().min(10),
+    amount : zod.number().positive()
+})
+
 async function signUp(req,res){
     const email= req.body.email
     const name= req.body.name
@@ -148,9 +153,15 @@ async function bulk(req,res){
 async function addBalance(req,res){
     const {to, amount} = req.body
 
+    const success = transactionBody.safeParse({to , amount})
+    if(!success.success){
+        return res.status(403).json({
+            message : "Invalid Inputs"
+        }) 
+    }
+
     try{
-        const user = await User.updateOne({_id: to},{$inc:{balance : +amount}})
-        console.log(user)
+        await User.updateOne({_id: to},{$inc:{balance : +amount}})
         res.status(200).json({
             message : "Transaction Successful!"
         })
