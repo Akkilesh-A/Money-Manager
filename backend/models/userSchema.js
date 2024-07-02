@@ -39,13 +39,17 @@ const transactionsSchema=new mongoose.Schema({
         required:true
     },
     to:{
-        type:String,
+        type:mongoose.Schema.Types.ObjectId,
         required:true
     },
     amount:{
         type:Number,
         required:true,
         min:1
+    },
+    date:{
+        type : Date,
+        required : true  
     }
 })
 

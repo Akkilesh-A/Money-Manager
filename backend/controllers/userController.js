@@ -171,9 +171,9 @@ async function sendMoney(req,res){
         }
 
         //Increment and decrement from respective accounts
-        const usertrans =await User.updateOne({_id : userId},{$inc:{balance : -amount}}).session(session)
-        const usertransplus = await User.updateOne({_id : to},{$inc:{balance : amount}}).session(session)
-        await Transactions.create({from : userId,to,amount})
+        await User.updateOne({_id : userId},{$inc:{balance : -amount}}).session(session)
+        await User.updateOne({_id : to},{$inc:{balance : amount}}).session(session)
+        await Transactions.create({from : userId,to,amount,date : new Date()})
 
         //commiting transaction
         await session.commitTransaction();
@@ -182,7 +182,7 @@ async function sendMoney(req,res){
         res.status(200).json({
             message : "Transaction Successful!"
         })
-        
+
     }catch(error){
         await session.abortTransaction();
         session.endSession();
@@ -195,6 +195,21 @@ async function sendMoney(req,res){
 }
 
 async function getTransactions(req,res){
+    const userId = req.userId
+    
+    const existingUser = await User.findById(userId)
+
+    if(!existingUser){
+        return res.status(200).json({
+            message : "User not found!"
+        })
+    }
+
+    const transactions = await Transactions.find({from : userId})
+
+    res.status(200).json({
+        transactions : transactions
+    })
 
 }
 
