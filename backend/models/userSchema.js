@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema({
 const User=mongoose.model('User',userSchema)
 
 const transactionsSchema=new mongoose.Schema({
-    userId:{
+    from:{
         type:mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required:true

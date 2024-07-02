@@ -5,8 +5,8 @@ const jwtSecret = process.env.USER_JWT_SECRET
 import zod from 'zod'
 import bcrypt from 'bcrypt'
 import { User,Transactions } from '../db/connection.js'
-import {readdirSync, rmSync} from 'fs'
 import { cloudinaryUpload } from '../utilities/cloudinaryUpload.js';
+import mongoose from 'mongoose';
 
 
 const signUpBody=zod.object({
@@ -141,9 +141,56 @@ async function updateProfile(req,res){
 async function sendMoney(req,res){
     const userId = req.userId
     const{to,amount} = req.body
-    res.status(200).json({
-        message : "Upload Successful!"
-    })
+    if(amount<=0){
+        return res.status(400).json({
+            message : "Invalid amount!"
+        })
+    }
+
+    //start transaction session
+    const session = await mongoose.startSession()
+    session.startTransaction();
+
+    try{
+        //find from User
+        const fromUser =await User.findById(userId).session(session)
+        if(!fromUser || fromUser.balance<amount){
+            await session.abortTransaction();
+            return res.status(400).json({
+                message : "Unable to proccess transaction, Amount exceeded balance!"
+            })
+        }
+
+        //find to User
+        const toUser =await User.findById(to).session(session)
+        if(!toUser){
+            await session.abortTransaction();
+            return res.status(400).json({
+                message : "User not found!"
+            })
+        }
+
+        //Increment and decrement from respective accounts
+        const usertrans =await User.updateOne({_id : userId},{$inc:{balance : -amount}}).session(session)
+        const usertransplus = await User.updateOne({_id : to},{$inc:{balance : amount}}).session(session)
+        await Transactions.create({from : userId,to,amount})
+
+        //commiting transaction
+        await session.commitTransaction();
+        session.endSession();
+
+        res.status(200).json({
+            message : "Transaction Successful!"
+        })
+        
+    }catch(error){
+        await session.abortTransaction();
+        session.endSession();
+        console.error(error);
+        res.status(500).json({
+            message: "Transaction failed due to server error!"
+        });
+    }
 
 }
 

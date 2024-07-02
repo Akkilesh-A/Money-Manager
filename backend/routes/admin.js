@@ -10,7 +10,7 @@ router.get("/",(req,res)=>{
 
 router.post("/signup",signUp)
 router.post("/signin",signIn)
-router.post("/users",adminAuthMiddleware, bulk)
+router.get("/users",adminAuthMiddleware, bulk)
 router.post("/addbalance",adminAuthMiddleware,addBalance)
 
 export default router

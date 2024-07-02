@@ -6,10 +6,8 @@ dotenv.config();
 const jwtSecret = process.env.USER_JWT_SECRET
 
 async function userAuthMiddleware(req,res,next){
-    const authorization = req.headers.authorization.split(" ")[1]
-
-   try{
-
+    try{
+        const authorization = req.headers.authorization.split(" ")[1]
         const isValid = jwt.verify(authorization,jwtSecret)
         const userId= isValid._id
         const existingUser = User.findById(userId)
@@ -21,8 +19,8 @@ async function userAuthMiddleware(req,res,next){
             req.userId = userId
             next()
         }        
-   }catch(err){
-    return res.status(403).json({
+    }catch(err){
+        return res.status(403).json({
         "message" : "Auth failed"
     })
    }
