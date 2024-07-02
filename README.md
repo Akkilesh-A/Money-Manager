@@ -1,5 +1,25 @@
+# Banking App - MERN
+
 A comprehensive MERN stack Banking app 
 
-Currently working on backend!
+# Backend
 
-![Bank App Backend](https://github.com/Akkilesh-A/Banking-App-MERN/assets/136828513/a956c495-8e32-481d-8e35-18b654878513)
+![Bank App Backend](https://github.com/Akkilesh-A/Banking-App-MERN/assets/136828513/0d11f06d-bc4d-4a15-96e7-8e008b390bff)
+
+## ⚙️Tech Stack
+
+| Server, Routing | Express.js |
+| --- | --- |
+| Language | Node.js |
+| Input Validation | Zod |
+| Database Connection | Mongoose |
+| Session Authentication | JWT |
+| Password Hashing  | Bcrypt |
+| Cloud storage | Cloudinary  |
+
+## 🛣️Routes
+
+### Admin Routes
+
+### User Routes
+
