@@ -26,7 +26,7 @@ export const SideBar = () => {
         {expanded? <ul className='m-2 duration-300 flex flex-col p-2 flex-1 transition-all'>
           <li className='hover:bg-gray-200 cursor-pointer hover:border hover:rounded-md flex  items-center   text-[1.2rem] font-semibold p-4'><p className='w-[10%]'><FontAwesomeIcon icon={faHouse} /> </p> <p className='px-2 transition-all'>Home</p></li>
           <li className='hover:bg-gray-200 cursor-pointer hover:border hover:rounded-md flex  items-center   text-[1.2rem] font-semibold p-4'><p className='w-[10%]'><FontAwesomeIcon icon={faSackDollar} /> </p> <p className='px-2 transition-all'>Send Money</p></li>
-          <li className='hover:bg-gray-200 cursor-pointer hover:border hover:rounded-md flex  items-center   text-[1.2rem] font-semibold p-4'><p className='w-[10%]'><FontAwesomeIcon icon={faMoneyBillTransfer} /> </p> <p className='px-2 transition-all'>Transactions History</p></li>
+          <li className='hover:bg-gray-200 cursor-pointer hover:border hover:rounded-md flex  items-center   text-[1.2rem] font-semibold p-4'><p className='w-[10%]'><FontAwesomeIcon icon={faMoneyBillTransfer} /> </p> <p className='px-2 transition-all'>Transactions </p></li>
           <li className='hover:bg-gray-200 cursor-pointer hover:border hover:rounded-md flex  items-center   text-[1.2rem] font-semibold p-4'><p className='w-[10%]'><FontAwesomeIcon icon={faTags} /> </p> <p className='px-2 transition-all'>Customize Tags</p></li>
         </ul>: <ul className='m-2 duration-300 flex flex-col items-center p-2 flex-1 transition-all'>
           <li className='hover:bg-gray-200 cursor-pointer hover:border hover:rounded-md text-[1.2rem] w-[90%] flex justify-center font-semibold p-4'><FontAwesomeIcon icon={faHouse} /></li>
