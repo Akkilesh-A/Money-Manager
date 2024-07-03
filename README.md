@@ -1,6 +1,6 @@
-# Banking App - MERN
+# Money Management App - MERN
 
-A comprehensive MERN stack Banking app 
+A comprehensive MERN stack money management web app
 
 # Backend
 
