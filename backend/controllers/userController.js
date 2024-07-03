@@ -1,13 +1,13 @@
 import dotenv from 'dotenv';
-dotenv.config();
 import jwt from 'jsonwebtoken'
-const jwtSecret = process.env.USER_JWT_SECRET
 import zod from 'zod'
 import bcrypt from 'bcrypt'
 import { User,Transactions } from '../db/connection.js'
 import { cloudinaryUpload } from '../utilities/cloudinaryUpload.js';
 import mongoose from 'mongoose';
 
+dotenv.config();
+const jwtSecret = process.env.USER_JWT_SECRET
 
 const signUpBody=zod.object({
     name: zod.string().min(3),

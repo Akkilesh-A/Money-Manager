@@ -16,4 +16,5 @@ router.get("/profile",userAuthMiddleware,getProfile)
 router.post("/update",userAuthMiddleware,upload.single('image'),updateProfile)
 router.post("/sendmoney",userAuthMiddleware,sendMoney)
 router.get("/transactions",userAuthMiddleware,getTransactions)
+
 export default router
