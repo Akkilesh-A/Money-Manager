@@ -1,12 +1,12 @@
+import { BrowserRouter, Route,Routes } from "react-router-dom"
+import UserLandingPage from "./pages/UserLandingPage"
 
-
-function App() {
-
+export default function App() {
   return (
-    <>
-      Hi
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path ="/" element={<UserLandingPage />}/>
+      </Routes>
+    </BrowserRouter>
   )
 }
-
-export default App
