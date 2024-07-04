@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
     adminId:{
         type : mongoose.Schema.Types.ObjectId,
         ref : 'User',
-        default : "none"
+        default : null
     },
 })
 

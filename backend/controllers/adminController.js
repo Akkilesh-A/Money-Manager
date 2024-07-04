@@ -165,4 +165,4 @@ async function addBalance(req,res){
 }
 
 
-export {signUp, signIn, addBalance}
+export {signUp, signIn, addBalance, createConnection}
