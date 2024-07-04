@@ -31,8 +31,16 @@ const userSchema = new mongoose.Schema({
         type : [String],
         required : true,
         default : ['Friends','Family','Online','Shopping','Food']
-    }
-
+    },
+    adminConnectionStatus :{
+        type : Boolean,
+        default : false
+    },
+    adminId:{
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'User',
+        default : "none"
+    },
 })
 
 const User=mongoose.model('User',userSchema)

@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import { signUp,signIn, getProfile, updateProfile, sendMoney, getTransactions, addTags, removeTag } from '../controllers/userController.js';
+import { signUp,signIn, getProfile, updateProfile, sendMoney, getTransactions, addTags, removeTag, bulk } from '../controllers/userController.js';
 import { userAuthMiddleware } from '../utilities/userAuthMiddleware.js';
 import multer from 'multer';
 
@@ -12,6 +12,7 @@ router.get("/",(req,res)=>{
 
 router.post("/signin",signIn)
 router.post("/signup",signUp)
+router.get("/users",userAuthMiddleware, bulk)
 router.get("/getprofile",userAuthMiddleware,getProfile)
 router.patch("/updateprofile",userAuthMiddleware,upload.single('image'),updateProfile)
 router.post("/sendmoney",userAuthMiddleware,sendMoney)

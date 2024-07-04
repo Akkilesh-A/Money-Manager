@@ -116,37 +116,28 @@ async function signIn(req,res){
 
 }
 
-async function bulk(req,res){
-    const {search = ""} = req.body
+async function createConnection(req,res){
+    const adminId = req.adminId
+    const {userId} = req.body
 
-    const users= await User.find({
-        $or: [{
-            name: {
-                "$regex": `^${search}`,
-                "$options": "i"
-            }
-        }, {
-            email: {
-                "$regex": `^${search}`,
-                "$options": "i"
-            }
-        }]
-    })
-    if(!users){
-        return res.status(400).json({
-            message : "users not found"
-        })
+    const existingAdmin = await Admin.findById(adminId)
+
+    if(!existingAdmin.userConnectionStatus){
+        const connectingUser=await Admin.updateOne({_id:adminId},{userConnectionStatus : true,userId : userId})
+        const connectingAdmin=await User.updateOne({_id : userId},{adminConnectionStatus : true,adminId : adminId}) 
+        if(!connectingUser.acknowledged || !connectingAdmin.acknowledged){
+            return res.status(404).json({
+                message : "Cannot update status! Try Again"
+            })
+        }
     }
 
     res.status(200).json({
-        users : users.map(user=>({
-            name : user.name,
-            email : user.email,
-            balance : user.balance,
-            imgURL : user.imgURL,
-            _id:user._id
-        }))
+        message : "Connection Established!"
     })
+}
+
+async function getConnection(req,res){
 
 }
 
@@ -174,4 +165,4 @@ async function addBalance(req,res){
 }
 
 
-export {signUp, signIn, bulk, addBalance}
+export {signUp, signIn, addBalance}

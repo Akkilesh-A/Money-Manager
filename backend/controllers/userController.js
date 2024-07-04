@@ -287,4 +287,38 @@ async function removeTag(req,res){
     }
 }
 
-export {signUp, signIn, getProfile, updateProfile, sendMoney, getTransactions, addTags, removeTag}
+async function bulk(req,res){
+    const {search = ""} = req.body
+
+    const users= await User.find({
+        $or: [{
+            name: {
+                "$regex": `^${search}`,
+                "$options": "i"
+            }
+        }, {
+            email: {
+                "$regex": `^${search}`,
+                "$options": "i"
+            }
+        }]
+    })
+    if(!users){
+        return res.status(400).json({
+            message : "users not found"
+        })
+    }
+
+    res.status(200).json({
+        users : users.map(user=>({
+            name : user.name,
+            email : user.email,
+            balance : user.balance,
+            imgURL : user.imgURL,
+            _id:user._id
+        }))
+    })
+
+}
+
+export {signUp, signIn, getProfile, updateProfile, sendMoney, getTransactions, addTags, removeTag, bulk}
