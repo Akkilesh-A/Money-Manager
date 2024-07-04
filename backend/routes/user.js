@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import { signUp,signIn, getProfile, updateProfile, sendMoney, getTransactions, addTags, removeTag, bulk } from '../controllers/userController.js';
+import { signUp,signIn, getProfile, updateProfile, sendMoney, getTransactions, addTags, removeTag, bulk, getConnection } from '../controllers/userController.js';
 import { userAuthMiddleware } from '../utilities/userAuthMiddleware.js';
 import multer from 'multer';
 
@@ -19,5 +19,6 @@ router.post("/sendmoney",userAuthMiddleware,sendMoney)
 router.get("/gettransactions",userAuthMiddleware,getTransactions)
 router.post("/addTags",userAuthMiddleware,addTags)
 router.delete("/removetag",userAuthMiddleware,removeTag)
+router.get("/getconnection",userAuthMiddleware,getConnection)
 
 export default router

@@ -137,31 +137,39 @@ async function createConnection(req,res){
     })
 }
 
-async function getConnection(req,res){
-    const adminId = req.adminId
-    
-    const admin = await Admin.findById(adminId)
-    if(!admin){
-        return res.status(404).json({
-            message : "Cannot find user! Try Again"
-        })
-    }
+async function getConnection(req, res) {
+    const adminId = req.adminId;
 
-    if(admin.userConnectionStatus){
-        const user=await User.findById(admin.userId)
-        if(!user){
+    try {
+        const admin = await Admin.findById(adminId);
+        if (!admin) {
             return res.status(404).json({
-                message : "Cannot find user! Try Again"
-            })
+                message: "Cannot find admin! Try Again"
+            });
         }
-        return res.status(200).json({
-            message : "User found successfully",
-            user : user
-        })
+
+        if (admin.userConnectionStatus) {
+            const user = await User.findById(admin.userId);
+            if (!user) {
+                return res.status(404).json({
+                    message: "Cannot find connected user! Try Again"
+                });
+            }
+            return res.status(200).json({
+                message: "User found successfully",
+                user: user
+            });
+        }
+
+        return res.status(404).json({
+            message: "No user connection found for this admin! Try Again"
+        });
+    } catch (err) {
+        return res.status(500).json({
+            message: "An error occurred while retrieving the connection",
+            error: err.message
+        });
     }
-    return res.status(404).json({
-        message : "Cannot find user! Try Again"
-    })
 }
 
 async function addBalance(req,res){
@@ -210,16 +218,10 @@ async function updateConnection(req,res){
         })
     }
 
-    const existingUser = await User.findById(adminId.userId)
-    if(!existingUser){
-        return res.status(400).json({
-            message : "Cannot find User!"
-        })
-    }
-
+    const disconnectingUser= await User.updateOne({_id:existingAdmin.userId},{adminConnectionStatus:false,adminId:null})
     const connectingUser=await Admin.updateOne({_id:adminId},{userConnectionStatus : true,userId : userId})
-    const connectingAdmin=await User.updateOne({_id : userId,eamil:email},{adminConnectionStatus : true,adminId : adminId}) 
-    if(!connectingUser.acknowledged || !connectingAdmin.acknowledged){
+    const connectingAdmin=await User.updateOne({_id : userId,email:email},{adminConnectionStatus : true,adminId : adminId}) 
+    if(!disconnectingUser.acknowledged || !connectingUser.acknowledged || !connectingAdmin.acknowledged){
         return res.status(404).json({
             message : "Cannot update status! Try Again"
         })

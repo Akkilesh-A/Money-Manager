@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken'
 import zod from 'zod'
 import bcrypt from 'bcrypt'
-import { User,Transactions } from '../db/connection.js'
+import { Admin,User,Transactions } from '../db/connection.js'
 import { cloudinaryUpload } from '../utilities/cloudinaryUpload.js';
 import mongoose from 'mongoose';
 
@@ -123,7 +123,7 @@ async function updateProfile(req,res){
 
     //hashing password and calling upload to cloudinary function
     const hash = await bcrypt.hash(password,12)
-    const cloudinaryURL=await cloudinaryUpload(userId,`uploads/${req.file.filename}`) || existingUserDetails.imgURL;
+    const cloudinaryURL=existingUserDetails.imgURL || await cloudinaryUpload(userId,`uploads/${req.file.filename}`) 
      
     // name ? name = name : name = existingUser.name
 
@@ -321,4 +321,31 @@ async function bulk(req,res){
 
 }
 
-export {signUp, signIn, getProfile, updateProfile, sendMoney, getTransactions, addTags, removeTag, bulk}
+async function getConnection(req,res){
+    const userId = req.userId
+    
+    const user = await User.findById(userId)
+    if(!user){
+        return res.status(404).json({
+            message : "Cannot find user! Try Again"
+        })
+    }
+
+    if(user.adminConnectionStatus){
+        const admin=await Admin.findById(user.adminId)
+        if(!admin){
+            return res.status(404).json({
+                message : "Cannot find admin! Try Again"
+            })
+        }
+        return res.status(200).json({
+            message : "Admin found successfully",
+            admin : admin
+        })
+    }
+    return res.status(404).json({
+        message : "Cannot find Admin! Try Again"
+    })
+}
+
+export {signUp, signIn, getProfile, updateProfile, sendMoney, getTransactions, addTags, removeTag, bulk, getConnection}
