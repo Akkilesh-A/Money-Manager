@@ -199,4 +199,35 @@ async function addBalance(req,res){
     }
 }
 
-export {signUp, signIn, addBalance, createConnection, getConnection}
+async function updateConnection(req,res){
+    const adminId = req.adminId
+    const {userId,email} = req.body
+
+    const existingAdmin = await Admin.findById(adminId)
+    if(!existingAdmin){
+        return res.status(400).json({
+            message : "Cannot find Admin!"
+        })
+    }
+
+    const existingUser = await User.findById(adminId.userId)
+    if(!existingUser){
+        return res.status(400).json({
+            message : "Cannot find User!"
+        })
+    }
+
+    const connectingUser=await Admin.updateOne({_id:adminId},{userConnectionStatus : true,userId : userId})
+    const connectingAdmin=await User.updateOne({_id : userId,eamil:email},{adminConnectionStatus : true,adminId : adminId}) 
+    if(!connectingUser.acknowledged || !connectingAdmin.acknowledged){
+        return res.status(404).json({
+            message : "Cannot update status! Try Again"
+        })
+    }
+
+    res.status(200).json({
+        message : "New Connection Established!"
+    })
+}
+
+export {signUp, signIn, addBalance, createConnection, getConnection, updateConnection}
