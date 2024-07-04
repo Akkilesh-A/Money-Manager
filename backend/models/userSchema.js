@@ -26,6 +26,11 @@ const userSchema = new mongoose.Schema({
         type : Number,
         required : true,
         min:0
+    },
+    tags :{
+        type : [String],
+        required : true,
+        default : ['Friends','Family','Online','Shopping','Food']
     }
 
 })
@@ -50,6 +55,9 @@ const transactionsSchema=new mongoose.Schema({
     date:{
         type : Date,
         required : true  
+    },
+    tag :{
+        type : String,
     }
 })
 

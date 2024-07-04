@@ -42,7 +42,7 @@ async function signUp(req,res){
         })
     }else{
         const hash = await bcrypt.hash(password,12)
-        const user = await User.create({name, email, password :hash,imgURL:"https://res.cloudinary.com/djeplonq5/image/upload/v1719914709/file_jmjj10.png",balance : 0})
+        const user = await User.create({name, email, password :hash,imgURL:"https://res.cloudinary.com/djeplonq5/image/upload/t_Square_Default_User/v1719914709/file_jmjj10.png",balance : 0})
         if(!user){
             return res.status(400).json({
                 message : "Unable to create user!"
@@ -103,7 +103,7 @@ async function getProfile(req,res){
 async function updateProfile(req,res){
 
     const userId = req.userId
-    const {email, name, password} = req.body
+    let {email, name, password} = req.body
 
     //checking for empty fields
     if(!name && !email && !password){
@@ -119,10 +119,13 @@ async function updateProfile(req,res){
             message : 'Check Credentials Again!'
         })
     }
+    const existingUserDetails = await User.findById(userId)
 
     //hashing password and calling upload to cloudinary function
     const hash = await bcrypt.hash(password,12)
-    const cloudinaryURL=await cloudinaryUpload(userId,`uploads/${req.file.filename}`);
+    const cloudinaryURL=await cloudinaryUpload(userId,`uploads/${req.file.filename}`) || existingUserDetails.imgURL;
+     
+    // name ? name = name : name = existingUser.name
 
     //updating data in db
     const existingUser = await User.updateOne({_id : userId},{$set : {name,email,password : hash, imgURL : cloudinaryURL}})
@@ -140,7 +143,7 @@ async function updateProfile(req,res){
 
 async function sendMoney(req,res){
     const userId = req.userId
-    const{to,amount} = req.body
+    const{to,amount,tag} = req.body
     if(amount<=0){
         return res.status(400).json({
             message : "Invalid amount!"
@@ -173,7 +176,7 @@ async function sendMoney(req,res){
         //Increment and decrement from respective accounts
         await User.updateOne({_id : userId},{$inc:{balance : -amount}}).session(session)
         await User.updateOne({_id : to},{$inc:{balance : amount}}).session(session)
-        await Transactions.create({from : userId,to,amount,date : new Date()})
+        await Transactions.create({from : userId,to,amount,date : new Date(),tag:tag || "Miscellaneous"})
 
         //commiting transaction
         await session.commitTransaction();
@@ -213,4 +216,75 @@ async function getTransactions(req,res){
 
 }
 
-export {signUp, signIn, getProfile, updateProfile, sendMoney, getTransactions}
+async function addTags(req, res) {
+    const userId = req.userId;
+    const newTags = req.body.newTags;
+
+    // Ensure newTags is an array
+    if (!Array.isArray(newTags) || newTags.length<1) {
+        return res.status(400).json({
+            message: "Invalid input. newTags should be an array of strings!"
+        });
+    }
+
+    try {
+        const existingUser = await User.findById(userId);
+        if (!existingUser) {
+            return res.status(404).json({
+                message: "User not found!"
+            });
+        }
+
+        // Optionally, filter out duplicate tags
+        const updatedTags = [...new Set([...existingUser.tags, ...newTags])];
+
+        await User.updateOne({ _id: userId }, { tags: updatedTags });
+
+        return res.status(200).json({
+            message: "Successful!"
+        });
+    } catch (err) {
+        return res.status(500).json({
+            message: "Unable to add tags!",
+            error: err.message
+        });
+    }
+}
+
+async function removeTag(req,res){
+    const userId = req.userId;
+    const removeTag = req.body.removeTag;
+
+    // Ensure newTags is an array
+    if (!removeTag) {
+        return res.status(400).json({
+            message: "Invalid input."
+        });
+    }
+
+    try {
+        const existingUser = await User.findById(userId);
+        if (!existingUser) {
+            return res.status(404).json({
+                message: "User not found!"
+            });
+        }
+
+        const updatedTags = existingUser.tags.filter((tag)=>{
+            return tag!==removeTag
+        });
+
+        await User.updateOne({ _id: userId }, { tags: updatedTags });
+
+        return res.status(200).json({
+            message: "Tag removed successfully!"
+        });
+    } catch (err) {
+        return res.status(500).json({
+            message: "Unable to add tags!",
+            error: err.message
+        });
+    }
+}
+
+export {signUp, signIn, getProfile, updateProfile, sendMoney, getTransactions, addTags, removeTag}
