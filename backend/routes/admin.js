@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import { signUp, signIn, addBalance, createConnection } from '../controllers/adminController.js';
+import { signUp, signIn, addBalance, createConnection, getConnection } from '../controllers/adminController.js';
 import { adminAuthMiddleware } from '../utilities/adminAuthMiddleware.js';
 
 const router = Router();
@@ -13,5 +13,7 @@ router.post("/signin",signIn)
 router.get("/getconnectionstatus",adminAuthMiddleware)
 router.post("/addbalance",adminAuthMiddleware,addBalance)
 router.post("/createconnection",adminAuthMiddleware,createConnection)
+router.get("/getconnection",adminAuthMiddleware,getConnection)
+
 
 export default router

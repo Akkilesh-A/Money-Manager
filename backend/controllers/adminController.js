@@ -118,13 +118,13 @@ async function signIn(req,res){
 
 async function createConnection(req,res){
     const adminId = req.adminId
-    const {userId} = req.body
+    const {userId,email} = req.body
 
     const existingAdmin = await Admin.findById(adminId)
 
     if(!existingAdmin.userConnectionStatus){
         const connectingUser=await Admin.updateOne({_id:adminId},{userConnectionStatus : true,userId : userId})
-        const connectingAdmin=await User.updateOne({_id : userId},{adminConnectionStatus : true,adminId : adminId}) 
+        const connectingAdmin=await User.updateOne({_id : userId,eamil:email},{adminConnectionStatus : true,adminId : adminId}) 
         if(!connectingUser.acknowledged || !connectingAdmin.acknowledged){
             return res.status(404).json({
                 message : "Cannot update status! Try Again"
@@ -138,31 +138,65 @@ async function createConnection(req,res){
 }
 
 async function getConnection(req,res){
+    const adminId = req.adminId
+    
+    const admin = await Admin.findById(adminId)
+    if(!admin){
+        return res.status(404).json({
+            message : "Cannot find user! Try Again"
+        })
+    }
 
+    if(admin.userConnectionStatus){
+        const user=await User.findById(admin.userId)
+        if(!user){
+            return res.status(404).json({
+                message : "Cannot find user! Try Again"
+            })
+        }
+        return res.status(200).json({
+            message : "User found successfully",
+            user : user
+        })
+    }
+    return res.status(404).json({
+        message : "Cannot find user! Try Again"
+    })
 }
 
 async function addBalance(req,res){
-    const {to, amount} = req.body
+    const {amount} = req.body
+    let to;
 
-    const success = transactionBody.safeParse({to , amount})
-    if(!success.success){
-        return res.status(403).json({
-            message : "Invalid Inputs"
-        }) 
+    const adminId = req.adminId
+    
+    const admin = await Admin.findById(adminId)
+    if(!admin){
+        return res.status(404).json({
+            message : "Cannot find user! Try Again"
+        })
     }
-
+    if(admin.userConnectionStatus){
+        const user=await User.findById(admin.userId)
+        if(!user){
+            return res.status(404).json({
+                message : "Cannot find user! Try Again"
+            })
+        }
+        to = user._id
+    }
     try{
         await User.updateOne({_id: to},{$inc:{balance : +amount}})
-        res.status(200).json({
+        
+        await Transactions.create({from:adminId,to:to,amount:amount,date:new Date(),tag:"Credited"})
+        return res.status(200).json({
             message : "Transaction Successful!"
         })
     }catch(err){
-        res.status(403).json({
+        return res.status(403).json({
             message : "Transaction Failed"
         })
     }
-
 }
 
-
-export {signUp, signIn, addBalance, createConnection}
+export {signUp, signIn, addBalance, createConnection, getConnection}
