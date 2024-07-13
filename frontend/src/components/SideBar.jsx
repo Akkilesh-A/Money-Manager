@@ -41,7 +41,12 @@ export default function SideBar () {
 
         <div className='m-2 p-4 flex items-center gap-4'>
           <div  className={`hover:scale-125 cursor-pointer duration-300 relative shadow-sm flex justify-center items-center rounded-full border-purple-200 border-2`}>
-            <img src='https://res.cloudinary.com/djeplonq5/image/upload/c_crop,ar_1:1/v1719914709/file_jmjj10.png' width={50}/>
+            {expanded
+            ?
+            <img src='https://res.cloudinary.com/djeplonq5/image/upload/c_crop,ar_1:1/v1719914709/file_jmjj10.png' width={100}/>
+            :
+            <img src='https://res.cloudinary.com/djeplonq5/image/upload/c_crop,ar_1:1/v1719914709/file_jmjj10.png' width={60}/>
+            }
           </div>
           <div className={`${expanded ? 'flex-1 leading-5' : "w-0 hidden" }`}>
               <h1 className={`text-[1.3rem]`}>Username</h1>
