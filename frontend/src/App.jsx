@@ -1,6 +1,7 @@
 import { BrowserRouter, Route,Routes } from "react-router-dom"
-import UserLandingPage from "./pages/UserLandingPage"
-import { SideBar } from "./components/SideBar"
+import { SignIn,SideBar } from "./components"
+import {UserLandingPage,SendMoney } from "./pages"
+import TransactionsPage from "./pages/TransactionsPage"
 
 export default function App() {
   return (
@@ -9,6 +10,9 @@ export default function App() {
         <SideBar />
         <Routes>
           <Route path ="/" element={<UserLandingPage />}/>
+          <Route path ="/signin" element={<SignIn />}/>
+          <Route path ="/sendmoney" element={<SendMoney />}/>
+          <Route path ="/transactions" element={<TransactionsPage />}/>
         </Routes>
       </div>
     </BrowserRouter>
