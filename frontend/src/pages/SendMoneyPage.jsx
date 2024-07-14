@@ -1,7 +1,7 @@
 import React from 'react'
 import { PageWrapper } from '../components'
 
-const SendMoney = () => {
+const SendMoneyPage = () => {
   return (
     <PageWrapper>       
         <div className='flex-1 flex flex-col '>
@@ -26,4 +26,4 @@ const SendMoney = () => {
   )
 }
 
-export default SendMoney
+export default SendMoneyPage

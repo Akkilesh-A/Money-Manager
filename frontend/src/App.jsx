@@ -1,7 +1,6 @@
 import { BrowserRouter, Route,Routes } from "react-router-dom"
 import { SignIn,SideBar } from "./components"
-import {UserLandingPage,SendMoney } from "./pages"
-import TransactionsPage from "./pages/TransactionsPage"
+import {UserLandingPage, SendMoneyPage, TransactionsPage, CustomizeTagsPage} from "./pages"
 
 export default function App() {
   return (
@@ -11,8 +10,10 @@ export default function App() {
         <Routes>
           <Route path ="/" element={<UserLandingPage />}/>
           <Route path ="/signin" element={<SignIn />}/>
-          <Route path ="/sendmoney" element={<SendMoney />}/>
+          <Route path ="/sendmoneypage" element={<SendMoneyPage />}/>
           <Route path ="/transactions" element={<TransactionsPage />}/>
+          <Route path="/customizetags" element={<CustomizeTagsPage />} />
+          <Route path ="*" element={<UserLandingPage />}/>
         </Routes>
       </div>
     </BrowserRouter>

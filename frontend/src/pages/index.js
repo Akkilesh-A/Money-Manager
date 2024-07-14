@@ -1,5 +1,6 @@
 import UserLandingPage from "./UserLandingPage";
-import SendMoney from "./SendMoneyPage";
+import SendMoneyPage from "./SendMoneyPage";
 import TransactionsPage from "./TransactionsPage";
+import CustomizeTagsPage from "./CustomizeTagsPage";
 
-export {UserLandingPage, SendMoney, TransactionsPage}
+export {UserLandingPage, SendMoneyPage, TransactionsPage, CustomizeTagsPage}
