@@ -1,7 +1,6 @@
-import { BarChart } from '@mui/x-charts/BarChart';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faVault,faArrowRight,faSackDollar,faHandHoldingDollar } from '@fortawesome/free-solid-svg-icons'
-import { TransactionComponent, CardComponent, PageWrapper } from '../components';
+import { TransactionComponent, CardComponent, PageWrapper, SideBar } from '../components';
 
 
 const transactions=[{to: "2324324245345", amount : "13", tag : "Entertainment"},{to: "12132233424343", amount : "1243", tag : "Friends"},{to: "31243245342545", amount : "323", tag : "Family"},{to: "2324324245345", amount : "13", tag : "Entertainment"}]
@@ -64,12 +63,15 @@ const UserLandingPage = () => {
 
 
   return (
-    <PageWrapper>
-        <div className='flex flex-col gap-8'>
-          <LandingSectionForUser />
-          <TransactionsSection />
-        </div>
-    </PageWrapper>
+    <div className="flex">
+      <SideBar />
+      <PageWrapper>
+          <div className='flex flex-col gap-8'>
+            <LandingSectionForUser />
+            <TransactionsSection />
+          </div>
+      </PageWrapper>
+    </div>
   )
 }
 
