@@ -25,12 +25,12 @@ const userSchema = new mongoose.Schema({
     balance:{
         type : Number,
         required : true,
-        min:0
+        deafult:0
     },
     tags :{
-        type : [String],
+        type : Object,
         required : true,
-        default : ['Friends','Family','Online','Shopping','Food']
+        default : {'Friends':0,'Family':0,'Online':0,'Shopping':0,'Food':0}
     },
     adminConnectionStatus :{
         type : Boolean,
@@ -66,7 +66,11 @@ const transactionsSchema=new mongoose.Schema({
     },
     tag :{
         type : String,
-    }
+    },
+    imgURL :{
+        type : String,
+        required:false
+    },
 })
 
 const Transactions = mongoose.model('Transactions',transactionsSchema)
