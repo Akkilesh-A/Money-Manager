@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import {useSelector} from "react-redux"
 import { PageWrapper,SideBar } from '../components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

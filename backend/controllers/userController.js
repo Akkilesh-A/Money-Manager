@@ -25,10 +25,9 @@ async function signUp(req,res){
 
     if(!name || !email || !password){
         return res.status(400).json({
-            message : 'Missing Credentials!'
+            error : 'Missing Credentials!'
         })
     }
-
     const success = signUpBody.safeParse({email, name, password})
 
     const existingUser = await User.findOne({email})
