@@ -1,15 +1,13 @@
 import { BrowserRouter, Route,Routes } from "react-router-dom"
-import { SignIn,SideBar } from "./components"
-import {UserLandingPage, SendMoneyPage, TransactionsPage, CustomizeTagsPage} from "./pages"
-import SignUpPage from "./pages/SignUpPage"
+import {UserLandingPage, SendMoneyPage, TransactionsPage, CustomizeTagsPage, SignUpPage, SignInPage} from "./pages"
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path ="/" element={<UserLandingPage />}/>
-        <Route path ="/signin" element={<SignIn />}/>
         <Route path ="/sendmoneypage" element={<SendMoneyPage />}/>
+        <Route path ="/signin" element={<SignInPage />}/>
         <Route path ="/transactions" element={<TransactionsPage />}/>
         <Route path="/customizetags" element={<CustomizeTagsPage />} />
         <Route path="/signup" element={<SignUpPage />} />
