@@ -1,7 +1,7 @@
-import { toast } from "react-toastify";
+import {Bounce, ToastContainer, toast} from "react-toastify"
 import "react-toastify/dist/ReactToastify.css";
 
-const ToastMessage = (message, mode) => {
+const ToastMessage = (mode,message) => {
   toast[mode](message, {
     position: "top-right",
     autoClose: 5000,
@@ -11,6 +11,7 @@ const ToastMessage = (message, mode) => {
     draggable: true,
     progress: undefined,
     theme: "light",
+    // transition:Bounce
   });
 };
 
