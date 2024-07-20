@@ -2,16 +2,13 @@ import { useForm } from 'react-hook-form'
 import {useNavigate} from "react-router-dom"
 import zod from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
-import {Bounce, ToastContainer, toast} from "react-toastify"
-import "react-toastify/dist/ReactToastify.css";
-import { FaAsterisk, FaSpinner } from "react-icons/fa";
-import {ToastMessage} from "../components"
-
 import axios from "axios"
 import { useState } from 'react'
+
+import {ToastMessage} from "../components"
+
+import "react-toastify/dist/ReactToastify.css";
+import { FaSpinner } from "react-icons/fa";
 
 const signUpSchema = zod.object({
     email: zod.string().email().min(7),
