@@ -95,8 +95,6 @@ const SignUpPage = () => {
 
   return (
        <div className='bg-purple-200 gap-8  flex flex-col m-auto justify-center items-center max-h-screen max-w-screen px-32 py-32 '>
-        <ToastContainer />
-
         {signinRole=="PARENT" && 
         <div className='md:flex justify-center items-center shadow-lg rounded-xl bg-white '>
             <div className='w-1/2 rounded-l-lg hidden lg:flex justify-center items-center bg-purple-200'>
