@@ -135,11 +135,8 @@ const SignUpPage = () => {
 
         {signinRole=="CHILD" && 
         <div className='md:flex justify-center items-center shadow-lg rounded-xl bg-white '>
-            <div className='w-1/2 rounded-l-lg hidden lg:flex justify-center items-center bg-purple-200'>
-                <img src='parent.png' /> 
-            </div>
-            <form onSubmit={handleSubmit(onParentSubmit)} className=" lg:w-1/2 flex flex-col gap-4 justify-center p-16">
-                <h1>Parent Sign Up!</h1>
+            <form onSubmit={handleSubmit(onChildSubmit)} className=" lg:w-1/2 flex flex-col gap-4 justify-center p-16">
+                <h1>Child Sign Up!</h1>
                 <div className='flex flex-col gap-2'>
                     <h2>Email Id</h2>
 
@@ -167,6 +164,9 @@ const SignUpPage = () => {
                 <button disabled={isSubmitting} className='m-auto px-4 py-2 border bg-yellow-400 rounded-md font-semibold'>{isSubmitting ?<FaSpinner /> : "Sign Up!"}</button>
                 {errors.root && <p className='text-red-500'>{errors.root.message}</p>}
             </form>
+            <div className='w-1/2 rounded-l-lg hidden lg:flex justify-center items-center bg-purple-200'>
+                <img src='child.png' /> 
+            </div>
         </div>}
 
         <div className='flex gap-8 justify-center items-center'>
