@@ -1,7 +1,5 @@
 # Money Management App - MERN
 
-A comprehensive MERN stack money management web app with admin and user roles!
-
 # Backend
 
 ## ⚙️Tech Stack
@@ -22,11 +20,12 @@ A comprehensive MERN stack money management web app with admin and user roles!
 
 ### Admin Routes
 
-- [ ]  signin
-- [ ]  signup
-- [ ]  addmoney - Admin can add money to verified user’s account only
-- [ ]  verification - To verify admins and users account connection and get user’s profile
-- [ ]  gettransactions - To get transaction history of user (Verify admin user connection middleware)
+- [x]  signin
+- [x]  signup
+- [x]  addmoney - Admin can add money to verified user’s account only
+- [x]  getConnection- To get connection details
+- [x]  createConnection - To connect user to admin account
+- [x]  updateConnection - To update connection and delete old connection
 
 ### User Routes
 
@@ -36,14 +35,14 @@ A comprehensive MERN stack money management web app with admin and user roles!
 - [x]  customizetags - To add, delete, update tags
 - [x]  sendmoney - An interface to record transaction between users (default tag - User/Friend)
 - [x]  gettransactions - To get user’s transactions (Verify user)
-- [ ]  getweeklytransactions - To get user’s weekly transactions
 - [x]  updateprofile - To update user’s profile
+- [x]  bulk - To get filtered results of other users!
+- [x]  getConnection- To verify admins and users account connection
 
 ### Middlewares
 
 - [x]  adminAuthMiddleware - Session authentication
 - [x]  userAuthMiddleware - Session authentication
-- [ ]  adminUserConnection - To verify whether particular admin is connected with the user account
 
 ---
 
@@ -57,6 +56,8 @@ A comprehensive MERN stack money management web app with admin and user roles!
 - Balance
 - Tags
 - imgURL
+- Admin connection status
+- Admin Id
 
 ### Transactions Schema
 
@@ -70,6 +71,6 @@ A comprehensive MERN stack money management web app with admin and user roles!
 - Name
 - Email
 - Password
-- User
 - imgURL
-
+- User connection status
+- User Id
