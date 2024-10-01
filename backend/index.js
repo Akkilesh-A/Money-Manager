@@ -1,26 +1,16 @@
-import express,{ Router } from 'express';
-import cors from 'cors';
-import RouterRoute from './routes/index.js'
-import { connection }  from './db/connection.js';
-import dotenv from 'dotenv';
-dotenv.config();
+import express from 'express';
+import { configDotenv } from 'dotenv';
 
-const app=express();
-const port=process.env.PORT || 3000;
-const router=Router();
-
+const app=express()
 app.use(express.json())
-app.use(cors())
-
-connection();
+configDotenv()
 
 app.get("/",(req,res)=>{
-    res.send("Healthy Server Running!😁")
+    res.status(200).json({
+        message:`Healthy server running ${process.env.PORT}`
+    })
 })
 
-app.use(router)
-router.use("/api/v1",RouterRoute)
-
-app.listen(port,()=>{
-    console.log(`Successfully running in Port-${port}`)
+app.listen(process.env.PORT,()=>{
+    console.log(`Server is running on port ${process.env.PORT}`)
 })
