@@ -11,7 +11,6 @@ function App() {
         <Route path="/" element={<H1>Lol</H1>} />
         <Route path="/home" element={<LandingPage />} />
       </Routes>
-
     </ThemeProvider>
   )
 }
