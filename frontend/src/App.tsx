@@ -1,13 +1,17 @@
+import { Routes, Route } from "react-router-dom"
 import { ModeToggle, ThemeProvider } from "./components"
-import { Button, H1 } from "./components/ui"
+import { LandingPage } from "./sections"
+import { H1 } from "./components/ui"
 
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
       <ModeToggle />
-      <H1>Hello World</H1>
-      <H1>lOL</H1>
-      <Button>Click Me!</Button>
+      <Routes>
+        <Route path="/" element={<H1>Lol</H1>} />
+        <Route path="/home" element={<LandingPage />} />
+      </Routes>
+
     </ThemeProvider>
   )
 }
