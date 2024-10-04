@@ -9,7 +9,7 @@ export function ModeToggle() {
 
   return (
     <div>
-      <Button className="absolute top-4 left-4" onClick={()=>{
+      <Button className="" onClick={()=>{
         if(theme == "light") {
           setTheme("dark")
         } else {

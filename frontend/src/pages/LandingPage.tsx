@@ -1,3 +1,4 @@
+import { NavBar } from '../components'
 import { 
     H1, 
     Button 
@@ -6,6 +7,7 @@ import {
 const LandingPage = () => {
   return (
     <div>
+        <NavBar />
         <H1>Landing Page!</H1>
         <Button>Click Me!</Button>   
     </div>

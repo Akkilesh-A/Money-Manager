@@ -26,11 +26,21 @@ import {
   SelectValue
  } from "./select";
 import { Toaster } from "./sonner";
-
+import { H2 } from "./h2";
+import { H3 } from "./h3";
+import { H4 } from "./h4";
+import { 
+  Avatar, 
+  AvatarFallback, 
+  AvatarImage 
+} from "./avatar"
 
 export {
     Button,
     H1,
+    H2,
+    H3,
+    H4,
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
@@ -50,5 +60,8 @@ export {
     SelectItem,
     SelectTrigger,
     SelectValue,
-    Toaster
+    Toaster,
+    Avatar, 
+    AvatarFallback, 
+    AvatarImage 
 }

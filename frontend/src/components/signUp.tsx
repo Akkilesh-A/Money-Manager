@@ -10,7 +10,7 @@ import {
     Input,
     Label,
  } from "./ui"
- import {set, useForm} from "react-hook-form"
+ import {useForm} from "react-hook-form"
  import { toast } from "sonner"
 
 interface signUpInputs{
