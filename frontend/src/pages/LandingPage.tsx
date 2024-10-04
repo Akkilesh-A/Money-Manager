@@ -1,16 +1,19 @@
-import { NavBar } from '../components'
+import { Layout } from '../components'
+import { RadialChartLabel } from '../components/charts'
 import { 
     H1, 
-    Button 
 } from '../components/ui'
 
 const LandingPage = () => {
   return (
-    <div>
-        <NavBar />
-        <H1>Landing Page!</H1>
-        <Button>Click Me!</Button>   
-    </div>
+    <Layout>
+        <div className='flex-col gap-8 flex'>
+          <H1>Welcome, you finance freak!</H1> 
+          <div className='flex'>
+            <RadialChartLabel />   
+          </div> 
+        </div>
+    </Layout>
   )
 }
 

@@ -93,6 +93,25 @@ async function signIn(req,res){
     })
 }
 
+async function getData(req,res){
+    const token=req.headers.authorization.split(" ")[1]
+    if(token){
+        const decoded=jwt.verify(token,process.env.JWT_SECRET)
+        try{
+            const user=await Adult.findOne({email:decoded.email})
+            res.status(200).json({
+                message:"Data fetched successfully",
+                data:user
+            })
+        }catch(err){
+            console.log(err)
+            res.status(400).json({
+                message:"Data fetch unsuccessful"
+            })
+        }
+    }
+}
+
 export {
     signIn,
     signUp

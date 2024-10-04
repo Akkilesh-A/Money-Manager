@@ -12,16 +12,8 @@ import {
  } from "./ui"
 import { GitHubLogoIcon } from "@radix-ui/react-icons"
 import { ModeToggle } from "./mode-toggle"
-import { useEffect } from "react"
 
 const NavBar = () => {
-
-    useEffect(()=>{
-        if(localStorage.getItem("token") == null) {
-            window.location.href="/signIn"
-        }
-    })
-
   return (
     <div className="w-full p-4 flex justify-between items-center">
         <div className="flex gap-4 items-center">

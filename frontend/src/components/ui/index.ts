@@ -34,6 +34,12 @@ import {
   AvatarFallback, 
   AvatarImage 
 } from "./avatar"
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "./chart"
 
 export {
     Button,
@@ -63,5 +69,13 @@ export {
     Toaster,
     Avatar, 
     AvatarFallback, 
-    AvatarImage 
+    AvatarImage,
+    ChartContainer,
+    ChartTooltip,
+    ChartTooltipContent,
+}
+
+export type {
+  ChartConfig,
+  
 }

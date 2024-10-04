@@ -45,6 +45,21 @@ const adultSchema = new mongoose.Schema({
     transactions:{
         type:[mongoose.SchemaTypes.ObjectId],
         ref:"Transaction"
+    },
+    transactionTags:{
+        type:[String],
+        required:true,
+        default:[]
+    },
+    childConnectionStatus:{
+        type:Boolean,
+        required:true,
+        default:false
+    },
+    children:{
+        type:[mongoose.SchemaTypes.ObjectId],
+        ref:"Child",
+        default:[]
     }
 })
 

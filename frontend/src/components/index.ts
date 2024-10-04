@@ -4,6 +4,7 @@ import { SignUpForm } from "./signUp";
 import { SignInForm } from "./signIn";
 import NavBar from "./navbar";
 import EntryFooter from "./entryFooter";
+import Layout from "./Layout";
 
 export {
     ThemeProvider,
@@ -11,5 +12,6 @@ export {
     SignUpForm,
     SignInForm,
     NavBar,
-    EntryFooter
+    EntryFooter,
+    Layout
 }
