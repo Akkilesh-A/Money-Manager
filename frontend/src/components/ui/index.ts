@@ -8,7 +8,25 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "./dropdown-menu"
-  
+  import { 
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+   } from "./card";
+import { Input } from "./input";
+import { Label } from "./label";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+ } from "./select";
+import { Toaster } from "./sonner";
+
 
 export {
     Button,
@@ -19,4 +37,18 @@ export {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+    Input,
+    Label,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+    Toaster
 }
