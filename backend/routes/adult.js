@@ -9,7 +9,9 @@ adultRouter.get("/",(req,res)=>{
     })
 })
 
-adultRouter.get("/signin",adultControllers.signIn)
+adultRouter.post("/signin",adultControllers.signIn)
+
+adultRouter.post("/signup",adultControllers.signUp)
 
 export {
     adultRouter

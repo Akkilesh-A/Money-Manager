@@ -8,7 +8,7 @@ const app=express()
 app.use(express.json())
 configDotenv()
 app.use(cors())
-// connectDB()
+connectDB()
 
 app.get("/",(req,res)=>{
     res.status(200).json({

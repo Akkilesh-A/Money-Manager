@@ -17,6 +17,11 @@ const adultSchema = new mongoose.Schema({
         required: true,
         trim:true
     },
+    imgURL:{
+        type:String,
+        required:true,
+        default:"https://res.cloudinary.com/djeplonq5/image/upload/v1719914709/file_jmjj10.png"
+    },
     accountBalance:{
         type:Number,
         required:true,

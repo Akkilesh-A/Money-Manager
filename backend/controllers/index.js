@@ -1,7 +1,8 @@
-import { signIn } from "./adultControllers.js";
+import { signIn, signUp } from "./adultControllers.js";
 
 const adultControllers={
-    signIn
+    signIn,
+    signUp
 }
 
 export {

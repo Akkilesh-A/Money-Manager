@@ -1,4 +1,4 @@
-import { Adult } from "./adultSchema";
+import { Adult } from "./adultSchema.js";
 
 export {
     Adult
