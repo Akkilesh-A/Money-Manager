@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { parentRouter } from "./parent.js";
 import { childRouter } from "./child.js";
 import { adultRouter } from "./adult.js";
 
@@ -10,8 +9,6 @@ router.get("/",(req,res)=>{
         message:"Healthy route api/v1"
     })
 })
-
-router.use("/parent",parentRouter)
 
 router.use("/child",childRouter)
 

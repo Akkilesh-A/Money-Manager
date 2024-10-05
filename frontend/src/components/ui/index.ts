@@ -40,6 +40,17 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "./chart"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "./alert-dialog"
 
 export {
     Button,
@@ -73,6 +84,15 @@ export {
     ChartContainer,
     ChartTooltip,
     ChartTooltipContent,
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
 }
 
 export type {

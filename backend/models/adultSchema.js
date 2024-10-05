@@ -51,6 +51,17 @@ const adultSchema = new mongoose.Schema({
         required:true,
         default:[]
     },
+    spendingsPerTag:{
+        type:Object,
+        required:true,
+        default:{
+            "Online":0,
+            "Food":0,
+            "Shopping":0,
+            "Travel":0,
+            "Others":0
+        }
+    },
     childConnectionStatus:{
         type:Boolean,
         required:true,

@@ -1,8 +1,9 @@
-import { signIn, signUp } from "./adultControllers.js";
+import { signIn, signUp,getData } from "./adultControllers.js";
 
 const adultControllers={
     signIn,
-    signUp
+    signUp,
+    getData
 }
 
 export {

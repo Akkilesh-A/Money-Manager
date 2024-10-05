@@ -12,6 +12,7 @@ import {
  import {useForm} from "react-hook-form"
  import { toast } from "sonner"
  import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 
 interface signUpInputs{
     email: string,
@@ -19,6 +20,7 @@ interface signUpInputs{
 }
 
 export function SignInForm() {
+    const navigate=useNavigate()
 
     const {register, handleSubmit} = useForm<signUpInputs>()
 
@@ -41,13 +43,13 @@ export function SignInForm() {
             return
         }
         toast.success(responseData.message)  
-        window.location.href="/home" 
+        navigate("/home") 
     }
 
     useEffect(() => {
         const token=localStorage.getItem("token")
         if(token){
-            window.location.href="/home"
+            navigate("/home")
         }
     }, [])     
 

@@ -13,6 +13,8 @@ adultRouter.post("/signin",adultControllers.signIn)
 
 adultRouter.post("/signup",adultControllers.signUp)
 
+adultRouter.get("/get-data",adultControllers.getData)
+
 export {
     adultRouter
 }

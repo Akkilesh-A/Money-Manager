@@ -1,6 +1,11 @@
 import { Routes, Route } from "react-router-dom"
 import { ThemeProvider } from "./components"
-import { LandingPage, SignInPage, SignUpPage } from "./pages"
+import { 
+  LandingPage, 
+  SignInPage, 
+  SignUpPage, 
+  ProfilePage
+ } from "./pages"
 import { H1, Toaster } from "./components/ui"
 
 function App() {
@@ -13,6 +18,7 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/home" element={<LandingPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </ThemeProvider>
     </div>
