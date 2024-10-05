@@ -3,6 +3,7 @@ import cors from 'cors';
 import { configDotenv } from 'dotenv';
 import connectDB from './db/connection.js';
 import { router } from './routes/index.js';
+import { cloudinaryUpload } from './middlewares/cloudinaryUpload.js';
 
 const app=express()
 app.use(express.json())
@@ -11,6 +12,7 @@ app.use(cors())
 connectDB()
 
 app.get("/",(req,res)=>{
+    cloudinaryUpload()
     res.status(200).json({
         message:`Healthy server running ${process.env.PORT}`
     })

@@ -3,6 +3,7 @@ import { signInBody, signUpBody } from "./zodTypes.js"
 import { Adult } from "../models/index.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import { cloudinaryUpload } from "../helpers/cloudinaryUpload.js"
 
 async function signUp(req,res){
     const {email,password,name,phoneNumber}=req.body
@@ -110,8 +111,20 @@ async function getData(req,res){
     }
 }
 
+async function updateProfile(req,res){
+    const {name,phoneNumber,email,password}=req.body
+    const image=req.file
+    const imgURL= await cloudinaryUpload(image)
+    console.log(req.body)
+    console.log(imgURL)
+    return res.status(400).json({
+        message:"Successful!"
+    })
+}
+
 export {
     signIn,
     signUp,
-    getData
+    getData,
+    updateProfile
 }
