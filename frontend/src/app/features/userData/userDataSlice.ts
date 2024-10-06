@@ -1,12 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+interface userDataSliceFields{
+    name:string,
+    email:string,
+    imgURL:string,
+    tags:[string],
+    token:string, 
+}
+
 const initialState={
     name:"",
     email:"",
     imgURL:"",
-    tags:[],
-    token:"",
-    
+    tags:["Shopping","Online","Transactions"],
+    token:"", 
 }
 
 export const userDataSlice = createSlice({
@@ -39,3 +46,6 @@ export const  {
 } = userDataSlice.actions
 
 export default userDataSlice.reducer
+export type {
+    userDataSliceFields
+}

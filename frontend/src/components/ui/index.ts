@@ -51,6 +51,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./alert-dialog"
+import { Progress } from "./progress";
+import { Badge } from "./badge";
 
 export {
     Button,
@@ -93,6 +95,8 @@ export {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
+    Progress,
+    Badge    
 }
 
 export type {

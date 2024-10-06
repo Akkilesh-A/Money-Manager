@@ -65,6 +65,9 @@ const NavBar = () => {
             }
             getData()
         }
+        // else{
+        //     navigate("/signin")
+        // }
     },[])
 
   return (

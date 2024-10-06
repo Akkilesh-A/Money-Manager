@@ -5,6 +5,8 @@ import { SignInForm } from "./signIn";
 import NavBar from "./navbar";
 import EntryFooter from "./entryFooter";
 import Layout from "./Layout";
+import UserBankDataCard from "./userBankData";
+import UserTagsCard from "./user-tags";
 
 export {
     ThemeProvider,
@@ -13,5 +15,7 @@ export {
     SignInForm,
     NavBar,
     EntryFooter,
-    Layout
+    Layout,
+    UserBankDataCard,
+    UserTagsCard
 }

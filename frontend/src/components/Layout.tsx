@@ -5,7 +5,7 @@ const Layout = ({children,className}:{children:ReactNode,className?:string}) => 
   return (
     <>
         <NavBar />
-        <div className={`px-16 ${className}`}>
+        <div className={`px-16 py-4 ${className}`}>
             {children}
         </div>
     </>
