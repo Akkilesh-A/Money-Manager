@@ -53,6 +53,11 @@ import {
 } from "./alert-dialog"
 import { Progress } from "./progress";
 import { Badge } from "./badge";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "./resizable"
 
 export {
     Button,
@@ -96,7 +101,10 @@ export {
     AlertDialogTitle,
     AlertDialogTrigger,
     Progress,
-    Badge    
+    Badge,
+    ResizableHandle,
+    ResizablePanel,
+    ResizablePanelGroup,    
 }
 
 export type {
