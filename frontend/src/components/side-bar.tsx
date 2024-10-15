@@ -65,8 +65,21 @@ const SideBar = ({isSideBarClosed}:{isSideBarClosed:boolean}) => {
         </div>}
 
         {isSideBarClosed && 
-        <div className="flex justify-center items-center">
-            <Sidebar />
+        <div className="flex flex-col justify-center items-center gap-4">
+            <div className="flex justify-center items-center">
+                <Sidebar />
+            </div>
+            <div>
+                {
+                    SidebarLinks.map((sidebarLink,index)=>{
+                        return(
+                            <div onClick={()=>setActiveTab(sidebarLink.route)} className={`flex p-4 dark:text-white rounded-md space-x-4 items-center cursor-pointer ${activeTab == sidebarLink.route ? "bg-[#27272a]" : "" }`} key={index}>
+                                {sidebarLink.icon}
+                            </div>
+                        )
+                    })
+                }
+            </div>            
         </div>}
     </div>
   )
