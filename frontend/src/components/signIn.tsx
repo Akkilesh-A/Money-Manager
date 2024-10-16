@@ -12,7 +12,7 @@ import {
  import {useForm} from "react-hook-form"
  import { toast } from "sonner"
  import { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 interface signUpInputs{
     email: string,
@@ -29,7 +29,7 @@ export function SignInForm() {
             email: data.email,
             password: data.password
         }
-        const response=await fetch("http://localhost:8000/api/v1/adult/signin", {
+        const response=await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/adult/signin`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -42,13 +42,15 @@ export function SignInForm() {
             toast.error(responseData.message)
             return
         }
+        await localStorage.setItem("money-manager-token",responseData.token)
         toast.success(responseData.message)  
         navigate("/home") 
     }
 
     useEffect(() => {
-        const token=localStorage.getItem("token")
+        const token=localStorage.getItem("money-manager-token")
         if(token){
+            toast.success("Session Restored!")
             navigate("/home")
         }
     }, [])     
@@ -57,8 +59,8 @@ export function SignInForm() {
     <Card className="w-[350px]">
         <form onSubmit={handleSubmit(onSubmit)}>
             <CardHeader>
-                <CardTitle>Sign Up</CardTitle>
-                <CardDescription>Fill in your details and get started!</CardDescription>
+                <CardTitle>Sign In </CardTitle>
+                <CardDescription>Fill in your details and continue!</CardDescription>
             </CardHeader>
             <CardContent>
                 <div className="grid w-full items-center gap-4">
@@ -76,7 +78,13 @@ export function SignInForm() {
                     </div>
                 </div>
             </CardContent>
-            <CardFooter className="flex justify-end">
+            <CardFooter className="flex justify-between">
+                <div className="text-sm">
+                    New here?{" "}
+                    <Link to="/signup" className="underline " >
+                        Sign Up
+                    </Link>
+                </div>
                 <Button type="submit" >Sign In</Button>
             </CardFooter>
         </form>

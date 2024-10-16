@@ -15,13 +15,26 @@ adultRouter.get("/",(req,res)=>{
     })
 })
 
+//SignIn
 adultRouter.post("/signin",adultControllers.signIn)
 
+//SignUp
 adultRouter.post("/signup",adultControllers.signUp)
 
-adultRouter.get("/get-data",jwtAuthorization,adultControllers.getData)
+//Get User Tags
+adultRouter.get("/get-user-tags",jwtAuthorization,adultControllers.getUserTags)
 
-adultRouter.post("/update-profile",jwtAuthorization,uploads.single(),adultControllers.updateProfile)
+//Add User Tag
+adultRouter.post("/add-new-tag",jwtAuthorization,adultControllers.addUserTags)
+
+//Delete User Tags
+adultRouter.delete("/delete-user-tag",jwtAuthorization,adultControllers.deleteUserTag)
+
+//Get Profile 
+adultRouter.get("/get-user-data",jwtAuthorization,adultControllers.getData)
+
+//Update Profile
+adultRouter.post("/update-profile",jwtAuthorization,adultControllers.updateProfile)
 
 export {
     adultRouter

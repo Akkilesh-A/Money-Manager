@@ -37,30 +37,19 @@ const adultSchema = new mongoose.Schema({
         required:true,
         default:["Online","Food","Shopping","Travel","Others"]
     },
+    tagColors:{
+        type:[String],
+        required:true,
+        default:["bg-[#2662d9]","bg-[#2eb88a]","bg-[#e88c30]","bg-[#af57db]","bg-[#e23670]"]
+    },
     favoriteTags:{
         type:[String],
         required:true,
-        default:[]
+        default:["Online","Travel"]
     },
     transactions:{
         type:[mongoose.SchemaTypes.ObjectId],
         ref:"Transaction"
-    },
-    transactionTags:{
-        type:[String],
-        required:true,
-        default:[]
-    },
-    spendingsPerTag:{
-        type:Object,
-        required:true,
-        default:{
-            "Online":0,
-            "Food":0,
-            "Shopping":0,
-            "Travel":0,
-            "Others":0
-        }
     },
     childConnectionStatus:{
         type:Boolean,

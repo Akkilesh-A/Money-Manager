@@ -7,6 +7,7 @@ import EntryFooter from "./entryFooter";
 import Layout from "./Layout";
 import UserBankDataCard from "./userBankData";
 import UserTagsCard from "./user-tags";
+import Loader from "./Loader";
 
 export {
     ThemeProvider,
@@ -17,5 +18,6 @@ export {
     EntryFooter,
     Layout,
     UserBankDataCard,
-    UserTagsCard
+    UserTagsCard,
+    Loader
 }

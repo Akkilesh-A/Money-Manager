@@ -1,10 +1,11 @@
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, Link } from "react-router-dom"
 import { ThemeProvider } from "./components"
 import { 
   LandingPage, 
   SignInPage, 
   SignUpPage, 
-  ProfilePage
+  ProfilePage,
+  TagsPage
  } from "./pages"
 import { H1, Toaster } from "./components/ui"
 
@@ -14,11 +15,15 @@ function App() {
       <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
         <Toaster />
         <Routes>
-          <Route path="/" element={<H1>Lol</H1>} />
+          <Route path="/" element={<div>
+            <H1>Lol</H1>
+            <Link to={"/home"}>Go to Home!</Link>
+          </div>} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/home" element={<LandingPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/tags" element={<TagsPage />} />
         </Routes>
       </ThemeProvider>
     </div>

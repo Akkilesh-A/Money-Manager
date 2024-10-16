@@ -80,31 +80,26 @@ const NavBar = () => {
             <a target="_blank" href="https://github.com/Akkilesh-A/Money-Manager" className="p-2 rounded-md border ">
                 <GitHubLogoIcon width={20} height={20} />
             </a>
-            <div className="dark:text-[#262626] text-[#e5e5e5]">
-            </div>
+            <div className="dark:text-[#262626] text-[#e5e5e5]">{"|"}</div>
             <ModeToggle />
             <div className="dark:text-[#262626] text-[#e5e5e5]">{"|"}</div>
-                <DropdownMenu>
-                    <DropdownMenuTrigger>
-                        <Avatar>
-                            <AvatarImage src={userData.imgURL} width={100} height={100}/>
-                            <AvatarFallback>{userData.name.slice(0)}</AvatarFallback>
-                        </Avatar>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        <DropdownMenuItem ><Link className="flex gap-4 items-center" to={"/profile"}><UserIcon/> Profile</Link></DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={()=>{
-                            localStorage.removeItem("token")
-                            navigate("/signin")
-                        }} className="flex gap-4 items-center"><LogOut/> Logout</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            
+            <DropdownMenu>
+                <DropdownMenuTrigger>
+                    <Avatar>
+                        <AvatarImage src={userData.imgURL} width={100} height={100}/>
+                        <AvatarFallback>{userData.name.slice(0)}</AvatarFallback>
+                    </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                    <DropdownMenuItem ><Link className="flex gap-4 items-center" to={"/profile"}><UserIcon/> Profile</Link></DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={()=>{
+                        localStorage.removeItem("money-manager-token")
+                        navigate("/signin")
+                    }} className="flex gap-4 items-center"><LogOut/> Logout</DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>   
         </div>
-
-        {/* {JSON.stringify(userData)} */}
-
     </div>
   )
 }

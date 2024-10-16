@@ -1,10 +1,13 @@
-import { signIn, signUp,getData, updateProfile } from "./adultControllers.js";
+import { signIn, signUp,getData, updateProfile, getUserTags, deleteUserTag, addUserTags } from "./adultControllers.js";
 
 const adultControllers={
     signIn,
     signUp,
     getData,
-    updateProfile
+    updateProfile,
+    getUserTags,
+    addUserTags,
+    deleteUserTag
 }
 
 export {

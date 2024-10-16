@@ -2,6 +2,8 @@ import {  BarChartBig, DollarSign, Home, Sidebar, Tags, } from "lucide-react"
 import {  H3, H4 } from "./ui"
 import {  ReactNode, useState } from "react"
 import { Link } from "react-router-dom"
+import { useLocation } from 'react-router-dom';
+
 
 interface SidebarLinks{
     icon:ReactNode,
@@ -34,8 +36,8 @@ const SidebarLinks=[
 
 const SideBar = ({isSideBarClosed}:{isSideBarClosed:boolean}) => {
 
-    const [activeTab, setActiveTab] = useState("/home")
-    
+    const location = useLocation()
+       
 
   return (
     <div className="px-4 py-4">
@@ -55,8 +57,7 @@ const SideBar = ({isSideBarClosed}:{isSideBarClosed:boolean}) => {
                                 icon={sidebarLink.icon} 
                                 title={sidebarLink.title} 
                                 route={sidebarLink.route}
-                                activeTab={activeTab} 
-                                setActiveTab={setActiveTab} 
+                                activeTab={location.pathname} 
                             />
                         )
                     })
@@ -73,9 +74,9 @@ const SideBar = ({isSideBarClosed}:{isSideBarClosed:boolean}) => {
                 {
                     SidebarLinks.map((sidebarLink,index)=>{
                         return(
-                            <div onClick={()=>setActiveTab(sidebarLink.route)} className={`flex p-4 dark:text-white rounded-md space-x-4 items-center cursor-pointer ${activeTab == sidebarLink.route ? "bg-[#27272a]" : "" }`} key={index}>
+                            <Link to={sidebarLink.route} className={`flex p-4 dark:text-white rounded-md space-x-4 items-center cursor-pointer ${location.pathname == sidebarLink.route ? "bg-[#27272a]" : "" }`} key={index}>
                                 {sidebarLink.icon}
-                            </div>
+                            </Link>
                         )
                     })
                 }
@@ -86,15 +87,12 @@ const SideBar = ({isSideBarClosed}:{isSideBarClosed:boolean}) => {
 }
 
 function SideBarButton(
-    {icon,title,activeTab,setActiveTab,route}
+    {icon,title,activeTab,route}
     :
-    {icon?:ReactNode,title?:string,activeTab:string,setActiveTab:(x:string)=>void,route:string}
+    {icon?:ReactNode,title?:string,activeTab:string,route:string}
     ){
     return(
-        <Link to={route} onClick={()=>{
-            setActiveTab(route)
-            
-        }} className={`flex p-4 dark:text-white rounded-md space-x-4 items-center cursor-pointer ${activeTab == route ? "bg-[#27272a]" : "" }`}>
+        <Link to={route} className={`flex p-4 dark:text-white rounded-md space-x-4 items-center cursor-pointer ${activeTab == route ? "bg-[#27272a]" : "" }`}>
             <div className="">
                 {icon}
             </div> 

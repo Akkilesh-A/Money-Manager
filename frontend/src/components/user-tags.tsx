@@ -15,7 +15,7 @@ const UserTagsCard = () => {
         <CardContent className='flex gap-4 flex-wrap'>
             {tags.map((tag,index)=>{
                return(
-                <Badge key={index}>
+                <Badge className={`p-2 `} key={index}>
                  {tag}
                </Badge> 
                )

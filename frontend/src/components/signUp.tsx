@@ -34,7 +34,7 @@ export function SignUpForm() {
             name: data.name,
             phoneNumber: data.phoneNumber,
         }
-        const response=await fetch("http://localhost:8000/api/v1/adult/signup", {
+        const response=await fetch(import.meta.env.VITE_BACKEND_URL+"/api/v1/adult/signup", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

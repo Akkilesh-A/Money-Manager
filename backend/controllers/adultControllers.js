@@ -94,6 +94,127 @@ async function signIn(req,res){
     })
 }
 
+//getting user tags
+async function getUserTags(req,res){
+    try{
+        const user=await Adult.findOne({email:req.body.authorization.email})
+        return res.status(200).json({
+            message:"Tags fecthed successfully",
+            data:user.tags
+        })
+        
+    }catch(err){
+        console.log(err)
+        return res.status(400).json({
+            message:"Data fetch unsuccessful"
+        })
+    }
+}
+
+async function addUserTags(req, res) {
+    const { newTag,newTagColor } = req.body;
+    const userEmail = req.body.authorization.email;
+
+    if (!newTag) {
+        return res.status(400).json({
+            status: "error",
+            message: "No new tag provided",
+            data: null
+        });
+    }
+
+    try {
+        const user = await Adult.findOne({ email: userEmail });
+        
+        if (!user) {
+            return res.status(404).json({
+                status: "error",
+                message: "User not found",
+                data: null
+            });
+        }
+
+        if (user.tags.includes(newTag)) {
+            return res.status(400).json({
+                status: "error",
+                message: "Tag already exists",
+                data: null
+            });
+        }
+
+        const updatedUser = await Adult.findOneAndUpdate(
+            { email: userEmail },
+            { $push: { tags: newTag,tagColors:newTagColor } },
+            { new: true }
+        );
+
+        return res.status(200).json({
+            status: 'success',
+            message: "New tag added successfully!",
+            data: {tags:updatedUser.tags,tagColors:updatedUser.tagColors}
+        });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({
+            status: "error",
+            message: "Operation unsuccessful. Please try again later.",
+            data: null
+        });
+    }
+}
+
+async function deleteUserTag(req, res) {
+    const { tagToDelete } = req.body;
+    const userEmail = req.body.authorization.email;
+
+    if (!tagToDelete) {
+        return res.status(400).json({
+            status: "error",
+            message: "No tag specified for deletion",
+            data: null
+        });
+    }
+
+    try {
+        const user = await Adult.findOne({ email: userEmail });
+        
+        if (!user) {
+            return res.status(404).json({
+                status: "error",
+                message: "User not found",
+                data: null
+            });
+        }
+
+        if (!user.tags.includes(tagToDelete)) {
+            return res.status(404).json({
+                status: "error",
+                message: "Tag not found in user's tags",
+                data: null
+            });
+        }
+
+        const updatedUser = await Adult.findOneAndUpdate(
+            { email: userEmail },
+            { $pull: { tags: tagToDelete } },
+            { new: true }
+        );
+
+        return res.status(200).json({
+            status: 'success',
+            message: "Tag deleted successfully!",
+            data: updatedUser.tags
+        });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({
+            status: "error",
+            message: "Operation unsuccessful. Please try again later.",
+            data: null
+        });
+    }
+}
+
 async function getData(req,res){
     try{
         const token=req.headers.authorization.split(" ")[1]
@@ -126,5 +247,8 @@ export {
     signIn,
     signUp,
     getData,
-    updateProfile
+    updateProfile,
+    getUserTags,
+    addUserTags,
+    deleteUserTag
 }

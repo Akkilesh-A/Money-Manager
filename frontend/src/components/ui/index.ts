@@ -58,6 +58,15 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "./resizable"
+import {P} from "./p"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./dialog"
 
 export {
     Button,
@@ -104,7 +113,14 @@ export {
     Badge,
     ResizableHandle,
     ResizablePanel,
-    ResizablePanelGroup,    
+    ResizablePanelGroup,   
+    P,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 }
 
 export type {
