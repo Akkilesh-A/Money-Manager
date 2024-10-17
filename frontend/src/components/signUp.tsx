@@ -13,6 +13,7 @@ import {
  import {useForm} from "react-hook-form"
  import { toast } from "sonner"
 import { useNavigate } from "react-router-dom"
+import { BACKEND_URL } from "../backendURL"
 
 interface signUpInputs{
     name: string,
@@ -34,7 +35,7 @@ export function SignUpForm() {
             name: data.name,
             phoneNumber: data.phoneNumber,
         }
-        const response=await fetch(import.meta.env.VITE_BACKEND_URL+"/api/v1/adult/signup", {
+        const response=await fetch(BACKEND_URL+"/api/v1/adult/signup", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

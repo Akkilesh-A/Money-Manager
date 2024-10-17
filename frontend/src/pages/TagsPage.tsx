@@ -17,6 +17,7 @@ import {
 import { toast } from "sonner"
 import { Plus } from "lucide-react"
 import { RadialChartLabel } from "../components/charts"
+import { BACKEND_URL } from "../backendURL"
 
 const TagsPage = () => {
 
@@ -30,7 +31,7 @@ const TagsPage = () => {
     useEffect(()=>{
         async function getTagsData(){
             const token=await localStorage.getItem("money-manager-token")
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/adult/get-user-data`,{
+            const response = await fetch(`${BACKEND_URL}/api/v1/adult/get-user-data`,{
                 method:"GET",
                 headers:{
                     "Authorization" : "Bearer "+token
@@ -50,7 +51,7 @@ const TagsPage = () => {
             newTag:newTag,
             newTagColor:newTagColor
         }
-        const response=await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/adult/add-new-tag`, {
+        const response=await fetch(`${BACKEND_URL}/api/v1/adult/add-new-tag`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -75,12 +76,12 @@ const TagsPage = () => {
             
             {!isTagsLoaded && <Loader /> }
 
-            <Card className="p-2 space-y-2">
+            {isTagsLoaded &&  <Card className="p-2 space-y-2 ">
                 <H3 className="p-4">
                     User Tags
                 </H3>
                 <CardContent className="flex flex-wrap gap-4">
-                    {isTagsLoaded && 
+                    {
                         tags.map((tag,index)=>{
                             const color=tagColors[index]
                             return(
@@ -118,14 +119,14 @@ const TagsPage = () => {
                         </DialogContent>
                     </Dialog>
                 </CardFooter>
-            </Card>
+            </Card>}
 
-            <Card className="p-2 space-y-2">
+            {isTagsLoaded &&  <Card className="p-2 space-y-2 flex flex-col justify-between">
                 <H3 className="p-4">
                     Favorite Tags
                 </H3>
                 <CardContent className="flex gap-4">
-                    {isTagsLoaded && 
+                    {
                         favoriteTags.map((favoriteTag,index)=>{
                             const localIndex=tags.indexOf(favoriteTag)
                             const color=tagColors[localIndex]
@@ -157,7 +158,7 @@ const TagsPage = () => {
                         </DialogContent>
                     </Dialog>
                 </CardFooter>
-            </Card>
+            </Card>}
 
             <RadialChartLabel />
 

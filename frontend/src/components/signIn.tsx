@@ -13,6 +13,7 @@ import {
  import { toast } from "sonner"
  import { useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { BACKEND_URL } from "../backendURL"
 
 interface signUpInputs{
     email: string,
@@ -29,7 +30,7 @@ export function SignInForm() {
             email: data.email,
             password: data.password
         }
-        const response=await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/adult/signin`, {
+        const response=await fetch(`${BACKEND_URL}/api/v1/adult/signin`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
