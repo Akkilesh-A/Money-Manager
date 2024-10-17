@@ -66,6 +66,8 @@ const TagsPage = () => {
             return
         }
         toast.success(responseData.message)  
+        setTags(responseData.data.tags)
+        setTagColors(responseData.data.tagColors)
         
     }
 
@@ -145,14 +147,10 @@ const TagsPage = () => {
                         </DialogTrigger>
                         <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>Create New Alert</DialogTitle>
+                            <DialogTitle>Add a Favorite Tag</DialogTitle>
                         </DialogHeader>
                         <div className="grid gap-4 py-4">
-                            <Input
-                            type="number"
-                            placeholder="Target price"
-                            onChange={(e) => setNewTag(e.target.value)}
-                            />
+                            
                             <Button onClick={addNewTag}>Create Alert</Button>
                         </div>
                         </DialogContent>

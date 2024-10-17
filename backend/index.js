@@ -11,8 +11,14 @@ configDotenv()
 app.use(cors())
 connectDB()
 
+// Log all requests
+app.use((req, res, next) => {
+    console.log(req.path, req.method);
+    next();
+  });
+
 app.get("/",(req,res)=>{
-    cloudinaryUpload()
+    // cloudinaryUpload()
     res.status(200).json({
         message:`Healthy server running in ${process.env.PORT}`
     })
