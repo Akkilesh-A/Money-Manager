@@ -20,7 +20,8 @@ import { RadialChartLabel } from "../components/charts"
 import { BACKEND_URL } from "../backendURL"
 
 const TagsPage = () => {
-
+    
+    const [isNull,setIsNull]=useState(false)
     const [tags,setTags] = useState([])
     const [tagColors,setTagColors]=useState([])
     const [favoriteTags,setFavoriteTags]=useState([])
@@ -38,6 +39,10 @@ const TagsPage = () => {
                 }
             })
             const responseData=await response.json()
+            if(!responseData.data.tags){
+                setIsNull(true)
+                return
+            }
             setTagColors(responseData.data.tagColors)
             setFavoriteTags(responseData.data.favoriteTags)
             setTags(responseData.data.tags)
@@ -77,6 +82,12 @@ const TagsPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             
             {!isTagsLoaded && <Loader /> }
+
+            {isTagsLoaded && isNull && 
+                <div>
+                    No Data    
+                </div>
+            }
 
             {isTagsLoaded &&  <Card className="p-2 space-y-2 ">
                 <H3 className="p-4">

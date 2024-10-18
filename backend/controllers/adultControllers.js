@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { signInBody, signUpBody } from "./zodTypes.js"
-import { Adult } from "../models/index.js"
+import { User } from "../models/index.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { cloudinaryUpload } from "../helpers/cloudinaryUpload.js"
@@ -17,23 +17,29 @@ async function signUp(req,res){
 
     //Parsing through zod types
     try{
+        console.log("here")
         const success=await signUpBody.parse(req.body)
         if(success){
             //Checking if email exists already
-            const existingUser = await Adult.findOne({email:email})
+            console.log("here2")
+            const existingUser = await User.findOne({email:email})
+            console.log("here3")
             if(existingUser){
                 return res.status(400).json({
                     message:"User with email exists already"
                 })
             }
             if(!existingUser){
+                console.log("here4")
                 const hash=await bcrypt.hash(password,10)
-                const newUser=await Adult.create({
+                console.log(hash)
+                const newUser=await User.create({
                     email:email,
                     password:hash,
                     name:name,
                     phoneNumber:phoneNumber
                 })
+                console.log("here5")
                 const jwtToken=await jwt.sign({email:newUser.email},process.env.JWT_SECRET)
                 return res.status(200).json({
                     message:"SignUp successful!",
@@ -42,7 +48,7 @@ async function signUp(req,res){
             }
         }
     }catch(err){
-        // console.log(err)
+        console.log(err)
         return res.status(400).json({
             message:"Field/s are not of requirements"
         }) 
@@ -68,7 +74,7 @@ async function signIn(req,res){
     try{
         const success=await signInBody.parse(req.body)
         //Checking if email exists already
-        const existingUser = await Adult.findOne({email:email})
+        const existingUser = await User.findOne({email:email})
         if(existingUser){
             const hashedPassword=await bcrypt.compare(password,existingUser.password)
             if(!existingUser || !hashedPassword){
@@ -97,7 +103,7 @@ async function signIn(req,res){
 //getting user tags
 async function getUserTags(req,res){
     try{
-        const user=await Adult.findOne({email:req.body.authorization.email})
+        const user=await User.findOne({email:req.body.authorization.email})
         return res.status(200).json({
             message:"Tags fecthed successfully",
             data:user.tags
@@ -124,7 +130,7 @@ async function addUserTags(req, res) {
     }
 
     try {
-        const user = await Adult.findOne({ email: userEmail });
+        const user = await User.findOne({ email: userEmail });
         
         if (!user) {
             return res.status(404).json({
@@ -142,7 +148,7 @@ async function addUserTags(req, res) {
             });
         }
 
-        const updatedUser = await Adult.findOneAndUpdate(
+        const updatedUser = await User.findOneAndUpdate(
             { email: userEmail },
             { $push: { tags: newTag,tagColors:newTagColor } },
             { new: true }
@@ -176,7 +182,7 @@ async function deleteUserTag(req, res) {
     }
 
     try {
-        const user = await Adult.findOne({ email: userEmail });
+        const user = await User.findOne({ email: userEmail });
         
         if (!user) {
             return res.status(404).json({
@@ -194,7 +200,7 @@ async function deleteUserTag(req, res) {
             });
         }
 
-        const updatedUser = await Adult.findOneAndUpdate(
+        const updatedUser = await User.findOneAndUpdate(
             { email: userEmail },
             { $pull: { tags: tagToDelete } },
             { new: true }
@@ -219,7 +225,7 @@ async function getData(req,res){
     try{
         const token=req.headers.authorization.split(" ")[1]
         const decoded=jwt.verify(token,process.env.JWT_SECRET)
-        const user=await Adult.findOne({email:decoded.email})
+        const user=await User.findOne({email:decoded.email})
         return res.status(200).json({
             message:"Data fetched successfully",
             data:user

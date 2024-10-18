@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 
-const adultSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     name:{
         type: String,
         required: true,
@@ -49,7 +49,12 @@ const adultSchema = new mongoose.Schema({
     },
     transactions:{
         type:[mongoose.SchemaTypes.ObjectId],
-        ref:"Transaction"
+        ref:"Transaction",
+        default:[]
+    },
+    isChild:{
+        type:Boolean,
+        default:false
     },
     childConnectionStatus:{
         type:Boolean,
@@ -58,13 +63,22 @@ const adultSchema = new mongoose.Schema({
     },
     children:{
         type:[mongoose.SchemaTypes.ObjectId],
-        ref:"Child",
+        ref:"User",
         default:[]
+    },
+    parentConnectionStatus:{
+        type:Boolean,
+        default:false
+    },
+    parent:{
+        type:mongoose.SchemaTypes.ObjectId,
+        ref:"User",
+        default:null
     }
 })
 
-const Adult=mongoose.model("Adult",adultSchema)
+const User=mongoose.model("User",userSchema)
 
 export {
-    Adult
+    User
 }

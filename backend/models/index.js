@@ -1,5 +1,7 @@
-import { Adult } from "./adultSchema.js";
+import { User } from "./userSchema.js"
+import { Transactions } from "./transactionSchema.js"
 
 export {
-    Adult
+    User,
+    Transactions
 }
