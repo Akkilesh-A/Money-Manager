@@ -1,27 +1,24 @@
 import { 
     Button, 
     H1, 
-    H2,
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
+    H3,
  } from '../components/ui'
 import { Layout, Loader } from '../components'
-import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { BACKEND_URL } from '../backendURL'
+import {  Edit2 } from 'lucide-react'
+
+interface UserDataFields{
+  name:string,
+  email:string,
+  imgURL:string,
+  isChild:boolean,
+  parentConnectionStatus:boolean
+}
 
 const ProfilePage = () => {
 
-    const navigate=useNavigate()
-
-    const[userData,setUserData]=useState({})
+    const[userData,setUserData]=useState<UserDataFields>()
     const [isFetching, setIsFetching] = useState(true)
 
     useEffect(()=>{
@@ -46,30 +43,22 @@ const ProfilePage = () => {
         {isFetching && <Loader />}
         {!isFetching && JSON.stringify(userData)}
         {!isFetching && 
-          <img src={userData.imgURL} width={200} height={200}/>
+          <div className='flex items-center'>
+            <div>
+              <div className='grid grid-cols-2 items-center'>
+                <img src={userData?.imgURL} width={200} height={200}/>
+                <div className='flex flex-col gap-2'>
+                  <H1>{userData?.name}</H1>
+                  <H3>{userData?.email}</H3>
+                </div>
+              </div>
+              <div className='flex justify-end'>
+                <Button size={"icon"}> <Edit2/> </Button>
+              </div>
+            </div>
+
+          </div>
         }
-        <div>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant={"default"}>Update Profile</Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Want to update your profile?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently change your
-                  profile in our servers.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={()=>{
-                  navigate("/update-profile")
-                }}>Continue</AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </div>
     </Layout>
   )
 }

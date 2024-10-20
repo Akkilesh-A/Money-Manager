@@ -32,7 +32,7 @@ const TagsPage = () => {
     useEffect(()=>{
         async function getTagsData(){
             const token=await localStorage.getItem("money-manager-token")
-            const response = await fetch(`${BACKEND_URL}/api/v1/adult/get-user-data`,{
+            const response = await fetch(`${BACKEND_URL}/api/v1/adult/get-user-tags`,{
                 method:"GET",
                 headers:{
                     "Authorization" : "Bearer "+token
@@ -171,15 +171,14 @@ const TagsPage = () => {
 
             <RadialChartLabel />
 
-        </div>         
-            
+        </div>             
     </Layout>
   )
 }
 
 function Tag({tag,color}:{tag:string,color:string}){
     return(
-        <div className={`p-2 rounded-xl gap-4 flex items-center justify-center ${color} `}>
+        <div style={{backgroundColor:color}} className={`p-2 rounded-xl gap-4 flex items-center justify-center `}>
             <p>{tag}</p>
         </div>
     )

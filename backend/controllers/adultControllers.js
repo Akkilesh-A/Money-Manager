@@ -106,7 +106,11 @@ async function getUserTags(req,res){
         const user=await User.findOne({email:req.body.authorization.email})
         return res.status(200).json({
             message:"Tags fecthed successfully",
-            data:user.tags
+            data:{
+                tags:user.tags,
+                favoriteTags:user.favoriteTags,
+                tagColors:user.tagColors
+            }
         })
         
     }catch(err){
@@ -221,8 +225,7 @@ async function deleteUserTag(req, res) {
     }
 }
 
-async function createTransaction(req,res){
-    
+async function createTransaction(req,res){   
 }
 
 async function getUserProfile(req,res){
