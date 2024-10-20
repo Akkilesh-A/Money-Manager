@@ -1,6 +1,8 @@
+import { Layout } from "../components"
+
 const TransactionsPage = () => {
   return (
-    <div>TransactionsPage</div>
+    <Layout>TransactionsPage</Layout>
   )
 }
 
