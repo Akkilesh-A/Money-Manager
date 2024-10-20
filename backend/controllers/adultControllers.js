@@ -221,14 +221,25 @@ async function deleteUserTag(req, res) {
     }
 }
 
-async function getData(req,res){
+async function createTransaction(req,res){
+    
+}
+
+async function getUserProfile(req,res){
     try{
         const token=req.headers.authorization.split(" ")[1]
         const decoded=jwt.verify(token,process.env.JWT_SECRET)
         const user=await User.findOne({email:decoded.email})
+        const dataToBeSent={
+            name:user.name,
+            email:user.email,
+            imgURL:user.imgURL,
+            isChild:user.isChild,
+            parentConnectionStatus:user.parentConnectionStatus
+        }
         return res.status(200).json({
             message:"Data fetched successfully",
-            data:user
+            data:dataToBeSent
         })
     }catch(err){
         console.log(err)
@@ -252,7 +263,7 @@ async function updateProfile(req,res){
 export {
     signIn,
     signUp,
-    getData,
+    getUserProfile,
     updateProfile,
     getUserTags,
     addUserTags,

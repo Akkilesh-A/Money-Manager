@@ -31,7 +31,7 @@ adultRouter.post("/add-new-tag",jwtAuthorization,adultControllers.addUserTags)
 adultRouter.delete("/delete-user-tag",jwtAuthorization,adultControllers.deleteUserTag)
 
 //Get Profile 
-adultRouter.get("/get-user-data",jwtAuthorization,adultControllers.getData)
+adultRouter.get("/get-user-data",jwtAuthorization,adultControllers.getUserProfile)
 
 //Update Profile
 adultRouter.post("/update-profile",jwtAuthorization,adultControllers.updateProfile)

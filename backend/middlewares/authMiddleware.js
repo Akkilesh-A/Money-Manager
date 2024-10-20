@@ -14,8 +14,9 @@ async function jwtAuthorization(req,res,next){
             })
         }
     }catch(err){
+        console.log(err)
         return res.status(401).json({
-            message:"Unauthorized",
+            message:"Unable to Authorize at this moment, Try again later",
             data:null
         })
     }
