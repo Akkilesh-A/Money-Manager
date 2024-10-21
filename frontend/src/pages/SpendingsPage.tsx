@@ -95,7 +95,7 @@ const SpendingsPage = () => {
         headers:{
           "Authorization":"Bearer "+localStorage.getItem("money-manager-token")        }
       })
-      // console.log(response)
+      console.log(response)
     }catch(err){
       console.log(err)
     }   
