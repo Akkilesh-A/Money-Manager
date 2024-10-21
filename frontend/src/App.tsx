@@ -6,7 +6,7 @@ import {
   SignUpPage, 
   ProfilePage,
   TagsPage,
-  TransactionsPage,
+  SpendingsPage,
   SendMoneyPage
  } from "./pages"
 import { H1, Toaster } from "./components/ui"
@@ -26,7 +26,7 @@ function App() {
           <Route path="/home" element={<LandingPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/tags" element={<TagsPage />} />
-          <Route path="/transactions" element={<TransactionsPage />} />
+          <Route path="/transactions" element={<SpendingsPage />} />
           <Route path="/send-money" element={<SendMoneyPage />} />
         </Routes>
       </ThemeProvider>

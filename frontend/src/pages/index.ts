@@ -3,7 +3,7 @@ import SignUpPage from "./SignUpPage";
 import SignInPage from "./SignInPage";
 import ProfilePage from "./ProfilePage";
 import TagsPage from "./TagsPage";
-import TransactionsPage from "./TransactionsPage";
+import SpendingsPage from "./SpendingsPage";
 import SendMoneyPage from "./SendMoneyPage";
 
 export {
@@ -12,6 +12,6 @@ export {
     SignInPage,
     ProfilePage,
     TagsPage,
-    TransactionsPage,
+    SpendingsPage,
     SendMoneyPage
 }

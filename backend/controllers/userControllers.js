@@ -137,10 +137,10 @@ async function deleteUserTag(req,res) {
 }
 
 async function createTransactionRecord(req,res){  
-    const {to,tag,title,amount,description}= req.body
+    const {tag,title,amount,description}= req.body
     const imageFile=req.file.filename
     const imgURL=await cloudinaryUpload(imageFile)
-    if(!to || !tag || !title || !amount){
+    if(!tag || !title || !amount){
         return res.status(400).json({
             message:"Input fields empty",
             data:null
@@ -148,8 +148,14 @@ async function createTransactionRecord(req,res){
     }
     try{
         const existingFromUser= await User.findOne({email:req.token.email})
-        const existingToUser= await User.findOne({_id:to})
-        if(!existingFromUser || !existingToUser){
+        // const existingToUser= await User.findOne({_id:to})
+        // if(!existingFromUser || !existingToUser){
+        //     return res.status(400).json({
+        //         message:"User not available",
+        //         data:null
+        //     })
+        // }
+        if(!existingFromUser){
             return res.status(400).json({
                 message:"User not available",
                 data:null
@@ -159,7 +165,7 @@ async function createTransactionRecord(req,res){
             title:title,
             amount:amount,
             from:existingFromUser._id,
-            to:to,
+            to:null,
             tag:tag,
             receiptURL:imgURL,
             description:description

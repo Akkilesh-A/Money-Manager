@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema({
     tagColors:{
         type:[String],
         required:true,
-        default:["bg-[#2662d9]","bg-[#2eb88a]","bg-[#e88c30]","bg-[#af57db]","bg-[#e23670]"]
+        default:["#2662d9","#2eb88a","#e88c30","#af57db","#e23670"]
     },
     favoriteTags:{
         type:[String],
