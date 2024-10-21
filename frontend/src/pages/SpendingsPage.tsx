@@ -296,7 +296,7 @@ function TransactionsAccordion({transactions}:{transactions:Transaction[]}){
           <AccordionItem value={`item-${index}`}>
             <AccordionTrigger>
             <Badge variant="secondary" >{transaction.tag}</Badge>
-              <H3>{transaction.amount}</H3>
+              <H3>${transaction.amount}</H3>
             </AccordionTrigger>
             <AccordionContent className="flex justify-around">
               <P className="text-gray-300">Description : {transaction.description}</P>
