@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     imgURL:{
         type:String,
         required:true,
-        default:"https://res.cloudinary.com/djeplonq5/image/upload/v1719914709/file_jmjj10.png"
+        default:"https://res.cloudinary.com/djeplonq5/image/upload/v1729526095/Avatar_edcw0g.png"
     },
     accountBalance:{
         type:Number,

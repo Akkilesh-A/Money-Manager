@@ -7,15 +7,26 @@ cloudinary.config({
 })
 
 async function cloudinaryUpload(file) {
+    if(!file){
+        return "No File"
+    }
     try{
-        if(file){
-            const image = `/uploads/${file}`;
-            async function upload() {
-                const result = await cloudinary.uploader.upload(image);
-                console.log(result);
-            }
-            upload()
-        }
+        const image = `./uploads/${file}`;
+        const result = await cloudinary.uploader.upload(image,{folder:"Money_Manager/User_Transactions"});
+        return result.secure_url
+    }catch(err){
+        console.log(err);
+        return "Error uploading file"
+    }
+}
+
+async function cloudinaryUploadProfilePhoto(file) {
+    if(!file){
+        return "No File"
+    }
+    try{
+        const image = `./uploads/${file}`;
+        const result = await cloudinary.uploader.upload(image,{folder:"Money_Manager/Profile_Photos"});
         return result.secure_url
     }catch(err){
         console.log(err);
@@ -24,5 +35,6 @@ async function cloudinaryUpload(file) {
 }
 
 export {
-    cloudinaryUpload
+    cloudinaryUpload,
+    cloudinaryUploadProfilePhoto
 }

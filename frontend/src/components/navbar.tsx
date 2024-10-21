@@ -24,7 +24,7 @@ const NavBar = () => {
         "name": "Akkilesh A",
         "email": "akkilalagar05@gmail.com",
         "password": "$2b$10$v1QMp3DLIXX8S/snbHKDeelaZhks7j9PlcdkazgF1Gd8OuN.vuBvq",
-        "imgURL": "https://res.cloudinary.com/djeplonq5/image/upload/v1719914709/file_jmjj10.png",
+        "imgURL": "https://res.cloudinary.com/djeplonq5/image/upload/v1729526095/Avatar_edcw0g.png",
         "accountBalance": 0,
         "phoneNumber": "9500094303",
         "tags": [
@@ -87,7 +87,7 @@ const NavBar = () => {
             <DropdownMenu>
                 <DropdownMenuTrigger>
                     <Avatar>
-                        <AvatarImage src={userData.imgURL} width={100} height={100}/>
+                        <AvatarImage  className="bg-gray-200" src={userData.imgURL} width={100} height={100}/>
                         <AvatarFallback>{userData.name.slice(0)}</AvatarFallback>
                     </Avatar>
                 </DropdownMenuTrigger>

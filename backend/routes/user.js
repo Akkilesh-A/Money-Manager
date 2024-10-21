@@ -3,9 +3,7 @@ import { userControllers, appControllers } from "../controllers/index.js";
 import { jwtAuthorization } from "../middlewares/index.js";
 import multer from "multer"
 
-const uploads=multer({
-    dest:"uploads/"
-})
+const upload = multer({ dest: 'uploads/' })
 
 const userRouter=Router()
 
@@ -43,7 +41,7 @@ userRouter.get("/get-user-transactions",jwtAuthorization,userControllers.getUser
 userRouter.get("/get-all-users",jwtAuthorization,appControllers.getAllUsers)
 
 //Post a transaction record
-userRouter.post("/create-transaction-record",jwtAuthorization,userControllers.createTransactionRecord)
+userRouter.post("/create-transaction-record",jwtAuthorization, upload.single('receiptImage'),userControllers.createTransactionRecord)
 
 export {
     userRouter

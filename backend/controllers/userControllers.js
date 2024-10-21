@@ -5,6 +5,17 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { cloudinaryUpload } from "../middlewares/index.js"
 
+const exampleUploads={
+    fieldname: 'image',
+    originalname: 'Profile_Pic-removebg-preview.png',
+    encoding: '7bit',
+    mimetype: 'image/png',
+    destination: 'uploads/',
+    filename: '6dbb4ca40e5e61a3bce2c6aa0a1dca34',
+    path: 'uploads\\6dbb4ca40e5e61a3bce2c6aa0a1dca34',
+    size: 209320
+  }
+
 //Onboarding User
 async function signUp(req,res){
     const {email,password,name,phoneNumber}=req.body
@@ -126,7 +137,9 @@ async function deleteUserTag(req,res) {
 }
 
 async function createTransactionRecord(req,res){  
-    const {to,tag,title,amount,description,receiptURL}= req.body
+    const {to,tag,title,amount,description}= req.body
+    const imageFile=req.file.filename
+    const imgURL=await cloudinaryUpload(imageFile)
     if(!to || !tag || !title || !amount){
         return res.status(400).json({
             message:"Input fields empty",
@@ -148,13 +161,12 @@ async function createTransactionRecord(req,res){
             from:existingFromUser._id,
             to:to,
             tag:tag,
-            receiptURL:receiptURL,
+            receiptURL:imgURL,
             description:description
         })
         const userTransactionArrayUpdate=await User.updateOne({_id:existingFromUser._id},{
             $push:{transactions:newTransaction._id}
         })
-        console.log(userTransactionArrayUpdate)
         if(newTransaction){
             return res.status(200).json({
                 message:"Created transaction successfully!",
@@ -181,7 +193,6 @@ async function getUserTransactions(req,res){
             })
         }
         const userId=existingUser._id
-        console.log(userId)
         const transactionsData=await Transactions.find({from:userId})
         console.log(transactionsData)
         res.status(200).json({
