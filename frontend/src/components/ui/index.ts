@@ -69,6 +69,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./dialog"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./accordion"
 
 export {
     Button,
@@ -125,6 +131,10 @@ export {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
 }
 
 export type {
