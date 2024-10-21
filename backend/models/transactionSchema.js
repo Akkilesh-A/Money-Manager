@@ -14,7 +14,7 @@ const transactionSchema = new mongoose.Schema({
     dateTime:{
         type: Date,
         required: true,
-        default:Date.now()
+        default:new Date()
     },
     tag:{
         type:String,

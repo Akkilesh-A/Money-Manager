@@ -1,10 +1,12 @@
 import { z } from "zod"
 import { signInBody, signUpBody } from "./zodTypes.js"
-import { User } from "../models/index.js"
+import { Transactions, User } from "../models/index.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { cloudinaryUpload } from "../helpers/cloudinaryUpload.js"
 
+
+//Onboarding User
 async function signUp(req,res){
     const {email,password,name,phoneNumber}=req.body
 
@@ -17,29 +19,23 @@ async function signUp(req,res){
 
     //Parsing through zod types
     try{
-        console.log("here")
         const success=await signUpBody.parse(req.body)
         if(success){
             //Checking if email exists already
-            console.log("here2")
             const existingUser = await User.findOne({email:email})
-            console.log("here3")
             if(existingUser){
                 return res.status(400).json({
                     message:"User with email exists already"
                 })
             }
             if(!existingUser){
-                console.log("here4")
                 const hash=await bcrypt.hash(password,10)
-                console.log(hash)
                 const newUser=await User.create({
                     email:email,
                     password:hash,
                     name:name,
                     phoneNumber:phoneNumber
                 })
-                console.log("here5")
                 const jwtToken=await jwt.sign({email:newUser.email},process.env.JWT_SECRET)
                 return res.status(200).json({
                     message:"SignUp successful!",
@@ -59,6 +55,7 @@ async function signUp(req,res){
     })
 }
 
+//For already existing users
 async function signIn(req,res){
 
     const {email,password}=req.body
@@ -100,7 +97,7 @@ async function signIn(req,res){
     })
 }
 
-//getting user tags
+//For Tags Page
 async function getUserTags(req,res){
     try{
         const user=await User.findOne({email:req.body.authorization.email})
@@ -121,111 +118,80 @@ async function getUserTags(req,res){
     }
 }
 
-async function addUserTags(req, res) {
-    const { newTag,newTagColor } = req.body;
-    const userEmail = req.body.authorization.email;
+async function addUserTag(req,res) {
+    
+}
 
-    if (!newTag) {
+async function deleteUserTag(req,res) {
+    
+}
+
+async function createTransaction(req,res){  
+    const {to,from,tag}= req.body
+    const token=req.token
+    const imgURL = "lol"
+    if(!to || !from){
         return res.status(400).json({
-            status: "error",
-            message: "No new tag provided",
-            data: null
-        });
+            message:"Input fields empty",
+            data:null
+        })
     }
-
-    try {
-        const user = await User.findOne({ email: userEmail });
-        
-        if (!user) {
-            return res.status(404).json({
-                status: "error",
-                message: "User not found",
-                data: null
-            });
-        }
-
-        if (user.tags.includes(newTag)) {
+    try{
+        const existingFromUser= await User.findOne({email:token.email})
+        const existingToUser= await User.findOne({_id:to})
+        if(!existingFromUser || !existingToUser){
             return res.status(400).json({
-                status: "error",
-                message: "Tag already exists",
-                data: null
-            });
+                message:"User not available",
+                data:null
+            })
         }
-
-        const updatedUser = await User.findOneAndUpdate(
-            { email: userEmail },
-            { $push: { tags: newTag,tagColors:newTagColor } },
-            { new: true }
-        );
-
-        return res.status(200).json({
-            status: 'success',
-            message: "New tag added successfully!",
-            data: {tags:updatedUser.tags,tagColors:updatedUser.tagColors}
-        });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({
-            status: "error",
-            message: "Operation unsuccessful. Please try again later.",
-            data: null
-        });
+        const newTransaction=await Transactions.create({
+            from:from,
+            to:to,
+            tag:tag,
+            imgURL:imgURL
+        })
+        if(newTransaction){
+            return res.status(200).json({
+                message:"Created transaction successfully!",
+                data:newTransaction
+            })
+        }
+    }catch(err){
+        console.log(err)
+        return res.status(404).json({
+            message:"Unable to process your request at this time!",
+            data:null
+        })
     }
 }
 
-async function deleteUserTag(req, res) {
-    const { tagToDelete } = req.body;
-    const userEmail = req.body.authorization.email;
-
-    if (!tagToDelete) {
-        return res.status(400).json({
-            status: "error",
-            message: "No tag specified for deletion",
-            data: null
-        });
-    }
-
-    try {
-        const user = await User.findOne({ email: userEmail });
-        
-        if (!user) {
-            return res.status(404).json({
-                status: "error",
-                message: "User not found",
-                data: null
-            });
+async function getUserTransactions(req,res){
+    const token=req.token
+    try{
+        const existingUser=await User.findOne({email:token.email})
+        if(!existingUser){
+            res.status(404).json({
+                message:"User doesn't exist!",
+                data:null
+            })
         }
+        const userId=existingUser._id
+        console.log(userId)
+        const transactionsData=await Transactions.find({from:userId})
+        console.log(transactionsData)
+        res.status(200).json({
+            message:"Successful!",
+            data:transactionsData
+        })
 
-        if (!user.tags.includes(tagToDelete)) {
-            return res.status(404).json({
-                status: "error",
-                message: "Tag not found in user's tags",
-                data: null
-            });
-        }
-
-        const updatedUser = await User.findOneAndUpdate(
-            { email: userEmail },
-            { $pull: { tags: tagToDelete } },
-            { new: true }
-        );
-
-        return res.status(200).json({
-            status: 'success',
-            message: "Tag deleted successfully!",
-            data: updatedUser.tags
-        });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({
-            status: "error",
-            message: "Operation unsuccessful. Please try again later.",
-            data: null
-        });
-    }
-}
-
-async function createTransaction(req,res){   
+    }catch(err){
+        console.log(err)
+        res.status(500).json({
+            message:"An error occurred while processing your request.",
+            data:null
+        })
+    }    
 }
 
 async function getUserProfile(req,res){
@@ -263,12 +229,13 @@ async function updateProfile(req,res){
     })
 }
 
-export {
+export const adultControllers={
     signIn,
     signUp,
     getUserProfile,
     updateProfile,
     getUserTags,
-    addUserTags,
-    deleteUserTag
+    addUserTag,
+    deleteUserTag,
+    getUserTransactions
 }

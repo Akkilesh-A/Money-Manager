@@ -1,15 +1,7 @@
-import { signIn, signUp,getUserProfile, updateProfile, getUserTags, deleteUserTag, addUserTags } from "./adultControllers.js";
-
-const adultControllers={
-    signIn,
-    signUp,
-    getUserProfile,
-    updateProfile,
-    getUserTags,
-    addUserTags,
-    deleteUserTag
-}
+import { adultControllers } from "./adultControllers.js";
+import { appControllers } from "./appControllers.js";
 
 export {
-    adultControllers
+    adultControllers,
+    appControllers
 }

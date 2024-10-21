@@ -6,6 +6,7 @@ async function jwtAuthorization(req,res,next){
         const decoded=jwt.verify(token,process.env.JWT_SECRET)
         if (decoded){
             req.body.authorization=decoded
+            req.token=decoded
             next()
         }else{
             return res.status(401).json({
