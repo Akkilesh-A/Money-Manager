@@ -34,14 +34,14 @@ userRouter.get("/get-user-data",jwtAuthorization,userControllers.getUserProfile)
 //Update Profile
 userRouter.post("/update-profile",jwtAuthorization,userControllers.updateProfile)
 
-//Get Transactions
-userRouter.get("/get-user-transactions",jwtAuthorization,userControllers.getUserTransactions)
-
 //Get all users
 userRouter.get("/get-all-users",jwtAuthorization,appControllers.getAllUsers)
 
-//Post a transaction record
-userRouter.post("/create-transaction-record",jwtAuthorization, upload.single('receiptImage'),userControllers.createTransactionRecord)
+//Get User Spendings
+userRouter.get("/get-user-spendings",jwtAuthorization,userControllers.getUserSpendings)
+
+//Post a spending record
+userRouter.post("/create-spending-record",jwtAuthorization, upload.single('receiptImage'),userControllers.createTransactionRecord)
 
 export {
     userRouter

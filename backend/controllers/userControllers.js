@@ -188,7 +188,7 @@ async function createTransactionRecord(req,res){
     }
 }
 
-async function getUserTransactions(req,res){
+async function getUserSpendings(req,res){
     const token=req.token
     try{
         const existingUser=await User.findOne({email:token.email})
@@ -200,7 +200,7 @@ async function getUserTransactions(req,res){
         }
         const userId=existingUser._id
         const transactionsData=await Transactions.find({from:userId})
-        console.log(transactionsData)
+        // console.log(transactionsData)
         res.status(200).json({
             message:"Successful!",
             data:transactionsData
@@ -243,8 +243,8 @@ async function updateProfile(req,res){
     const {name,phoneNumber,email,password}=req.body
     const image=req.file
     const imgURL= await cloudinaryUpload(image)
-    console.log(req.body)
-    console.log(imgURL)
+    // console.log(req.body)
+    // console.log(imgURL)
     return res.status(400).json({
         message:"Successful!"
     })
@@ -258,6 +258,6 @@ export const userControllers={
     getUserTags,
     addUserTag,
     deleteUserTag,
-    getUserTransactions,
+    getUserSpendings,
     createTransactionRecord
 }

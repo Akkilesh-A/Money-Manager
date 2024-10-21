@@ -89,13 +89,13 @@ const SpendingsPage = () => {
     dataTobeSent.append("tag",data.tag)
     dataTobeSent.append("receiptImage",data.receiptImage[0])
     try{
-      const response=await fetch(`${BACKEND_URL}/api/v1/user/create-transaction-record`,{
+      const response=await fetch(`${BACKEND_URL}/api/v1/user/create-spending-record`,{
         method:"POST",
         body:dataTobeSent,
         headers:{
           "Authorization":"Bearer "+localStorage.getItem("money-manager-token")        }
       })
-      console.log(response)
+      // console.log(response)
     }catch(err){
       console.log(err)
     }   

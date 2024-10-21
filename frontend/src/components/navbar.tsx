@@ -62,7 +62,7 @@ const NavBar = () => {
                 })
                 const data=await response.json()
                 setUserData(data.data)
-                console.log(userData)
+                // console.log(userData)
             }
             getData()
         }

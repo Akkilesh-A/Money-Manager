@@ -9,7 +9,7 @@ import {
   SpendingsPage,
   SendMoneyPage
  } from "./pages"
-import { H1, Toaster } from "./components/ui"
+import { Toaster } from "./components/ui"
 
 function App() {
   return (
@@ -17,10 +17,7 @@ function App() {
       <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
         <Toaster />
         <Routes>
-          <Route path="/" element={<div>
-            <H1>Lol</H1>
-            <Link to={"/home"}>Go to Home!</Link>
-          </div>} />
+          <Route path="/" element={<SignInPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/home" element={<LandingPage />} />
