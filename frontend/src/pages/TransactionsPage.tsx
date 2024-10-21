@@ -43,7 +43,7 @@ const TransactionsPage = () => {
   //Get all users
   useEffect(()=>{
     async function getAllUsers() {
-      const response=await fetch(`${BACKEND_URL}/api/v1/adult/get-all-users`,{
+      const response=await fetch(`${BACKEND_URL}/api/v1/user/get-all-users`,{
         method:"GET",
         headers:{
           "Authorization" : "Bearer " + localStorage.getItem("money-manager-token")
@@ -60,7 +60,7 @@ const TransactionsPage = () => {
   useEffect(()=>{
       async function getTagsData(){
           const token=await localStorage.getItem("money-manager-token")
-          const response = await fetch(`${BACKEND_URL}/api/v1/adult/get-user-tags`,{
+          const response = await fetch(`${BACKEND_URL}/api/v1/user/get-user-tags`,{
               method:"GET",
               headers:{
                   "Authorization" : "Bearer "+token

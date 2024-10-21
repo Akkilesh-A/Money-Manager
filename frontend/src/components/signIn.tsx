@@ -30,7 +30,7 @@ export function SignInForm() {
             email: data.email,
             password: data.password
         }
-        const response=await fetch(`${BACKEND_URL}/api/v1/adult/signin`, {
+        const response=await fetch(`${BACKEND_URL}/api/v1/user/signin`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

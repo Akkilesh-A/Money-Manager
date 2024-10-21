@@ -3,7 +3,7 @@ import cors from 'cors';
 import { configDotenv } from 'dotenv';
 import connectDB from './db/connection.js';
 import { router } from './routes/index.js';
-import { cloudinaryUpload } from './helpers/cloudinaryUpload.js';
+import { cloudinaryUpload } from './middlewares/index.js';
 
 const app=express()
 app.use(express.json())

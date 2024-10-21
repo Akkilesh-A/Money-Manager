@@ -24,7 +24,7 @@ const ProfilePage = () => {
     useEffect(()=>{
       async function getUserData(){
         const token=await localStorage.getItem("money-manager-token")
-        const response =await fetch(`${BACKEND_URL}/api/v1/adult/get-user-data`,{
+        const response =await fetch(`${BACKEND_URL}/api/v1/user/get-user-data`,{
           method:"GET",
           headers:{
             "Authorization":"Bearer "+token || " ",

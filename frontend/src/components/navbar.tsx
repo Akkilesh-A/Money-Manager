@@ -54,7 +54,7 @@ const NavBar = () => {
         if(token!=null){
             console.log("Token is present")
             async function getData(){
-                const response= await fetch(`${BACKEND_URL}/api/v1/adult/get-data`,{
+                const response= await fetch(`${BACKEND_URL}/api/v1/user/get-data`,{
                     method:"GET",
                     headers:{
                         "authorization":`Bearer ${token}`

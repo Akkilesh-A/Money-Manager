@@ -3,8 +3,7 @@ import { signInBody, signUpBody } from "./zodTypes.js"
 import { Transactions, User } from "../models/index.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import { cloudinaryUpload } from "../helpers/cloudinaryUpload.js"
-
+import { cloudinaryUpload } from "../middlewares/index.js"
 
 //Onboarding User
 async function signUp(req,res){
@@ -234,7 +233,7 @@ async function updateProfile(req,res){
     })
 }
 
-export const adultControllers={
+export const userControllers={
     signIn,
     signUp,
     getUserProfile,

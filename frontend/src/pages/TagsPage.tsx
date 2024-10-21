@@ -32,7 +32,7 @@ const TagsPage = () => {
     useEffect(()=>{
         async function getTagsData(){
             const token=await localStorage.getItem("money-manager-token")
-            const response = await fetch(`${BACKEND_URL}/api/v1/adult/get-user-tags`,{
+            const response = await fetch(`${BACKEND_URL}/api/v1/user/get-user-tags`,{
                 method:"GET",
                 headers:{
                     "Authorization" : "Bearer "+token
@@ -56,7 +56,7 @@ const TagsPage = () => {
             newTag:newTag,
             newTagColor:newTagColor
         }
-        const response=await fetch(`${BACKEND_URL}/api/v1/adult/add-new-tag`, {
+        const response=await fetch(`${BACKEND_URL}/api/v1/user/add-new-tag`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

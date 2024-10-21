@@ -1,7 +1,7 @@
-import { adultControllers } from "./adultControllers.js";
+import { userControllers } from "./userControllers.js";
 import { appControllers } from "./appControllers.js";
 
 export {
-    adultControllers,
+    userControllers,
     appControllers
 }

@@ -35,7 +35,7 @@ export function SignUpForm() {
             name: data.name,
             phoneNumber: data.phoneNumber,
         }
-        const response=await fetch(BACKEND_URL+"/api/v1/adult/signup", {
+        const response=await fetch(BACKEND_URL+"/api/v1/user/signup", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

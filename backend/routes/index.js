@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { userRouter } from "./adult.js";
+import { userRouter } from "./user.js";
 
 const router=Router()
 
@@ -9,7 +9,7 @@ router.get("/",(req,res)=>{
     })
 })
 
-router.use("/adult",userRouter)
+router.use("/user",userRouter)
 
 export {
     router
