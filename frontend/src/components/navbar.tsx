@@ -14,6 +14,7 @@ import { GitHubLogoIcon } from "@radix-ui/react-icons"
 import { ModeToggle } from "./mode-toggle"
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { BACKEND_URL } from "../backendURL"
 
 const NavBar = () => {
     const navigate=useNavigate()
@@ -53,7 +54,7 @@ const NavBar = () => {
         if(token!=null){
             console.log("Token is present")
             async function getData(){
-                const response= await fetch("localhost:8000/api/v1/adult/get-data",{
+                const response= await fetch(`${BACKEND_URL}/api/v1/adult/get-data`,{
                     method:"GET",
                     headers:{
                         "authorization":`Bearer ${token}`

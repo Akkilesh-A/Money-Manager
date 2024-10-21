@@ -8,8 +8,18 @@ const transactionSchema = new mongoose.Schema({
     },
     to:{
         type: mongoose.SchemaTypes.ObjectId,
-        required: true,
         ref:"User"
+    },
+    amount:{
+        type:Number,
+        required:true
+    },
+    title:{
+        type:String,
+        required:true        
+    },
+    description:{
+        type:String,
     },
     dateTime:{
         type: Date,

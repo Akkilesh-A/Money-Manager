@@ -126,18 +126,16 @@ async function deleteUserTag(req,res) {
     
 }
 
-async function createTransaction(req,res){  
-    const {to,from,tag}= req.body
-    const token=req.token
-    const imgURL = "lol"
-    if(!to || !from){
+async function createTransactionRecord(req,res){  
+    const {to,tag,title,amount,description,receiptURL}= req.body
+    if(!to || !tag || !title || !amount){
         return res.status(400).json({
             message:"Input fields empty",
             data:null
         })
     }
     try{
-        const existingFromUser= await User.findOne({email:token.email})
+        const existingFromUser= await User.findOne({email:req.token.email})
         const existingToUser= await User.findOne({_id:to})
         if(!existingFromUser || !existingToUser){
             return res.status(400).json({
@@ -146,11 +144,18 @@ async function createTransaction(req,res){
             })
         }
         const newTransaction=await Transactions.create({
-            from:from,
+            title:title,
+            amount:amount,
+            from:existingFromUser._id,
             to:to,
             tag:tag,
-            imgURL:imgURL
+            receiptURL:receiptURL,
+            description:description
         })
+        const userTransactionArrayUpdate=await User.updateOne({_id:existingFromUser._id},{
+            $push:{transactions:newTransaction._id}
+        })
+        console.log(userTransactionArrayUpdate)
         if(newTransaction){
             return res.status(200).json({
                 message:"Created transaction successfully!",
@@ -237,5 +242,6 @@ export const adultControllers={
     getUserTags,
     addUserTag,
     deleteUserTag,
-    getUserTransactions
+    getUserTransactions,
+    createTransactionRecord
 }

@@ -42,6 +42,9 @@ userRouter.get("/get-user-transactions",jwtAuthorization,adultControllers.getUse
 //Get all users
 userRouter.get("/get-all-users",jwtAuthorization,appControllers.getAllUsers)
 
+//Post a transaction record
+userRouter.post("/create-transaction-record",jwtAuthorization,adultControllers.createTransactionRecord)
+
 export {
     userRouter
 }

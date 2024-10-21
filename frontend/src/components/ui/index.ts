@@ -21,9 +21,11 @@ import { Label } from "./label";
 import { 
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
-  SelectValue
+  SelectValue,
  } from "./select";
 import { Toaster } from "./sonner";
 import { H2 } from "./h2";
@@ -90,7 +92,9 @@ export {
     Label,
     Select,
     SelectContent,
+    SelectGroup,
     SelectItem,
+    SelectLabel,
     SelectTrigger,
     SelectValue,
     Toaster,
