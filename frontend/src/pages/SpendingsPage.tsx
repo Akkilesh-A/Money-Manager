@@ -32,8 +32,7 @@ import {
  } from "../components/ui"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { ArrowRight, ArrowRightSquare, Plus } from "lucide-react"
-import { ValueNoneIcon } from "@radix-ui/react-icons"
+import { Plus } from "lucide-react"
 
 // interface User{
 //   index:number,
