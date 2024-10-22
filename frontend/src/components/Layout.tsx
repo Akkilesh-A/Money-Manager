@@ -23,8 +23,8 @@ const Layout = ({children,className}:{children:ReactNode,className?:string}) => 
         >
           <SideBar isSideBarClosed={isSideBarClosed} />
         </ResizablePanel>
-        <ResizableHandle withHandle />
-        <ResizablePanel className={`px-8 py-4 ${className}`}>
+        <ResizableHandle className='sm:flex hidden' withHandle />
+        <ResizablePanel className={`px-4 sm:px-8 py-4 ${className}`}>
             {children}
         </ResizablePanel>
       </ResizablePanelGroup>

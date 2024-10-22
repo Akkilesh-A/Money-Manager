@@ -5,9 +5,6 @@ import {
   Badge,
   Button,
   Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
   H1,   
   H2,   
   H3,   
@@ -21,6 +18,13 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
   Accordion,
   AccordionContent,
   AccordionItem,
@@ -28,6 +32,7 @@ import {
  } from "../components/ui"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import { Plus } from "lucide-react"
 
 // interface User{
 //   index:number,
@@ -171,118 +176,124 @@ const SpendingsPage = () => {
   }
 
   return (
-    <Layout className="flex flex-col gap-8">
+    <Layout className="flex flex-col gap-4">
       <div>
-        <H1>Record Spending</H1>
-      </div>
-
+        <H1>Your Spendings</H1>
+      </div>     
       <div className="flex gap-4">
-        <div className="flex">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Card>
-              <CardHeader>
-                <H3>Create a new Transaction</H3>
-              </CardHeader>
-              <CardContent>
-                <div className="grid w-full items-center gap-4">
-                    {/* <Select onValueChange={(val:string)=>setValue("to",val)}>
-                      <SelectTrigger className="w-[380px]">
-                        <SelectValue placeholder="Select a User" />
-                      </SelectTrigger>
-                      <SelectContent>
-                          {allUsers.map((user,index)=>{
-                            return(
-                              <SelectItem key={index} value={user.userId}>{user.name}</SelectItem>
-                            )
-                          })}
-                      </SelectContent>
-                    </Select> */}
+        <div className="w-1/4 hidden sm:block border-r ">
+          Filters
+        </div>
+        <div className="sm:w-3/4 w-full p-2 h-[80vh] overflow-scroll overflow-x-hidden scrollbar">
+          <TransactionsAccordion transactions={dummyTransactions as Transaction[]}/>
+        </div>          
+      </div> 
+      <div className="fixed bottom-10 right-10">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" size="icon" className=""><Plus /></Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+            <DialogHeader>
+              <DialogTitle>Record a spending</DialogTitle>
+              <DialogDescription>
+                Record a spending with details and receipt image if needed!
+              </DialogDescription>
+            </DialogHeader>
+              <div className="grid w-full items-center gap-4">
+                  {/* <Select onValueChange={(val:string)=>setValue("to",val)}>
+                    <SelectTrigger className="w-[380px]">
+                      <SelectValue placeholder="Select a User" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {allUsers.map((user,index)=>{
+                          return(
+                            <SelectItem key={index} value={user.userId}>{user.name}</SelectItem>
+                          )
+                        })}
+                    </SelectContent>
+                  </Select> */}
 
-                    <div className="flex flex-col space-y-2">
-                      <Label htmlFor="title">Spent on?</Label>
-                      <Input {...register("title",{
-                          required: "This field is required"
-                      })} id="title" placeholder="What did you spend on?" />
-                    </div>
+                  <div className="flex flex-col space-y-2">
+                    <Label htmlFor="title">Spent on?</Label>
+                    <Input {...register("title",{
+                        required: "This field is required"
+                    })} id="title" placeholder="What did you spend on?" />
+                  </div>
 
-                    <div className="flex flex-col space-y-2">
-                      <Label htmlFor="description">Description</Label>
-                      <Input {...register("description",{
-                          required: "This field is required"
-                      })} id="description" type="text" placeholder="Brief Description" />
-                    </div>
+                  <div className="flex flex-col space-y-2">
+                    <Label htmlFor="description">Description</Label>
+                    <Input {...register("description",{
+                        required: "This field is required"
+                    })} id="description" type="text" placeholder="Brief Description" />
+                  </div>
 
-                    <div className="flex flex-col space-y-2">
-                      <Label htmlFor="amount">Amount</Label>
-                      <Input {...register("amount",{
-                          required: "This field is required"
-                      })} id="amount" type="number" placeholder="How much?" />
-                    </div>
+                  <div className="flex flex-col space-y-2">
+                    <Label htmlFor="amount">Amount</Label>
+                    <Input {...register("amount",{
+                        required: "This field is required"
+                    })} id="amount" type="number" placeholder="How much?" />
+                  </div>
 
-                    <div className="flex flex-col space-y-2">
-                      <Label htmlFor="receiptURL">Bil/Receipt Image</Label>
-                      <Input {...register("receiptImage",{
-                          required: "This field is required"
-                      })} id="receiptURL" accept="image/png, image/gif, image/jpeg" type="file" placeholder="" />
-                    </div>
-                    
-                    <div className="flex flex-col space-y-2">
-                      <Label htmlFor="tag">Select Tag</Label>
-                      {isTagsLoading && !isNull && <Loader />}
-                      {isNull && 
-                        <div className="flex gap-2 items-center">
-                          <P>No Tags</P>
-                          <Link to="/tags" >Add a Tag?</Link>
-                        </div>
-                      }
-                      {!isTagsLoading && 
-                        <Select onValueChange={(val:string)=>setValue("tag",val)}>
-                          <SelectTrigger className="">
-                            <SelectValue placeholder="Select Tag" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectGroup>
-                              <SelectLabel>Favorite Tags</SelectLabel>
-                              {favoriteTags.map((favoriteTag,index)=>{
-                                const localIndex=tags.indexOf(favoriteTag)
-                                const color=tagColors[localIndex]
-                                return(
-                                  <SelectItem style={{color:color}} key={index} value={favoriteTag}>{favoriteTag}</SelectItem>
-                                )
-                              })}
-                            </SelectGroup>
-                            <SelectGroup>
-                              <SelectLabel>All Tags</SelectLabel>
-                              {tags.map((tag,index)=>{
-                                const tagIndex=favoriteTags.indexOf(tag)
-                                if(tagIndex!=-1){
-                                  return
-                                }
-                                return(
-                                  <SelectItem style={{color:tagColors[index]}} key={index} value={tag}>{tag}</SelectItem>
-                                )
-                              })}
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select> 
-                      }
-                    </div>
-                    
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button>Create Record</Button>
-              </CardFooter>
-            </Card>
-          </form>
-        </div>  
-
-        <div className="flex flex-col w-3/4">
-          <H2 className="">Your Spendings</H2>
-          <TransactionsAccordion transactions={dummyTransactions as Transaction[]}/>          
-        </div> 
-      </div>   
-      
+                  <div className="flex flex-col space-y-2">
+                    <Label htmlFor="receiptURL">Bil/Receipt Image</Label>
+                    <Input {...register("receiptImage",{
+                        required: "This field is required"
+                    })} id="receiptURL" accept="image/png, image/gif, image/jpeg" type="file" placeholder="" />
+                  </div>
+                  
+                  <div className="flex flex-col space-y-2">
+                    <Label htmlFor="tag">Select Tag</Label>
+                    {isTagsLoading && !isNull && <Loader />}
+                    {isNull && 
+                      <div className="flex gap-2 items-center">
+                        <P>No Tags</P>
+                        <Link to="/tags" >Add a Tag?</Link>
+                      </div>
+                    }
+                    {!isTagsLoading && 
+                      <Select onValueChange={(val:string)=>setValue("tag",val)}>
+                        <SelectTrigger className="">
+                          <SelectValue placeholder="Select Tag" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Favorite Tags</SelectLabel>
+                            {favoriteTags.map((favoriteTag,index)=>{
+                              const localIndex=tags.indexOf(favoriteTag)
+                              const color=tagColors[localIndex]
+                              return(
+                                <SelectItem style={{color:color}} key={index} value={favoriteTag}>{favoriteTag}</SelectItem>
+                              )
+                            })}
+                          </SelectGroup>
+                          <SelectGroup>
+                            <SelectLabel>All Tags</SelectLabel>
+                            {tags.map((tag,index)=>{
+                              const tagIndex=favoriteTags.indexOf(tag)
+                              if(tagIndex!=-1){
+                                return
+                              }
+                              return(
+                                <SelectItem style={{color:tagColors[index]}} key={index} value={tag}>{tag}</SelectItem>
+                              )
+                            })}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select> 
+                    }
+                  </div>
+                  
+              </div>              
+            <DialogFooter>
+              <Button onClick={()=>handleSubmit(onSubmit)} type="submit">Add Spending</Button>
+            </DialogFooter>
+            </form>
+          </DialogContent>
+        </Dialog>
+      </div>
+    
     </Layout>
   )
 }
@@ -292,13 +303,13 @@ function TransactionsAccordion({transactions}:{transactions:Transaction[]}){
     <Accordion className="space-y-4" type="multiple">
       {transactions.map((transaction,index)=>{
         return (
-        <Card className="px-4 py-2">
+        <Card key={index} className="px-4 py-2">
           <AccordionItem value={`item-${index}`}>
             <AccordionTrigger>
             <Badge variant="secondary" >{transaction.tag}</Badge>
               <H3>${transaction.amount}</H3>
             </AccordionTrigger>
-            <AccordionContent className="flex justify-around">
+            <AccordionContent className="flex flex-col sm:flex-row justify-around">
               <P className="text-gray-300">Description : {transaction.description}</P>
               <img width={200} src={transaction.receiptURL} />
             </AccordionContent>

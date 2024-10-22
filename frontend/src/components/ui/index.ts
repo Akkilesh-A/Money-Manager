@@ -68,6 +68,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter
 } from "./dialog"
 import {
   Accordion,
@@ -131,6 +132,7 @@ export {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
+    DialogFooter,
     Accordion,
     AccordionContent,
     AccordionItem,
