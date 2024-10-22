@@ -32,7 +32,8 @@ import {
  } from "../components/ui"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { Plus } from "lucide-react"
+import { ArrowRight, ArrowRightSquare, Plus } from "lucide-react"
+import { ValueNoneIcon } from "@radix-ui/react-icons"
 
 // interface User{
 //   index:number,
@@ -56,65 +57,17 @@ interface Transaction{
 const SpendingsPage = () => {
 
   // const [allUsers, setAllUsers] = useState<User[]>([])
-  // const [userTransactions, setUserTransactions] = useState([])
+  const [isTransactionsLoading,setIsTransactionsLoading] = useState(true)
+  const [userSpendings, setUserSpendings] = useState([])
   // const [isUserLoading, setIsUserLoading] = useState(true)
   const {register,handleSubmit,setValue } =useForm()
+  const [isSpendingsNull, setIsSpendingsNull] = useState(false)
   const [isNull,setIsNull]=useState(false)
   const [tags,setTags] = useState([])
   const [tagColors,setTagColors]=useState([])
   const [favoriteTags,setFavoriteTags]=useState([])
   const [isTagsLoading, setIsTagsLoading] = useState(true)
   
-  const dummyTransactions=[
-    {
-      "_id": "6716897da2cf71cdaf78e1c4",
-      "from": "6711d51db4dc952c79952569",
-      "to": "6715e7a2e3fb95eb9afd6a19",
-      "amount": 233,
-      "title": "title3",
-      "description": "description3",
-      "dateTime": "2024-10-21T17:03:51.197Z",
-      "tag": "Travel",
-      "receiptURL": "https://res.cloudinary.com/djeplonq5/image/upload/v1729533568/Money_Manager/User_Transactions/ezfh6ibpeqsrrsfvk8fi.jpg",
-      "__v": 0
-    },
-    {
-        "_id": "67168dc3de71a386dd61e0ef",
-        "from": "6711d51db4dc952c79952569",
-        "to": "6715e7a2e3fb95eb9afd6a19",
-        "amount": 200,
-        "title": "title",
-        "description": "description",
-        "dateTime": "2024-10-21T17:06:06.222Z",
-        "tag": "Travel",
-        "receiptURL": "https://res.cloudinary.com/djeplonq5/image/upload/v1729533568/Money_Manager/User_Transactions/ezfh6ibpeqsrrsfvk8fi.jpg",
-        "__v": 0
-    },
-    {
-        "_id": "67168eeb35c3664c1c1af782",
-        "from": "6711d51db4dc952c79952569",
-        "to": "6715e7a2e3fb95eb9afd6a19",
-        "amount": 200,
-        "title": "title",
-        "description": "description",
-        "dateTime": "2024-10-21T17:26:56.557Z",
-        "tag": "Travel",
-        "receiptURL": "https://res.cloudinary.com/djeplonq5/image/upload/v1729533568/Money_Manager/User_Transactions/ezfh6ibpeqsrrsfvk8fi.jpg",
-        "__v": 0
-    },
-    {
-        "_id": "6716963c6bf0a824f7800abb",
-        "from": "6711d51db4dc952c79952569",
-        "to": null,
-        "amount": 123,
-        "title": "summa",
-        "description": "description",
-        "dateTime": "2024-10-21T17:56:41.825Z",
-        "tag": "Travel",
-        "receiptURL": "https://res.cloudinary.com/djeplonq5/image/upload/v1729533568/Money_Manager/User_Transactions/ezfh6ibpeqsrrsfvk8fi.jpg",
-        "__v": 0
-    },
-  ]
 
   //Get all users
   // useEffect(()=>{
@@ -131,6 +84,26 @@ const SpendingsPage = () => {
   //   }
   //   getAllUsers()    
   // },[])
+
+  //Get All Spendings
+  useEffect(()=>{
+    async function getUserSpendings(){
+      const token=await localStorage.getItem("money-manager-token")
+      const response = await fetch(`${BACKEND_URL}/api/v1/user/get-user-spendings`,{
+          method:"GET",
+          headers:{
+              "Authorization" : "Bearer "+token
+          }
+      })
+      const responseData=await response.json()
+      if(responseData.data.length==0){
+        setIsSpendingsNull(true)
+      }
+      setUserSpendings(responseData.data)
+      setIsTransactionsLoading(false)
+  }
+  getUserSpendings()
+  },[])
 
   //Get User Tags
   useEffect(()=>{
@@ -185,13 +158,25 @@ const SpendingsPage = () => {
           Filters
         </div>
         <div className="sm:w-3/4 w-full p-2 h-[80vh] overflow-scroll overflow-x-hidden scrollbar">
-          <TransactionsAccordion transactions={dummyTransactions as Transaction[]}/>
+          {isTransactionsLoading && <Loader />}
+          {isSpendingsNull && 
+            <div className="flex flex-col justify-center items-center">
+              <div>
+                <img src="/illustrations/empty_folder.svg" width={600} />  
+                <H2 className="">Nothing to look here</H2>
+              </div>
+            </div>
+          }
+          {!isTransactionsLoading && <TransactionsAccordion transactions={userSpendings}/>}
         </div>          
       </div> 
       <div className="fixed bottom-10 right-10">
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="outline" size="icon" className=""><Plus /></Button>
+            <div className="flex items-center gap-2">
+              {isSpendingsNull && <H3 className="flex items-center">Start adding spendings here </H3>}
+              <Button variant="outline" size="icon" className=""><Plus /></Button>
+            </div>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
