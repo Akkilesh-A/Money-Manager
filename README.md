@@ -74,3 +74,9 @@
 - imgURL
 - User connection status
 - User Id
+
+
+### Features
+
+- [ ]  Verified Users only - Verification using email while onboarding user
+- [ ]  Monthly mail - Monthly mail to your inbox with the transactions of that previous month!
