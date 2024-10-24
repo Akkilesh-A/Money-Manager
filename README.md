@@ -1,4 +1,6 @@
-# ⚙️Tech Stack
+# Money Muncher 🤑
+
+## ⚙️Tech Stack
 
 ### 🖥️ Frontend
 
@@ -20,7 +22,7 @@
 | Assets cloud storage | Cloudinary  |
 | Image uploads | Multer |
 
-# 🔗Routes
+## 🔗Routes
 
 ### 🖥️ Frontend
 
@@ -50,7 +52,7 @@
 | GET | /get-user-spendings | `getUserSpendings` |
 | POST | /create-spending-record | `createTransactionRecord` |
 
-# 📊 Database Design
+## 📊 Database Design
 
 ### **Transactions Schema**
 
