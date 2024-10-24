@@ -1,4 +1,5 @@
 import { 
+    Badge,
     Button,
     Card,
     CardContent,
@@ -14,6 +15,8 @@ import {
  import { useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { BACKEND_URL } from "../backendURL"
+import { useState } from "react"
+import { Eye, EyeOff } from "lucide-react"
 
 interface signUpInputs{
     email: string,
@@ -23,7 +26,10 @@ interface signUpInputs{
 export function SignInForm() {
     const navigate=useNavigate()
 
-    const {register, handleSubmit} = useForm<signUpInputs>()
+    const [eyeOpen,setEyeOpen]=useState(false)
+
+
+    const {register, handleSubmit, formState:{errors}} = useForm<signUpInputs>()
 
     async function onSubmit(data: signUpInputs){
         const dataToBeSent={
@@ -65,18 +71,24 @@ export function SignInForm() {
             </CardHeader>
             <CardContent>
                 <div className="grid w-full items-center gap-4">
-                    <div className="flex flex-col space-y-1.5">
+                    <div className="space-y-1.5">
                     <Label htmlFor="framework">Email</Label>
                     <Input {...register("email",{
                         required: "This field is required"
                     })} id="name" placeholder="user@example.com" />
+                    {errors.email && <Badge variant={"destructive"}>{errors.email.message}</Badge>}
                     </div>
-                    <div className="flex flex-col space-y-1.5">
+                    <div className="space-y-1.5">
                     <Label htmlFor="framework">Password</Label>
                     <Input {...register("password",{
                         required: "This field is required"
-                    })} id="name" type="password" placeholder="" />
+                    })} id="name" type={eyeOpen ? "text" : "password"} placeholder="" />
+                    {errors.password && <Badge variant={"destructive"}>{errors.password?.message}</Badge>}
+                    <div className={`${errors.password && "-top-16"} relative -top-9 -right-64`}>
+                        {eyeOpen ? <Eye className="cursor-pointer" onClick={()=>setEyeOpen(false)}/> : <EyeOff className="cursor-pointer" onClick={()=>setEyeOpen(true)}/>}
                     </div>
+                    </div>
+
                 </div>
             </CardContent>
             <CardFooter className="flex justify-between">
