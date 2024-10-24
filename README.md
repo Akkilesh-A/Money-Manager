@@ -1,8 +1,14 @@
-# Money Management App - MERN
+# ⚙️Tech Stack
 
-# Backend
+### 🖥️ Frontend
 
-## ⚙️Tech Stack
+| Framework | React.js |
+| --- | --- |
+| CSS framework | Tailwind CSS |
+| UI Library | ShadCN |
+| Build Tool | Vite |
+
+### 🔧 Backend
 
 | Server, Routing | Express.js |
 | --- | --- |
@@ -11,72 +17,77 @@
 | Database Connection | Mongoose |
 | Session Authentication | JWT |
 | Password Hashing  | Bcrypt |
-| Cloud storage | Cloudinary  |
+| Assets cloud storage | Cloudinary  |
 | Image uploads | Multer |
 
----
+# 🔗Routes
 
-## Routes
+### 🖥️ Frontend
 
-### Admin Routes
+| **Path** | **Component** |
+| --- | --- |
+| / | **`<SignInPage />`** |
+| /signup | **`<SignUpPage />`** |
+| /signin | **`<SignInPage />`** |
+| /home | **`<LandingPage />`** |
+| /profile | **`<ProfilePage />`** |
+| /tags | **`<TagsPage />`** |
+| /transactions | **`<SpendingsPage />`** |
+| /send-money | **`<SendMoneyPage />`** |
 
-- [x]  signin
-- [x]  signup
-- [x]  addmoney - Admin can add money to verified user’s account only
-- [x]  getConnection- To get connection details
-- [x]  createConnection - To connect user to admin account
-- [x]  updateConnection - To update connection and delete old connection
+### 🔧 Backend
 
-### User Routes
+| **HTTP Method** | **Endpoint** | **Controller Function** |
+| --- | --- | --- |
+| POST | /signin | `signIn` |
+| POST | /signup | `signUp` |
+| GET | /get-user-tags | `getUserTags` |
+| POST | /add-new-tag | `addUserTag` |
+| DELETE | /delete-user-tag | `deleteUserTag` |
+| GET | /get-user-data | `getUserProfile` |
+| POST | /update-profile | `updateProfile` |
+| GET | /get-all-users | `getAllUsers` |
+| GET | /get-user-spendings | `getUserSpendings` |
+| POST | /create-spending-record | `createTransactionRecord` |
 
-- [x]  signin
-- [x]  signup
-- [x]  getprofile - To get user’s profile
-- [x]  customizetags - To add, delete, update tags
-- [x]  sendmoney - An interface to record transaction between users (default tag - User/Friend)
-- [x]  gettransactions - To get user’s transactions (Verify user)
-- [x]  updateprofile - To update user’s profile
-- [x]  bulk - To get filtered results of other users!
-- [x]  getConnection- To verify admins and users account connection
+# 📊 Database Design
 
-### Middlewares
+### **Transactions Schema**
 
-- [x]  adminAuthMiddleware - Session authentication
-- [x]  userAuthMiddleware - Session authentication
+| **Attributes** | **Data Type** |
+| --- | --- |
+| from | ObjectId (ref: User) |
+| to | ObjectId (ref: User) |
+| amount | Number |
+| title | String |
+| description | String |
+| dateTime | Date |
+| tag | String |
+| receiptURL | String |
 
----
+### **User Schema**
 
-## Schemas
+| **Attributes** | **Data Type** |
+| --- | --- |
+| name | String |
+| email | String |
+| password | String |
+| imgURL | String |
+| accountBalance | Number |
+| phoneNumber | String |
+| tags | Array of Strings |
+| tagColors | Array of Strings |
+| favoriteTags | Array of Strings |
+| transactions | Array of ObjectIds (ref: Transaction) |
+| isChild | Boolean |
+| childConnectionStatus | Boolean |
+| children | Array of ObjectIds (ref: User) |
+| parentConnectionStatus | Boolean |
+| parent | ObjectId (ref: User) |
 
-### User Schema
+# 🤑Features
 
-- Name
-- Email
-- Password
-- Balance
-- Tags
-- imgURL
-- Admin connection status
-- Admin Id
-
-### Transactions Schema
-
-- From - ref User Schema
-- To
-- DateTime
-- Tag
-
-### Admin Schema
-
-- Name
-- Email
-- Password
-- imgURL
-- User connection status
-- User Id
-
-
-### Features
-
-- [ ]  Verified Users only - Verification using email while onboarding user
-- [ ]  Monthly mail - Monthly mail to your inbox with the transactions of that previous month!
+- [x]  Tags - Transactions can be tagged with custom user tags
+- [ ]  Filters - Filter transactions based on tags, dates, etc…
+- [ ]  Email Verification - Verification of users while signing up
+- [ ]  Monthly Mail - Monthly mail with that month’s spendings and transaction details as a csv export!
