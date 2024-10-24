@@ -1,51 +1,52 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface userDataSliceFields{
-    name:string,
-    email:string,
-    imgURL:string,
-    tags:[string],
-    token:string, 
+interface userDataSliceFields {
+    name: string;
+    email: string;
+    imgURL: string;
+    tags: string[];  // Fixed type array
+    token: string;
 }
 
-const initialState={
-    name:"",
-    email:"",
-    imgURL:"",
-    tags:["Shopping","Online","Transactions"],
-    token:"", 
-}
+const initialState: userDataSliceFields = {
+    name: "",
+    email: "",
+    imgURL: "",
+    tags: ["Shopping", "Online", "Transactions"],
+    token: "",
+};
 
 export const userDataSlice = createSlice({
-    name:"userData",
+    name: "userData",
     initialState,
-    reducers:{
-        setToken:(state,action)=>{
-            state.token=action.payload
+    reducers: {
+        setToken: (state, action) => {
+            state.token = action.payload;
         },
-        setTags:(state,action)=>{
-            state.tags=action.payload
+        setTags: (state, action) => {
+            state.tags = action.payload;
         },
-        appendTag:(state,action)=>{
-            state.tags+=action.payload
+        appendTag: (state, action) => {
+            state.tags.push(action.payload);  // to correctly append to array
         },
-        setUserData:(state,action)=>{
-            state.email=action.payload.email
-            state.name=action.payload.name
-            state.imgURL=action.payload.imgURL
-            state.tags=action.payload.tags
+        setUserData: (state, action) => {
+            state.email = action.payload.email;
+            state.name = action.payload.name;
+            state.imgURL = action.payload.imgURL;
+            state.tags = action.payload.tags;
         }
     }
-})
+});
 
-export const  {
+export const {
     setToken,
     setTags,
     appendTag,
     setUserData
-} = userDataSlice.actions
+} = userDataSlice.actions;
 
-export default userDataSlice.reducer
+export default userDataSlice.reducer;
+
 export type {
     userDataSliceFields
-}
+};
