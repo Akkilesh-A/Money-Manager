@@ -90,6 +90,7 @@
 # 🤑Features
 
 - [x]  Tags - Transactions can be tagged with custom user tags
+- [ ]  Redux Store - To store session data 
 - [ ]  Filters - Filter transactions based on tags, dates, etc…
 - [ ]  Email Verification - Verification of users while signing up
 - [ ]  Monthly Mail - Monthly mail with that month’s spendings and transaction details as a csv export!
