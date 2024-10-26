@@ -109,7 +109,6 @@ async function signIn(req,res){
 
 //For Home Page
 async function getNumberOfSpendingsPerTag(req,res){
-    console.log(req.token)
     try{
         const token=req.token
         const user=await User.findOne({email:token.email})
@@ -151,6 +150,50 @@ async function getNumberOfSpendingsPerTag(req,res){
             message:"Data fetch unsuccessful"
         })
     }
+}
+
+async function getSpendingsPerTag(req,res) {
+    try{
+        const token=req.token
+        const user=await User.findOne({email:token.email})
+        let transactions=await Transactions.find({from:user._id})
+        let chartData=user.tags.map((tag,index)=>{
+            let spendings=0
+            transactions.map((transaction)=>{
+                if(transaction.tag==tag){
+                    spendings+=transaction.amount
+                }
+            })
+            return(
+                {tagName:tag,spendings:spendings,fill:user.tagColors[index]}
+            )
+        })
+        let chartConfig = {
+            visitors: {
+                label: "Number of Spendings",
+            }
+        };
+      
+        user.tags.forEach((tag, index) => {
+            chartConfig[tag] = {
+                label: tag,
+                color: `hsl(var(--chart-${index + 1}))`
+            };
+        });
+        return res.status(200).json({
+            message:"Tags fecthed successfully",
+            data:{
+                chartData:chartData,
+                chartConfig:chartConfig
+            }
+        })
+        
+    }catch(err){
+        console.log(err)
+        return res.status(400).json({
+            message:"Data fetch unsuccessful"
+        })
+    }   
 }
 
 //For Tags Page
@@ -306,5 +349,6 @@ export const userControllers={
     deleteUserTag,
     getUserSpendings,
     createTransactionRecord,
-    getNumberOfSpendingsPerTag
+    getNumberOfSpendingsPerTag,
+    getSpendingsPerTag
 }

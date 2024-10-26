@@ -13,16 +13,19 @@ userRouter.get("/",(req,res)=>{
     })
 })
 
+//AUTH ROUTES
 //SignIn
 userRouter.post("/signin",userControllers.signIn)
 
 //SignUp
 userRouter.post("/signup",userControllers.signUp)
-
+ 
+//======================
 
 //HOME PAGE
 //Number of spendings per tag graph
 userRouter.get("/get-number-of-spendings-per-tag",jwtAuthorization,userControllers.getNumberOfSpendingsPerTag)
+userRouter.get("/get-spendings-per-tag",jwtAuthorization,userControllers.getSpendingsPerTag)
 
 //Get User Tags
 userRouter.get("/get-user-tags",jwtAuthorization,userControllers.getUserTags)

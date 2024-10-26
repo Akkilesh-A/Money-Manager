@@ -9,9 +9,9 @@ import { BACKEND_URL } from '../backendURL'
 
 const LandingPage = () => {
 
-  const [chartData, setChartData] = useState([])
-  const [chartConfig, setChartConfig] = useState({})
-  const [isNoOfSpenginsLoading, setIsNoOfSpenginsLoading] = useState(true)
+  const [chartData1, setChartData1] = useState([])
+  const [chartConfig1, setChartConfig1] = useState({})
+  const [isNoOfSpendingsLoading, setIsNoOfSpendingsLoading] = useState(true)
   useEffect(()=>{
     async function fetchNoOfSpendingsGraphData(){
       const response=await fetch(`${BACKEND_URL}/api/v1/user/get-number-of-spendings-per-tag`,{
@@ -20,9 +20,27 @@ const LandingPage = () => {
         }
       })
       const responseData=await response.json()
-      setChartData(responseData.data.chartData)
-      setChartConfig(responseData.data.chartConfig)
-      setIsNoOfSpenginsLoading(false)
+      setChartData1(responseData.data.chartData)
+      setChartConfig1(responseData.data.chartConfig)
+      setIsNoOfSpendingsLoading(false)
+    }
+    fetchNoOfSpendingsGraphData()
+  },[])
+
+  const [chartData2, setChartData2] = useState([])
+  const [chartConfig2, setChartConfig2] = useState({})
+  const [isSpendingsLoading, setIsSpendingsLoading] = useState(true)
+  useEffect(()=>{
+    async function fetchNoOfSpendingsGraphData(){
+      const response=await fetch(`${BACKEND_URL}/api/v1/user/get-number-of-spendings-per-tag`,{
+        headers:{
+          "Authorization" :"Bearer " + localStorage.getItem("money-manager-token")
+        }
+      })
+      const responseData=await response.json()
+      setChartData2(responseData.data.chartData)
+      setChartConfig2(responseData.data.chartConfig)
+      setIsSpendingsLoading(false)
     }
     fetchNoOfSpendingsGraphData()
   },[])
@@ -33,11 +51,13 @@ const LandingPage = () => {
           <H1>Welcome, you finance freak!</H1> 
           <div className='grid sm:grid-cols-2 md:grid-cols-3 grid-cols-1 gap-4'>
             <UserBankDataCard />
-            {isNoOfSpenginsLoading && <Loader />}
-            {!isNoOfSpenginsLoading && 
-              <PieChartDonutWithText chartData={chartData} chartConfig={chartConfig}/>
+            {isNoOfSpendingsLoading && <Loader />}
+            {!isNoOfSpendingsLoading && 
+              <PieChartDonutWithText chartData={chartData1} chartConfig={chartConfig1}/>
             }
-            <RadialChartLabel /> 
+            {!isSpendingsLoading && 
+              <RadialChartLabel chartData={chartData2} chartConfig={chartConfig2}/>
+            }
             <UserTagsCard /> 
           </div> 
         </div>
