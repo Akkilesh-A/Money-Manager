@@ -107,6 +107,52 @@ async function signIn(req,res){
     })
 }
 
+//For Home Page
+async function getNumberOfSpendingsPerTag(req,res){
+    console.log(req.token)
+    try{
+        const token=req.token
+        const user=await User.findOne({email:token.email})
+        let transactions=await Transactions.find({from:user._id})
+        let chartData=user.tags.map((tag,index)=>{
+            let noOfSpendings=0
+            transactions.map((transaction,miniIndex)=>{
+                if(transaction.tag==tag){
+                    noOfSpendings+=1
+                }
+            })
+            return(
+                {tagName:tag,spendings:noOfSpendings,fill:user.tagColors[index]}
+            )
+        })
+        let chartConfig = {
+            visitors: {
+                label: "Number of Spendings",
+            }
+        };
+      
+        user.tags.forEach((tag, index) => {
+            chartConfig[tag] = {
+                label: tag,
+                color: `hsl(var(--chart-${index + 1}))`
+            };
+        });
+        return res.status(200).json({
+            message:"Tags fecthed successfully",
+            data:{
+                chartData:chartData,
+                chartConfig:chartConfig
+            }
+        })
+        
+    }catch(err){
+        console.log(err)
+        return res.status(400).json({
+            message:"Data fetch unsuccessful"
+        })
+    }
+}
+
 //For Tags Page
 async function getUserTags(req,res){
     try{
@@ -259,5 +305,6 @@ export const userControllers={
     addUserTag,
     deleteUserTag,
     getUserSpendings,
-    createTransactionRecord
+    createTransactionRecord,
+    getNumberOfSpendingsPerTag
 }

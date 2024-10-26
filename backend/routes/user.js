@@ -19,6 +19,11 @@ userRouter.post("/signin",userControllers.signIn)
 //SignUp
 userRouter.post("/signup",userControllers.signUp)
 
+
+//HOME PAGE
+//Number of spendings per tag graph
+userRouter.get("/get-number-of-spendings-per-tag",jwtAuthorization,userControllers.getNumberOfSpendingsPerTag)
+
 //Get User Tags
 userRouter.get("/get-user-tags",jwtAuthorization,userControllers.getUserTags)
 
