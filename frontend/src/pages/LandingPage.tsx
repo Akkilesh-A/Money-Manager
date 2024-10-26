@@ -3,7 +3,6 @@ import { Layout, Loader, UserBankDataCard, UserTagsCard } from '../components'
 import { PieChartDonutWithText, RadialChartLabel } from '../components/charts'
 import { 
     H1,
-    P,
 } from '../components/ui'
 import { BACKEND_URL } from '../backendURL'
 
