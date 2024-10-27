@@ -1,14 +1,14 @@
 "use client"
 
 import * as React from "react"
-import { TrendingUp } from "lucide-react"
+// import { TrendingUp } from "lucide-react"
 import { Label, Pie, PieChart } from "recharts"
 
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
+  // CardFooter,
   CardHeader,
   CardTitle,
   ChartConfig,
@@ -24,22 +24,22 @@ export function PieChartDonutWithText({chartData,chartConfig}:{chartData:{ tagNa
     return chartData.reduce((acc, curr) => acc + curr.spendings, 0)
   }, [])
 
-  const [highestSpent,setHighestSpent] = React.useState(0)
-  const [highestSpentTag,setHighestSpentTag] = React.useState("")
+  // const [highestSpent,setHighestSpent] = React.useState(0)
+  // const [highestSpentTag,setHighestSpentTag] = React.useState("")
 
-  React.useEffect(()=>{
-    let max=chartData[0].spendings
-    let index=0
-    setHighestSpent(max)
-    for(let i=0;i<chartData.length;i++){
-      if(chartData[i].spendings>max){
-        max=chartData[i].spendings
-        index=i
-      }
-    }
-    setHighestSpent(max)
-    setHighestSpentTag(chartData[index].tagName)
-  },[chartData])
+  // React.useEffect(()=>{
+  //   let max=chartData[0].spendings
+  //   let index=0
+  //   setHighestSpent(max)
+  //   for(let i=0;i<chartData.length;i++){
+  //     if(chartData[i].spendings>max){
+  //       max=chartData[i].spendings
+  //       index=i
+  //     }
+  //   }
+  //   setHighestSpent(max)
+  //   setHighestSpentTag(chartData[index].tagName)
+  // },[chartData])
 
   return (
     <Card className="flex flex-col">
