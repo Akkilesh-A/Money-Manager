@@ -45,13 +45,14 @@ export function SignInForm() {
         }
         )
         const responseData=await response.json()
-        if(response.status!==200){
+        if(responseData.status!==200){
             toast.error(responseData.message)
             return
+        }else{
+            await localStorage.setItem("money-manager-token",responseData.token)
+            toast.success(responseData.message)  
+            navigate("/home")
         }
-        await localStorage.setItem("money-manager-token",responseData.token)
-        toast.success(responseData.message)  
-        navigate("/home") 
     }
 
     useEffect(() => {
@@ -59,6 +60,8 @@ export function SignInForm() {
         if(token){
             toast.success("Session Restored!")
             navigate("/home")
+        }else{
+            navigate("/signin")
         }
     }, [])     
 

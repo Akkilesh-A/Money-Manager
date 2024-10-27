@@ -14,7 +14,7 @@ export default function UserBankDataCard({
   const targetPercentage = (currentBalance / monthlyTarget) * 100
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Bank Balance</CardTitle>
       </CardHeader>

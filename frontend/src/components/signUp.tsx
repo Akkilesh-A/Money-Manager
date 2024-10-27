@@ -30,7 +30,7 @@ export function SignUpForm() {
 
     const [eyeOpen,setEyeOpen]=useState(false)
 
-    const {register, handleSubmit, formState:{errors}} = useForm<signUpInputs>()
+    const {register, handleSubmit,watch, formState:{errors}} = useForm<signUpInputs>()
 
     async function onSubmit(data: signUpInputs){
         const dataToBeSent={
@@ -53,8 +53,8 @@ export function SignUpForm() {
             return
         }
         toast.success(responseData.message)  
-        await localStorage.setItem("money-manager-token", responseData.token)
-        navigate("/signin") 
+        await localStorage.setItem("OTP-token", responseData.token)
+        navigate("/otp") 
     }
 
     useEffect(() => {
@@ -103,14 +103,14 @@ export function SignUpForm() {
                         <Input {...register("password",{
                             required: "This field is required",
                             minLength: {value: 6, message: "Password should be atleast 6 characters long"}
-                        })} id="name" type="password" placeholder="Password"/>
+                        })} id="name" type={eyeOpen ? "text" : "password"} placeholder="Password"/>
                         {errors.password && <Badge variant={"destructive"}>{errors.password?.message}</Badge>}
                     </div>
                     <div className="space-y-1">
                         <Label htmlFor="framework">Confirm Password</Label>
                         <Input  {...register("confirmPassword",{
                             required: "This field is required",
-                            validate: value => value === "password" || "Passwords do not match"
+                            validate: value => value === watch("password") || "Passwords do not match"
                         })} id="name" type={eyeOpen ? "text" : "password"} placeholder="Confirm Password"/>
                         <div className="relative -top-8 -right-64">
                             {eyeOpen ? <Eye className="cursor-pointer" onClick={()=>setEyeOpen(false)}/> : <EyeOff className="cursor-pointer" onClick={()=>setEyeOpen(true)}/>}

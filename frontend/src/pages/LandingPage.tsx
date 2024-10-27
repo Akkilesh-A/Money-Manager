@@ -49,15 +49,20 @@ const LandingPage = () => {
         <div className='flex-col gap-8 flex'>
           <H1>Welcome, you finance freak!</H1> 
           <div className='grid sm:grid-cols-2 md:grid-cols-3 grid-cols-1 gap-4'>
-            <UserBankDataCard />
+            <div className='space-y-4'>
+              <UserBankDataCard />
+              <UserTagsCard /> 
+            </div>
             {isNoOfSpendingsLoading && <Loader />}
-            {!isNoOfSpendingsLoading && 
-              <PieChartDonutWithText chartData={chartData1} chartConfig={chartConfig1}/>
-            }
-            {!isSpendingsLoading && 
-              <RadialChartLabel chartData={chartData2} chartConfig={chartConfig2}/>
-            }
-            <UserTagsCard /> 
+            <div className='space-y-4'>
+              {!isNoOfSpendingsLoading && 
+                <PieChartDonutWithText chartData={chartData1} chartConfig={chartConfig1}/>
+              }
+              {!isSpendingsLoading && 
+                <RadialChartLabel chartData={chartData2} chartConfig={chartConfig2}/>
+              }
+            </div>
+
           </div> 
         </div>
     </Layout>

@@ -76,6 +76,19 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./accordion"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "./popover"
+import { ColorPicker } from "./color-picker";
+import {  
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+}
+  from "./input-otp"
 
 export {
     Button,
@@ -137,6 +150,14 @@ export {
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+    ColorPicker,
+    InputOTP,
+    InputOTPGroup,
+    InputOTPSeparator,
+    InputOTPSlot,
 }
 
 export type {

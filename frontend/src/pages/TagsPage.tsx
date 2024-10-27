@@ -5,6 +5,7 @@ import {
     Card, 
     CardContent, 
     CardFooter, 
+    ColorPicker, 
     Dialog,
     DialogContent,
     DialogHeader,
@@ -12,7 +13,8 @@ import {
     DialogTrigger, 
     H1, 
     H3, 
-    Input
+    Input,
+    Label
 } from "../components/ui"
 import { toast } from "sonner"
 import { Plus } from "lucide-react"
@@ -28,26 +30,28 @@ const TagsPage = () => {
     const [isTagsLoaded, setIsTagsLoaded] = useState(false)
     const [newTag,setNewTag]=useState("")
     const [newTagColor,setNewTagColor]=useState("")
+    const [color,setColor]=useState("")
+    
+    async function getTagsData(){
+        const token=await localStorage.getItem("money-manager-token")
+        const response = await fetch(`${BACKEND_URL}/api/v1/user/get-user-tags`,{
+            method:"GET",
+            headers:{
+                "Authorization" : "Bearer "+token
+            }
+        })
+        const responseData=await response.json()
+        if(!responseData.data.tags){
+            setIsNull(true)
+            return
+        }
+        setTagColors(responseData.data.tagColors)
+        setFavoriteTags(responseData.data.favoriteTags)
+        setTags(responseData.data.tags)
+        setIsTagsLoaded(true)
+    }
 
     useEffect(()=>{
-        async function getTagsData(){
-            const token=await localStorage.getItem("money-manager-token")
-            const response = await fetch(`${BACKEND_URL}/api/v1/user/get-user-tags`,{
-                method:"GET",
-                headers:{
-                    "Authorization" : "Bearer "+token
-                }
-            })
-            const responseData=await response.json()
-            if(!responseData.data.tags){
-                setIsNull(true)
-                return
-            }
-            setTagColors(responseData.data.tagColors)
-            setFavoriteTags(responseData.data.favoriteTags)
-            setTags(responseData.data.tags)
-            setIsTagsLoaded(true)
-        }
         getTagsData()
     },[])
 
@@ -73,8 +77,25 @@ const TagsPage = () => {
         toast.success(responseData.message)  
         setTags(responseData.data.tags)
         setTagColors(responseData.data.tagColors)
-        
     }
+
+    const [chartData2, setChartData2] = useState([])
+    const [chartConfig2, setChartConfig2] = useState({})
+    const [isSpendingsLoading, setIsSpendingsLoading] = useState(true)
+    useEffect(()=>{
+      async function fetchNoOfSpendingsGraphData(){
+        const response=await fetch(`${BACKEND_URL}/api/v1/user/get-number-of-spendings-per-tag`,{
+          headers:{
+            "Authorization" :"Bearer " + localStorage.getItem("money-manager-token")
+          }
+        })
+        const responseData=await response.json()
+        setChartData2(responseData.data.chartData)
+        setChartConfig2(responseData.data.chartConfig)
+        setIsSpendingsLoading(false)
+      }
+      fetchNoOfSpendingsGraphData()
+    },[])
 
   return (
     <Layout className="space-y-8">
@@ -115,16 +136,14 @@ const TagsPage = () => {
                             <DialogTitle>Create New Tag</DialogTitle>
                         </DialogHeader>
                         <div className="grid gap-4  py-4">
+                            <Label>New Tag Name</Label>
                             <Input
                                 type="text"
                                 placeholder="Tag Name"
                                 onChange={(e) => setNewTag(e.target.value)}
                             />
-                            <Input 
-                                type="text"
-                                placeholder="Tag Color"
-                                onChange={(e)=>setNewTagColor(e.target.value)}
-                            />
+                            <Label>Tag Color</Label>
+                            <ColorPicker value="" onChange={(e)=>setNewTagColor(e)}/>
                             <div className="flex justify-end">
                                 <Button onClick={addNewTag}>Add New Tag</Button>
                             </div>
@@ -169,7 +188,9 @@ const TagsPage = () => {
                 </CardFooter>
             </Card>}
 
-            <RadialChartLabel />
+            {!isSpendingsLoading && 
+              <RadialChartLabel chartData={chartData2} chartConfig={chartConfig2}/>
+            }
 
         </div>             
     </Layout>

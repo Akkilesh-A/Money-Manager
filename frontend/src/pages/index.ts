@@ -5,6 +5,7 @@ import ProfilePage from "./ProfilePage";
 import TagsPage from "./TagsPage";
 import SpendingsPage from "./SpendingsPage";
 import SendMoneyPage from "./SendMoneyPage";
+import OTPVerificationPage from "./OTPVerificationPage";
 
 export {
     LandingPage,
@@ -13,5 +14,6 @@ export {
     ProfilePage,
     TagsPage,
     SpendingsPage,
-    SendMoneyPage
+    SendMoneyPage,
+    OTPVerificationPage
 }
