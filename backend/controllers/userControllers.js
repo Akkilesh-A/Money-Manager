@@ -5,73 +5,63 @@ import bcrypt from "bcrypt"
 import jwt, { decode } from "jsonwebtoken"
 import { cloudinaryUpload } from "../middlewares/index.js"
 import { sendMail } from "../helpers/mailer.js"
-
-const exampleUploads={
-    fieldname: 'image',
-    originalname: 'Profile_Pic-removebg-preview.png',
-    encoding: '7bit',
-    mimetype: 'image/png',
-    destination: 'uploads/',
-    filename: '6dbb4ca40e5e61a3bce2c6aa0a1dca34',
-    path: 'uploads\\6dbb4ca40e5e61a3bce2c6aa0a1dca34',
-    size: 209320
-  }
+import mongoose from "mongoose"
 
 //Onboarding User - JWT with _id
-async function signUp(req,res){
-    const {email,password,name,phoneNumber}=req.body
+async function signUp(req, res) {
+    try {
+        const { email, password, name, phoneNumber } = req.body;
 
-    //Checking fields
-    if(!email || !password || !name || !phoneNumber){
-        return res.status(400).json({
-            message:"Required field/s empty"
-        })
-    }
+        // Validate input using Zod
+        const validatedInput = await signUpBody.parseAsync(req.body);
 
-    //Parsing through zod types
-    try{
-        const success=await signUpBody.parse(req.body)
-        if(success){
-            //Checking if email exists already
-            const existingUser = await User.findOne({email:email})
-            if(existingUser){
-                return res.status(400).json({
-                    message:"User with email exists already"
-                })
-            }
-            if(!existingUser){
-                const hash=await bcrypt.hash(password,10)
-                const otp=Math.floor(100000 + Math.random() * 900000)
-                const mailSent= await sendMail(
-                    email,
-                    "Verification mail from Money Muncher",
-                    `Yout OTP is ${otp}`,
-                    `<b>Yout OTP is ${otp}</b>`
-                )
-                const newUser=await User.create({
-                    email:email,
-                    password:hash,
-                    name:name,
-                    phoneNumber:phoneNumber,
-                    otp:otp
-                })
-                const jwtToken=await jwt.sign({id:newUser._id},process.env.JWT_SECRET)
-                return res.status(200).json({
-                    message:"Successful! Check mail for OTP",
-                    token:jwtToken
-                })
-            }
+        // Check if user already exists
+        const existingUser = await User.findOne({ email: email.toLowerCase() });
+        if (existingUser) {
+            return res.status(409).json({ message: "User with this email already exists" });
         }
-    }catch(err){
-        console.log(err)
-        return res.status(400).json({
-            message:"Field/s are not of requirements"
-        }) 
-    }
 
-    res.status(400).json({
-        message:"SignUp unsuccessful, Try again!"
-    })
+        // Hash password
+        const saltRounds = 12;
+        const hash = await bcrypt.hash(password, saltRounds);
+
+        // Generate OTP
+        const otp = Math.floor(100000 + Math.random() * 900000);
+
+        // Create new user
+        const newUser = await User.create({
+            email: email.toLowerCase(),
+            password: hash,
+            name,
+            phoneNumber,
+            otp,
+            isVerified: false
+        });
+
+        // Send verification email
+        await sendMail(
+            email,
+            "Verification mail from Money Muncher",
+            `Your OTP is ${otp}`,
+            `<b>Your OTP is ${otp}</b>`
+        );
+
+        // Generate JWT
+        const jwtToken = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+
+        res.status(201).json({
+            message: "Signup successful! Check your email for OTP",
+            token: jwtToken
+        });
+    } catch (error) {
+        console.error('Signup error:', error);
+
+        if (error.name === 'ZodError') {
+            return res.status(400).json({ message: "Invalid input data", errors: error.errors });
+        }
+
+        res.status(500).json({ message: "An error occurred during signup. Please try again." });
+    }
 }
 
 //For verifying OTP
@@ -175,7 +165,7 @@ async function userVerification(req,res){
     }
 }
 
-//For Home Page
+//For Home Page Graph1
 async function getNumberOfSpendingsPerTag(req,res){
     try{
         const token=req.token
@@ -220,6 +210,7 @@ async function getNumberOfSpendingsPerTag(req,res){
     }
 }
 
+//For Home Page Graph2
 async function getSpendingsPerTag(req,res) {
     try{
         const token=req.token
@@ -264,6 +255,143 @@ async function getSpendingsPerTag(req,res) {
     }   
 }
 
+//For adding money to wallet
+async function addMoney(req, res) {
+    const { amount, description } = req.body;
+    const { email } = req.token;
+
+    if (!amount || isNaN(amount) || amount <= 0) {
+        return res.status(400).json({
+            message: "Valid amount is required",
+            data: null
+        });
+    }
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+        const user = await User.findOne({ email }).session(session);
+        if (!user) {
+            throw new Error("User not found");
+        }
+
+        user.accountBalance += amount;
+        await user.save({ session });
+
+        const newTransaction = new Transactions({
+            from: user._id,
+            to: user._id,
+            amount: amount,
+            title: "Added Money to Wallet",
+            description: description || "Added money to wallet",
+            tag: "Add-Money",
+            receiptURL: "N/A"
+        });
+
+        await newTransaction.save({ session });
+
+        user.transactions.push(newTransaction._id);
+        await user.save({ session });
+
+        await session.commitTransaction();
+        session.endSession();
+
+        return res.status(200).json({
+            message: "Money added successfully",
+            data: {
+                updatedBalance: user.accountBalance,
+                transaction: newTransaction
+            }
+        });
+    } catch (err) {
+        await session.abortTransaction();
+        session.endSession();
+
+        console.error("Error adding money:", err);
+        return res.status(500).json({
+            message: "An error occurred while processing your request",
+            data: null
+        });
+    }
+}
+
+//For withdrawing money
+async function withdrawMoney(req, res) {
+    const { amount, description } = req.body;
+    const { email } = req.token;
+
+    if (!amount || isNaN(amount) || amount <= 0) {
+        return res.status(400).json({
+            message: "Valid amount is required",
+            data: null
+        });
+    }
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+        const user = await User.findOne({ email }).session(session);
+        if (!user) {
+            throw new Error("User not found");
+        }
+
+        if (user.accountBalance < amount) {
+            throw new Error("Insufficient balance");
+        }
+
+        user.accountBalance -= amount;
+        await user.save({ session });
+
+        user.totalSpent+=amount;
+        await user.save({ session });
+
+        const newTransaction = new Transactions({
+            from: user._id,
+            to: null,
+            amount: amount,
+            title: "Withdrawn Money",
+            description: description || "Withdrawn money from wallet",
+            tag: "Withdraw-Money",
+            receiptURL: "N/A"
+        });
+
+        await newTransaction.save({ session });
+
+        user.transactions.push(newTransaction._id);
+        await user.save({ session });
+
+        await session.commitTransaction();
+        session.endSession();
+
+        return res.status(200).json({
+            message: "Money withdrawn successfully",
+            data: {
+                updatedBalance: user.accountBalance,
+                transaction: newTransaction
+            }
+        });
+    } catch (err) {
+        await session.abortTransaction();
+        session.endSession();
+
+        console.error("Error withdrawing money:", err);
+
+        if (err.message === "Insufficient balance") {
+            return res.status(400).json({
+                message: "Insufficient balance",
+                data: null
+            });
+        }
+
+        return res.status(500).json({
+            message: "An error occurred while processing your request",
+            data: null
+        });
+    }
+}
+
 //For Tags Page
 async function getUserTags(req,res){
     try{
@@ -287,15 +415,23 @@ async function getUserTags(req,res){
 
 async function addUserTag(req,res) {
     const token=req.token
-    const {tagName,tagColor} = req.body
-    if(!tagName){
+    const {newTag,newTagColor} = req.body
+    if(!newTag){
         return res.status(400).json({
             message : "No Tag Name found",
             data:null
         })
     }
     try{
-
+        const newAddedTag=await User.updateOne({email:token.email},{
+            $push:{tags:newTag,tagColors:newTagColor}
+        })
+        if(newAddedTag){
+            return res.status(200).json({
+                message:"Tag added successfully!",
+                data:newAddedTag
+            })
+        }
     }catch(err){
         console.log(err)
         return res.status(400).json({
@@ -305,11 +441,130 @@ async function addUserTag(req,res) {
     }
 }
 
-async function deleteUserTag(req,res) {
-    
+// async function addFavoriteTag(req,res) {
+//     const token=req.token
+//     const {tag}=req.body
+//     if(!tag){
+//         return res.status(400).json({
+//             message:"No Tag found",
+//             data:null
+//         })
+//     }
+//     try{
+//         const newFavoriteTag=await User.updateOne({email:token.email},{
+//             $push:{favoriteTags:tag}
+//         })
+//         if(newFavoriteTag){
+//             return res.status(200).json({
+//                 message:"Favorite Tag added successfully!",
+//                 data:newFavoriteTag
+//             })
+//         }
+//     }catch(err){
+//         console.log(err)
+//         return res.status(400).json({
+//             message:"Unable to process request at this time",
+//             data:null
+//         })
+//     }    
+// }
+
+async function updateUserTag(req, res) {
+    const { email } = req.token;
+    const { oldTag, newTag, action } = req.body;
+
+    if (!oldTag) {
+        return res.status(400).json({
+            message: "Old tag is required",
+            data: null
+        });
+    }
+
+    try {
+        let message, userUpdateResult, transactionUpdateResult;
+
+        // Check if the old tag exists for the user
+        const user = await User.findOne({ email, tags: oldTag });
+        if (!user) {
+            return res.status(404).json({
+                message: "Tag not found for this user",
+                data: null
+            });
+        }
+
+        switch (action) {
+            case 'update':
+                if (!newTag) {
+                    return res.status(400).json({
+                        message: "New tag is required for update action",
+                        data: null
+                    });
+                }
+                userUpdateResult = await User.updateOne(
+                    { email, tags: oldTag },
+                    { $set: { "tags.$": newTag } }
+                );
+                transactionUpdateResult = await Transactions.updateMany(
+                    { userEmail: email, tag: oldTag },
+                    { $set: { tag: newTag } }
+                );
+                message = "Tag updated successfully";
+                break;
+
+            case 'delete':
+                userUpdateResult = await User.updateOne(
+                    { email },
+                    { $pull: { tags: oldTag } }
+                );
+                transactionUpdateResult = await Transactions.deleteMany(
+                    { userEmail: email, tag: oldTag }
+                );
+                message = "Tag and associated transactions deleted successfully";
+                break;
+
+            case 'changeToOthers':
+                userUpdateResult = await User.updateOne(
+                    { email },
+                    { $pull: { tags: oldTag } }
+                );
+                transactionUpdateResult = await Transactions.updateMany(
+                    { userEmail: email, tag: oldTag },
+                    { $set: { tag: 'Others' } }
+                );
+                message = "Tag deleted and transactions updated to 'Others'";
+                break;
+
+            default:
+                return res.status(400).json({
+                    message: "Invalid action specified",
+                    data: null
+                });
+        }
+
+        if (userUpdateResult.modifiedCount > 0 || transactionUpdateResult.modifiedCount > 0) {
+            return res.status(200).json({
+                message,
+                data: {
+                    userUpdate: userUpdateResult,
+                    transactionUpdate: transactionUpdateResult
+                }
+            });
+        } else {
+            return res.status(404).json({
+                message: "No changes made",
+                data: null
+            });
+        }
+    } catch (err) {
+        console.error("Error updating user tag:", err);
+        return res.status(500).json({
+            message: "An error occurred while processing your request",
+            data: null
+        });
+    }
 }
 
-async function createTransactionRecord(req,res){  
+async function createSpendingRecord(req,res){  
     const {tag,title,amount,description}= req.body
     const imageFile=req.file.filename
     const imgURL=await cloudinaryUpload(imageFile)
@@ -319,43 +574,42 @@ async function createTransactionRecord(req,res){
             data:null
         })
     }
+    const token=req.token
     try{
-        const existingFromUser= await User.findOne({email:req.token.email})
-        // const existingToUser= await User.findOne({_id:to})
-        // if(!existingFromUser || !existingToUser){
-        //     return res.status(400).json({
-        //         message:"User not available",
-        //         data:null
-        //     })
-        // }
-        if(!existingFromUser){
-            return res.status(400).json({
-                message:"User not available",
+        try{
+            const user=await User.findOne({email:token.email})
+            try{
+                const newTransaction=await Transactions.create({
+                    from:user._id,
+                    to:null,
+                    tag:tag,
+                    title:title,
+                    amount:amount,
+                    description:description,
+                    receiptURL:imgURL
+                })
+                return res.status(200).json({
+                    message:"Spending record created successfully",
+                    data:newTransaction
+                })
+            }catch(err){
+                console.log(err)
+                return res.status(404).json({
+                    message:"Unable to create spending record",
+                    data:null
+                })
+            }
+        }catch(err){
+            console.log(err)
+            return res.status(404).json({
+                message:"User doesn't exist!",
                 data:null
-            })
-        }
-        const newTransaction=await Transactions.create({
-            title:title,
-            amount:amount,
-            from:existingFromUser._id,
-            to:null,
-            tag:tag,
-            receiptURL:imgURL,
-            description:description
-        })
-        const userTransactionArrayUpdate=await User.updateOne({_id:existingFromUser._id},{
-            $push:{transactions:newTransaction._id}
-        })
-        if(newTransaction){
-            return res.status(200).json({
-                message:"Created transaction successfully!",
-                data:newTransaction
             })
         }
     }catch(err){
         console.log(err)
-        return res.status(404).json({
-            message:"Unable to process your request at this time!",
+        return res.status(400).json({
+            message:"Unable to process request at this time",
             data:null
         })
     }
@@ -427,12 +681,15 @@ export const userControllers={
     signIn,
     signUp,
     getUserProfile,
+    addMoney,
+    withdrawMoney,
     updateProfile,
     getUserTags,
     addUserTag,
-    deleteUserTag,
+    // addFavoriteTag,
+    updateUserTag,
     getUserSpendings,
-    createTransactionRecord,
+    createSpendingRecord,
     getNumberOfSpendingsPerTag,
     getSpendingsPerTag,
     userVerification,

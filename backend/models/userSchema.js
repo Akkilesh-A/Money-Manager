@@ -81,6 +81,14 @@ const userSchema = new mongoose.Schema({
     },
     otp:{
         type:Number
+    },
+    monthlyLimit:{
+        type:Number,
+        default:0
+    },
+    totalSpent:{
+        type:Number,
+        default:0
     }
 })
 

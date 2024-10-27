@@ -27,6 +27,12 @@ userRouter.post("/otp-verification",userControllers.otpVerification)
 userRouter.get("/user-verification",jwtAuthorization,userControllers.userVerification)
 
 //HOME PAGE
+
+//ADD MONEY TO WALLET
+userRouter.post("/add-money-to-wallet",jwtAuthorization,userControllers.addMoney)
+//WITHDRAW MONEY FROM WALLET
+userRouter.post("/withdraw-money-from-wallet",jwtAuthorization,userControllers.withdrawMoney)
+
 //Number of spendings per tag graph
 userRouter.get("/get-number-of-spendings-per-tag",jwtAuthorization,userControllers.getNumberOfSpendingsPerTag)
 userRouter.get("/get-spendings-per-tag",jwtAuthorization,userControllers.getSpendingsPerTag)
@@ -37,8 +43,12 @@ userRouter.get("/get-user-tags",jwtAuthorization,userControllers.getUserTags)
 //Add User Tag
 userRouter.post("/add-new-tag",jwtAuthorization,userControllers.addUserTag)
 
+userRouter.post("/update-user-tag",jwtAuthorization,userControllers.updateUserTag)
+
+// userRouter.post("/add-favorite-tag",jwtAuthorization,userControllers.addFavoriteTag)
+
 //Delete User Tags
-userRouter.delete("/delete-user-tag",jwtAuthorization,userControllers.deleteUserTag)
+userRouter.delete("/delete-user-tag",jwtAuthorization,userControllers.updateUserTag)
 
 //Get Profile 
 userRouter.get("/get-user-data",jwtAuthorization,userControllers.getUserProfile)
@@ -53,7 +63,7 @@ userRouter.get("/get-all-users",jwtAuthorization,appControllers.getAllUsers)
 userRouter.get("/get-user-spendings",jwtAuthorization,userControllers.getUserSpendings)
 
 //Post a spending record
-userRouter.post("/create-spending-record",jwtAuthorization, upload.single('receiptImage'),userControllers.createTransactionRecord)
+userRouter.post("/create-spending-record",jwtAuthorization, upload.single('receiptImage'),userControllers.createSpendingRecord)
 
 export {
     userRouter

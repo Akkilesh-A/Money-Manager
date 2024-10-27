@@ -29,12 +29,11 @@ const transactionSchema = new mongoose.Schema({
     tag:{
         type:String,
         required:true,
-        default:null
+        default:"Uncategorized"
     },
     receiptURL:{
         type:String,
-        required:true,
-        default:null
+        default:"N/A"
     }
 })
 
