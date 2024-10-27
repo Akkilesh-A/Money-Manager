@@ -30,8 +30,7 @@ const TagsPage = () => {
     const [isTagsLoaded, setIsTagsLoaded] = useState(false)
     const [newTag,setNewTag]=useState("")
     const [newTagColor,setNewTagColor]=useState("")
-    const [color,setColor]=useState("")
-    
+        
     async function getTagsData(){
         const token=await localStorage.getItem("money-manager-token")
         const response = await fetch(`${BACKEND_URL}/api/v1/user/get-user-tags`,{

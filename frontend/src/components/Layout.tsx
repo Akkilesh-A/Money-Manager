@@ -2,23 +2,9 @@ import { ReactNode, useState } from 'react'
 import {  ResizableHandle, ResizablePanel, ResizablePanelGroup } from "./ui"
 import NavBar from './navbar'
 import SideBar from './side-bar'
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { toast } from 'sonner'
 
 const Layout = ({children,className}:{children:ReactNode,className?:string}) => {
-  const navigate=useNavigate()
-  const [isSideBarClosed, setIsSideBarClosed] = useState(false)
-
-  useEffect(() => {
-    const token=localStorage.getItem("money-manager-token")
-    if(token){
-        toast.success("Session Restored!")
-        navigate("/home")
-    }else{
-        navigate("/signin")
-    }
-}, [])   
+  const [isSideBarClosed, setIsSideBarClosed] = useState(false) 
 
   return (
     <>  
