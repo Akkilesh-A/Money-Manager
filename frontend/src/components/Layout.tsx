@@ -2,9 +2,19 @@ import { ReactNode, useState } from 'react'
 import {  ResizableHandle, ResizablePanel, ResizablePanelGroup } from "./ui"
 import NavBar from './navbar'
 import SideBar from './side-bar'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Layout = ({children,className}:{children:ReactNode,className?:string}) => {
-  const [isSideBarClosed, setIsSideBarClosed] = useState(false) 
+  const navigate=useNavigate()
+  const [isSideBarClosed, setIsSideBarClosed] = useState(false)
+
+  useEffect(() => {
+    const token=localStorage.getItem("money-manager-token")
+    if(!token){
+        navigate("/signin")
+      }
+  }, [])   
 
   return (
     <>  
