@@ -423,13 +423,21 @@ async function addUserTag(req,res) {
         })
     }
     try{
+        const oldTags=await User.findOne({email:token.email})
+        if(oldTags.tags.includes(newTag)){
+            return res.status(400).json({
+                message:"Tag already exists",
+                data:null
+            })
+        }
         const newAddedTag=await User.updateOne({email:token.email},{
             $push:{tags:newTag,tagColors:newTagColor}
         })
+        const newTags=await User.findOne({email:token.email})
         if(newAddedTag){
             return res.status(200).json({
                 message:"Tag added successfully!",
-                data:newAddedTag
+                data:{tags:newTags.tags,tagColors:newTags.tagColors}
             })
         }
     }catch(err){

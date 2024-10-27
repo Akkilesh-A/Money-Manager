@@ -282,7 +282,7 @@ const SpendingsPage = () => {
   )
 }
 
-function TransactionsAccordion({transactions}:{transactions:Transaction[]}){
+export function TransactionsAccordion({transactions}:{transactions:Transaction[]}){
   return(
     <Accordion className="space-y-4" type="multiple">
       {transactions.map((transaction,index)=>{

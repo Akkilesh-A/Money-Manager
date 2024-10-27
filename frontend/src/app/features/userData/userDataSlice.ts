@@ -4,25 +4,23 @@ interface userDataSliceFields{
     name:string,
     email:string,
     imgURL:string,
-    tags:[string],
-    token:string, 
+    tags:string[],
+    tagColors:string[]
+
 }
 
 const initialState={
     name:"",
     email:"",
     imgURL:"",
-    tags:["Shopping","Online","Transactions"],
-    token:"", 
+    tags:[],
+    tagColors:[]
 }
 
 export const userDataSlice = createSlice({
     name:"userData",
     initialState,
     reducers:{
-        setToken:(state,action)=>{
-            state.token=action.payload
-        },
         setTags:(state,action)=>{
             state.tags=action.payload
         },
@@ -34,12 +32,12 @@ export const userDataSlice = createSlice({
             state.name=action.payload.name
             state.imgURL=action.payload.imgURL
             state.tags=action.payload.tags
+            state.tagColors=action.payload.tagColors
         }
     }
 })
 
 export const  {
-    setToken,
     setTags,
     appendTag,
     setUserData

@@ -1,4 +1,4 @@
-import { DollarSignIcon, LogOut, UserIcon } from "lucide-react"
+import { IndianRupeeIcon, LogOut, UserIcon } from "lucide-react"
 import { 
     H3, 
     AvatarFallback,
@@ -74,7 +74,7 @@ const NavBar = () => {
   return (
     <div className="w-full p-4 flex justify-between items-center">
         <div className="flex gap-4 items-center">
-            <DollarSignIcon />
+            <IndianRupeeIcon />
             <H3>Money Manager</H3>
         </div>
         <div className="flex gap-4 items-center">
