@@ -45,7 +45,7 @@ export function SignInForm() {
         }
         )
         const responseData=await response.json()
-        if(responseData.status!==200){
+        if(responseData.message!=="SignIn successful!"){
             toast.error(responseData.message)
             return
         }else{
