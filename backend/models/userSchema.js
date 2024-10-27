@@ -74,6 +74,13 @@ const userSchema = new mongoose.Schema({
         type:mongoose.SchemaTypes.ObjectId,
         ref:"User",
         default:null
+    },
+    isVerified:{
+        type:Boolean,
+        default:false
+    },
+    otp:{
+        type:Number
     }
 })
 

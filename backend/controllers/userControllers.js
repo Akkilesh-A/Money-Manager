@@ -2,8 +2,9 @@ import { z } from "zod"
 import { signInBody, signUpBody } from "./zodTypes.js"
 import { Transactions, User } from "../models/index.js"
 import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
+import jwt, { decode } from "jsonwebtoken"
 import { cloudinaryUpload } from "../middlewares/index.js"
+import { sendMail } from "../helpers/mailer.js"
 
 const exampleUploads={
     fieldname: 'image',
@@ -16,7 +17,7 @@ const exampleUploads={
     size: 209320
   }
 
-//Onboarding User
+//Onboarding User - JWT with _id
 async function signUp(req,res){
     const {email,password,name,phoneNumber}=req.body
 
@@ -40,15 +41,23 @@ async function signUp(req,res){
             }
             if(!existingUser){
                 const hash=await bcrypt.hash(password,10)
+                const otp=Math.floor(100000 + Math.random() * 900000)
+                const mailSent= await sendMail(
+                    email,
+                    "Verification mail from Money Muncher",
+                    `Yout OTP is ${otp}`,
+                    `<b>Yout OTP is ${otp}</b>`
+                )
                 const newUser=await User.create({
                     email:email,
                     password:hash,
                     name:name,
-                    phoneNumber:phoneNumber
+                    phoneNumber:phoneNumber,
+                    otp:otp
                 })
-                const jwtToken=await jwt.sign({email:newUser.email},process.env.JWT_SECRET)
+                const jwtToken=await jwt.sign({id:newUser._id},process.env.JWT_SECRET)
                 return res.status(200).json({
-                    message:"SignUp successful!",
+                    message:"Successful! Check mail for OTP",
                     token:jwtToken
                 })
             }
@@ -60,9 +69,42 @@ async function signUp(req,res){
         }) 
     }
 
-    res.status(200).json({
+    res.status(400).json({
         message:"SignUp unsuccessful, Try again!"
     })
+}
+
+//For verifying OTP
+async function otpVerification(req,res) {
+    const {otp,token}=req.body
+    if(!otp || !token){
+        return res.status(404).json({
+            message:"Input field/s not of requirements"
+        })
+    }
+    const decoded=jwt.verify(token,process.env.JWT_SECRET)
+    try{
+        const otpFromDB=await User.findById({_id:decoded.id})
+        if(otpFromDB.otp==otp){
+            const jwtToken=await jwt.sign({email:otpFromDB.email},process.env.JWT_SECRET)
+            await User.findByIdAndUpdate({_id:decoded.id},{isVerified:true})
+            const verificationStatus =await User.findById({_id:decoded.id})
+            return res.status(200).json({
+                message:"SignUp Successfull!",
+                token:jwtToken,
+                isVerified:verificationStatus.isVerified
+            })
+        }else{
+            return res.status(400).json({
+                message:"Wrong OTP"
+            })
+        }
+    }catch(err){
+        console.log(err)
+        return res.status(404).json({
+            message:"Unable to process your request at this time!"
+        })
+    }
 }
 
 //For already existing users
@@ -85,9 +127,9 @@ async function signIn(req,res){
         if(existingUser){
             const hashedPassword=await bcrypt.compare(password,existingUser.password)
             if(!existingUser || !hashedPassword){
-            return res.status(400).json({
-                message:"Email or password is incorrect"
-            })
+                return res.status(400).json({
+                    message:"Email or password is incorrect"
+                })
             }
             const jwtToken=jwt.sign({email:existingUser.email},process.env.JWT_SECRET)
             return res.status(200).json({
@@ -105,6 +147,32 @@ async function signIn(req,res){
     res.status(200).json({
         message:"SignIn unsuccessful, Try again!"
     })
+}
+
+//For User verification
+async function userVerification(req,res){
+    const token=req.token
+    if(!token){
+        return res.status(400).json({
+            message:"User creds not found!"
+        })
+    }
+    try{
+        const existingUser=await User.findOne({email:token.email})
+        if(!existingUser){
+            return res.status(404).json({
+                message:"User not found!"
+            })
+        }
+        return res.status(200).json({
+            message:"Session restored successfully!"
+        })
+    }catch(err){
+        console.log(err)
+        return res.status(404).json({
+            message:"Unable to process your request at this time!"
+        })
+    }
 }
 
 //For Home Page
@@ -218,7 +286,23 @@ async function getUserTags(req,res){
 }
 
 async function addUserTag(req,res) {
-    
+    const token=req.token
+    const {tagName,tagColor} = req.body
+    if(!tagName){
+        return res.status(400).json({
+            message : "No Tag Name found",
+            data:null
+        })
+    }
+    try{
+
+    }catch(err){
+        console.log(err)
+        return res.status(400).json({
+            message:"Unable to process request at this time",
+            data:null
+        })
+    }
 }
 
 async function deleteUserTag(req,res) {
@@ -350,5 +434,7 @@ export const userControllers={
     getUserSpendings,
     createTransactionRecord,
     getNumberOfSpendingsPerTag,
-    getSpendingsPerTag
+    getSpendingsPerTag,
+    userVerification,
+    otpVerification
 }

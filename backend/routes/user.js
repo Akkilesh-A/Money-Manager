@@ -19,8 +19,12 @@ userRouter.post("/signin",userControllers.signIn)
 
 //SignUp
 userRouter.post("/signup",userControllers.signUp)
+
+//OTP VERIFICATION 
+userRouter.post("/otp-verification",userControllers.otpVerification)
  
-//======================
+//SESSION RESTORATION
+userRouter.get("/user-verification",jwtAuthorization,userControllers.userVerification)
 
 //HOME PAGE
 //Number of spendings per tag graph
