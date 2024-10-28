@@ -5,7 +5,7 @@ import { SignInForm } from "./signIn";
 import NavBar from "./navbar";
 import EntryFooter from "./entryFooter";
 import Layout from "./Layout";
-import UserBankDataCard from "./UserBankData";
+import UserBankDataCard from "./UserBankDataCard";
 import UserTagsCard from "./UserTagsCard";
 import Loader from "./Loader";
 

@@ -5,7 +5,6 @@ import {
   CardContent, 
   CardFooter, 
   CardTitle, 
-  ColorPicker, 
   Dialog,
   DialogContent,
   DialogHeader,
@@ -15,7 +14,7 @@ import {
   Label,
   Progress 
 } from "./ui"
-import { BadgeIndianRupee, IndianRupee, Plus, Target } from "lucide-react"
+import { BadgeIndianRupee, IndianRupee, Target } from "lucide-react"
 import { useForm } from "react-hook-form"
 
 export default function UserBankDataCard({ 
