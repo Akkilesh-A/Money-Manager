@@ -1,7 +1,10 @@
 import { 
     Button, 
+    Card, 
     H1, 
     H3,
+    CardContent,
+    CardFooter,
  } from '../components/ui'
 import { Layout, Loader } from '../components'
 import { useEffect, useState } from 'react'
@@ -38,27 +41,27 @@ const ProfilePage = () => {
     },[])
 
   return (
-    <Layout className='flex flex-col gap-4'>
+    <Layout className='space-y-8'>
         <H1>Profile Page</H1>
         {isFetching && <Loader />}
-        {!isFetching && JSON.stringify(userData)}
-        {!isFetching && 
-          <div className='flex items-center'>
-            <div>
-              <div className='grid grid-cols-2 items-center'>
-                <img src={userData?.imgURL} width={200} height={200}/>
-                <div className='flex flex-col gap-2'>
-                  <H1>{userData?.name}</H1>
-                  <H3>{userData?.email}</H3>
-                </div>
-              </div>
-              <div className='flex justify-end'>
-                <Button size={"icon"}> <Edit2/> </Button>
-              </div>
-            </div>
-
-          </div>
-        }
+        <div className='flex'>
+          {!isFetching && 
+            <Card>
+              <CardContent className='py-4 flex '>
+                  <div className='flex items-center gap-8'>
+                    <img className='bg-gray-300 rounded-full' src={userData?.imgURL} width={200} height={200}/>
+                    <div className='flex flex-col gap-2'>
+                      <H1>{userData?.name}</H1>
+                      <H3>{userData?.email}</H3>
+                    </div>
+                  </div>
+              </CardContent>
+              <CardFooter className='flex justify-end'>
+                  <Button size={"icon"}> <Edit2/> </Button>
+              </CardFooter>
+            </Card>
+          }
+        </div>
     </Layout>
   )
 }
