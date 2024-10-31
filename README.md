@@ -1,4 +1,4 @@
-# Money Muncher 🤑
+# Money Manager(MERN)
 
 ## ⚙️Tech Stack
 
@@ -88,6 +88,7 @@
 | parent | ObjectId (ref: User) |
 
 # 🤑Features
+
 
 - [x]  Tags - Transactions can be tagged with custom user tags
 - [ ]  Redux Store - To store session data 
