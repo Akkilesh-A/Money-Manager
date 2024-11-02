@@ -18,7 +18,12 @@ async function signUp(req, res) {
         // Check if user already exists
         const existingUser = await User.findOne({ email: email.toLowerCase() });
         if (existingUser) {
-            return res.status(409).json({ message: "User with this email already exists" });
+            if (existingUser.isVerified=="true") {
+                return res.status(409).json({ message: "User with this email already exists" });
+            }else{
+                const jwtToken = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+                return res.status(200).json({ message: "User already exists, Please verify your email",token:jwtToken });
+            }
         }
 
         // Hash password
