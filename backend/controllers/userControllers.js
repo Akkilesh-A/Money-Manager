@@ -6,7 +6,6 @@ import jwt, { decode } from "jsonwebtoken"
 import { cloudinaryUpload } from "../middlewares/index.js"
 import { sendMail } from "../helpers/mailer.js"
 import mongoose from "mongoose"
-import { mail } from "../helpers/mailTemplate.js"
 
 //Onboarding User - JWT with _id
 async function signUp(req, res) {
