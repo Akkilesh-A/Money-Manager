@@ -6,6 +6,7 @@ import jwt, { decode } from "jsonwebtoken"
 import { cloudinaryUpload } from "../middlewares/index.js"
 import { sendMail } from "../helpers/mailer.js"
 import mongoose from "mongoose"
+import { mail } from "../helpers/mailTemplate.js"
 
 //Onboarding User - JWT with _id
 async function signUp(req, res) {
@@ -43,7 +44,7 @@ async function signUp(req, res) {
             email,
             "Verification mail from Money Muncher",
             `Your OTP is ${otp}`,
-            `<b>Your OTP is ${otp}</b>`
+            mail
         );
 
         // Generate JWT
