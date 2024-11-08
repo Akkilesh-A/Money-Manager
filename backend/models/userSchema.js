@@ -42,11 +42,6 @@ const userSchema = new mongoose.Schema({
         required:true,
         default:["#2662d9","#2eb88a","#e88c30","#af57db","#e23670"]
     },
-    favoriteTags:{
-        type:[String],
-        required:true,
-        default:["Online","Travel"]
-    },
     transactions:{
         type:[mongoose.SchemaTypes.ObjectId],
         ref:"Transaction",

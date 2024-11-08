@@ -489,7 +489,6 @@ async function getUserTags(req,res){
             message:"Tags fecthed successfully",
             data:{
                 tags:user.tags,
-                favoriteTags:user.favoriteTags,
                 tagColors:user.tagColors
             }
         })
@@ -538,33 +537,6 @@ async function addUserTag(req,res) {
     }
 }
 
-// async function addFavoriteTag(req,res) {
-//     const token=req.token
-//     const {tag}=req.body
-//     if(!tag){
-//         return res.status(400).json({
-//             message:"No Tag found",
-//             data:null
-//         })
-//     }
-//     try{
-//         const newFavoriteTag=await User.updateOne({email:token.email},{
-//             $push:{favoriteTags:tag}
-//         })
-//         if(newFavoriteTag){
-//             return res.status(200).json({
-//                 message:"Favorite Tag added successfully!",
-//                 data:newFavoriteTag
-//             })
-//         }
-//     }catch(err){
-//         console.log(err)
-//         return res.status(400).json({
-//             message:"Unable to process request at this time",
-//             data:null
-//         })
-//     }    
-// }
 
 async function updateUserTag(req, res) {
     const { email } = req.token;
@@ -783,7 +755,6 @@ export const userControllers={
     updateProfile,
     getUserTags,
     addUserTag,
-    // addFavoriteTag,
     updateUserTag,
     getUserSpendings,
     createSpendingRecord,

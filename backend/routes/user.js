@@ -45,8 +45,6 @@ userRouter.post("/add-new-tag",jwtAuthorization,userControllers.addUserTag)
 
 userRouter.post("/update-user-tag",jwtAuthorization,userControllers.updateUserTag)
 
-// userRouter.post("/add-favorite-tag",jwtAuthorization,userControllers.addFavoriteTag)
-
 //Delete User Tags
 userRouter.delete("/delete-user-tag",jwtAuthorization,userControllers.updateUserTag)
 

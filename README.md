@@ -79,7 +79,6 @@
 | phoneNumber | String |
 | tags | Array of Strings |
 | tagColors | Array of Strings |
-| favoriteTags | Array of Strings |
 | transactions | Array of ObjectIds (ref: Transaction) |
 | isChild | Boolean |
 | childConnectionStatus | Boolean |

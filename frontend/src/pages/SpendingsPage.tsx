@@ -64,7 +64,6 @@ const SpendingsPage = () => {
   const [isNull,setIsNull]=useState(false)
   const [tags,setTags] = useState([])
   const [tagColors,setTagColors]=useState([])
-  const [favoriteTags,setFavoriteTags]=useState([])
   const [isTagsLoading, setIsTagsLoading] = useState(true)
   
 
@@ -120,7 +119,6 @@ const SpendingsPage = () => {
               return
           }
           setTagColors(responseData.data.tagColors)
-          setFavoriteTags(responseData.data.favoriteTags)
           setTags(responseData.data.tags)
           setIsTagsLoading(false)
       }
@@ -243,22 +241,8 @@ const SpendingsPage = () => {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
-                            <SelectLabel>Favorite Tags</SelectLabel>
-                            {favoriteTags.map((favoriteTag,index)=>{
-                              const localIndex=tags.indexOf(favoriteTag)
-                              const color=tagColors[localIndex]
-                              return(
-                                <SelectItem style={{color:color}} key={index} value={favoriteTag}>{favoriteTag}</SelectItem>
-                              )
-                            })}
-                          </SelectGroup>
-                          <SelectGroup>
                             <SelectLabel>All Tags</SelectLabel>
                             {tags.map((tag,index)=>{
-                              const tagIndex=favoriteTags.indexOf(tag)
-                              if(tagIndex!=-1){
-                                return
-                              }
                               return(
                                 <SelectItem style={{color:tagColors[index]}} key={index} value={tag}>{tag}</SelectItem>
                               )

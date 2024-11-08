@@ -34,7 +34,6 @@ const NavBar = () => {
             "Travel",
             "Others"
         ],
-        "favoriteTags": [],
         "transactions": [],
         "transactionTags": [],
         "spendingsPerTag": {
