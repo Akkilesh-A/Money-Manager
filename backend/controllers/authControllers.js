@@ -21,7 +21,7 @@ async function signUp(req, res) {
                 if (existingUser.isVerified) {                    
                     return res.status(400).json(responseJSON.error("User with this email already exists",{redirect:"/signin"}));
                 }else{
-                    return res.status(400).json(responseJSON.error("Verify with OTP sent to mail!",{redirect:"/otp"}));
+                    return res.status(400).json(responseJSON.error(errorMessages.verifyMail,{redirect:"/otp"}));
                 }
             }
             else{
@@ -126,39 +126,40 @@ async function signIn(req,res){
 
     //Checking fields
     if(!email || !password){
-        return res.status(400).json({
-            message:"Required field/s empty"
-        })
+        return res.status(400).json(responseJSON.error(errorMessages.missingFields));
     }
 
     //Parsing through zod types
     try{
-        const success=await signInBody.parse(req.body)
-        //Checking if email exists already
-        const existingUser = await User.findOne({email:email})
-        if(existingUser){
-            const hashedPassword=await bcrypt.compare(password,existingUser.password)
-            if(!existingUser || !hashedPassword){
-                return res.status(400).json({
-                    message:"Email or password is incorrect"
-                })
+        const validatedInput = await signInBody.safeParse(req.body);
+        if(validatedInput.success){
+            //Checking if email exists already
+            const existingUser = await User.findOne({email:email})
+            if(existingUser){
+                const hashedPassword=await bcrypt.compare(password,existingUser.password)
+                if(!hashedPassword){
+                    return res.status(400).json(responseJSON.error("Email or password is incorrect"))
+                }
+                const jwtToken=jwt.sign({id:existingUser._id},process.env.JWT_SECRET)
+                if(!existingUser.isVerified){
+                    return res.status(201).json(responseJSON.success(errorMessages.verifyMail,{
+                        token:jwtToken,
+                        redirect:'/otp'
+                    }));
+                }
+                return res.status(201).json(responseJSON.success("SignIn successful!",{
+                    token:jwtToken,
+                }));
+            }else{
+                return res.status(400).json(responseJSON.error(errorMessages.missingUser));
             }
-            const jwtToken=jwt.sign({email:existingUser.email},process.env.JWT_SECRET)
-            return res.status(200).json({
-                message:"SignIn successful!",
-                token:jwtToken
-            })
         }
-        
-    }catch(err){
-        return res.status(400).json({
-            message:"Field/s are not of requirements"
-        }) 
+        else{
+            return res.status(400).json(responseJSON.error(errorMessages.missingFields));
+        }
+    }catch(error){
+        return res.status(400).json(responseJSON.error(errorMessages.serverFailure));
     }
-
-    res.status(200).json({
-        message:"SignIn unsuccessful, Try again!"
-    })
 }
 
 //For User verification
