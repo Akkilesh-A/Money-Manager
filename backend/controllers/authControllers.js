@@ -163,27 +163,17 @@ async function signIn(req,res){
 
 //For User verification
 async function userVerification(req,res){
-    const token=req.token
-    if(!token){
-        return res.status(400).json({
-            message:"User creds not found!"
-        })
+    const {id}=req.body
+    // Check for missing fields
+    if (!id) {
+        return res.status(400).json(responseJSON.error(errorMessages.missingFields));
     }
     try{
-        const existingUser=await User.findOne({email:token.email})
-        if(!existingUser){
-            return res.status(404).json({
-                message:"User not found!"
-            })
-        }
-        return res.status(200).json({
-            message:"Session restored successfully!"
-        })
-    }catch(err){
-        console.log(err)
-        return res.status(404).json({
-            message:"Unable to process your request at this time!"
-        })
+        const existingUser=await User.findOne({_id:id})
+        return res.status(400).json(responseJSON.success("Successful",existingUser));
+    }catch(error){
+        console.error(error)
+        return res.status(400).json(responseJSON.error(errorMessages.serverFailure));
     }
 }
 
