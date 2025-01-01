@@ -1,12 +1,11 @@
 import { signInBody, signUpBody } from "./zodTypes.js"
 import bcrypt from "bcrypt"
 import { sendMail } from "../helpers/mailer.js";
-import { responseJSON, errorMessages, mailTemplates } from "../helpers/index.js";
+import { responseJSON, errorMessages, mailTemplates, signJWT, saltRounds } from "../helpers/index.js";
 import { User } from "../models/userSchema.js";
 import jwt from "jsonwebtoken"
 
 //JWT signed with _id
-const saltRounds = 12;
 
 //Onboarding User
 async function signUp(req, res) {
@@ -48,9 +47,10 @@ async function signUp(req, res) {
                 );
                 if(info.accepted.length!=0){
                     // Generate JWT
-                    const jwtToken = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+                    const jwtToken = signJWT(newUser._id)
                     res.status(201).json(responseJSON.success("SignUp successful!",{
-                        token:jwtToken
+                        token:jwtToken,
+                        redirect:'/otp'
                     }));
                 }else{
                     res.status(401).json(responseJSON.error("Error sending you OTP, try again later!",{
@@ -67,43 +67,55 @@ async function signUp(req, res) {
                 validatedInput.error
             ))
         }
-  
     } catch (error) {
         console.error('Signup error:', error);
-        res.status(500).json({ message: errorMessages.serverFailure });
+        res.status(500).json(responseJSON.error(errorMessages.serverFailure,null,error));
     }
 }
 
 //For verifying OTP
-async function otpVerification(req,res) {
-    const {otp,token}=req.body
-    if(!otp || !token){
-        return res.status(404).json({
-            message:"Input field/s not of requirements"
-        })
-    }
-    const decoded=jwt.verify(token,process.env.JWT_SECRET)
-    try{
-        const otpFromDB=await User.findById({_id:decoded.id})
-        if(otpFromDB.otp==otp){
-            const jwtToken=await jwt.sign({email:otpFromDB.email},process.env.JWT_SECRET)
-            await User.findByIdAndUpdate({_id:decoded.id},{isVerified:true})
-            const verificationStatus =await User.findById({_id:decoded.id})
-            return res.status(200).json({
-                message:"SignUp Successfull!",
-                token:jwtToken,
-                isVerified:verificationStatus.isVerified
-            })
-        }else{
-            return res.status(400).json({
-                message:"Wrong OTP"
-            })
+async function otpVerification(req, res) {
+    try {
+        const { otp, id } = req.body;
+
+        // Check for missing fields
+        if (!otp || !id) {
+            return res.status(400).json(responseJSON.error(errorMessages.missingFields));
         }
-    }catch(err){
-        console.log(err)
-        return res.status(404).json({
-            message:"Unable to process your request at this time!"
-        })
+
+        // Find the user by ID
+        const existingUser = await User.findById(id);
+        if (!existingUser) {
+            return res.status(404).json(responseJSON.error("User not found"));
+        }
+
+        // Check if the user is already verified
+        if (existingUser.isVerified) {
+            return res.status(200).json(responseJSON.success("Verified already", { redirect: "/signin" }));
+        }
+
+        // Verify OTP
+        if (existingUser.otp !== otp) {
+            return res.status(400).json(responseJSON.error("Wrong OTP"));
+        }
+
+        // Update user verification status
+        try {
+            const jwtToken = await signJWT(existingUser._id);
+            existingUser.isVerified = true;
+            await existingUser.save();
+
+            return res.status(200).json(responseJSON.success("Verification Successful!", {
+                token: jwtToken,
+                isVerified: existingUser.isVerified
+            }));
+        } catch (error) {
+            console.error("Error during user update:", error);
+            return res.status(500).json(responseJSON.error("Couldn't verify at this time!"));
+        }
+    } catch (error) {
+        console.error('OTP verification error:', error);
+        return res.status(500).json(responseJSON.error(errorMessages.serverFailure, null, error));
     }
 }
 

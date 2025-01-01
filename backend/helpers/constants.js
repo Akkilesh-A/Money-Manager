@@ -16,7 +16,23 @@ const error=(message, data=null, error=null)=>{
     }
 }
 
+const info=(message, data=null, error=null)=>{
+    return {
+        status:"info",
+        message:message,
+        data:data,
+        error:error
+    }
+}
+
 export const responseJSON={
     success,
-    error
+    error,
+    info
+}
+
+export const saltRounds = 12;
+export const signJWT=(id)=>{
+    const jwtToken = jwt.sign({ id: id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+    return jwtToken
 }

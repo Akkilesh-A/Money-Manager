@@ -21,7 +21,7 @@ userRouter.post("/signin",authControllers.signIn)
 userRouter.post("/signup",authControllers.signUp)
 
 //OTP VERIFICATION 
-userRouter.post("/otp-verification",authControllers.otpVerification)
+userRouter.post("/otp-verification",jwtAuthorization,authControllers.otpVerification)
  
 //SESSION RESTORATION
 userRouter.get("/user-verification",jwtAuthorization,authControllers.userVerification)
