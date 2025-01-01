@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { userControllers, appControllers } from "../controllers/index.js";
+import { userControllers, appControllers, authControllers } from "../controllers/index.js";
 import { jwtAuthorization } from "../middlewares/index.js";
 import multer from "multer"
 
@@ -15,18 +15,18 @@ userRouter.get("/",(req,res)=>{
 
 //AUTH ROUTES
 //SignIn
-userRouter.post("/signin",userControllers.signIn)
+userRouter.post("/signin",authControllers.signIn)
 
 //SignUp
-userRouter.post("/signup",userControllers.signUp)
+userRouter.post("/signup",authControllers.signUp)
 
 //OTP VERIFICATION 
-userRouter.post("/otp-verification",userControllers.otpVerification)
+userRouter.post("/otp-verification",authControllers.otpVerification)
  
 //SESSION RESTORATION
-userRouter.get("/user-verification",jwtAuthorization,userControllers.userVerification)
+userRouter.get("/user-verification",jwtAuthorization,authControllers.userVerification)
 
-//HOME PAGE
+// HOME PAGE
 
 //ADD MONEY TO WALLET
 userRouter.post("/add-money-to-wallet",jwtAuthorization,userControllers.addMoney)

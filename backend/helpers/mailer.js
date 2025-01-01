@@ -23,5 +23,5 @@ async function sendMail(to,subject,text,html) {
 
 
 export {
-    sendMail
+  sendMail
 }
