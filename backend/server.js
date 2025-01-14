@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { router } from "./routes/index.js";
+import connectDB from "./db/connection.js";
 
 dotenv.config();
 
@@ -36,6 +37,8 @@ const options = {
   },
   apis: ["./routes/*.js"],
 };
+
+connectDB();
 
 const specs = swaggerJSDoc(options);
 app.use(
