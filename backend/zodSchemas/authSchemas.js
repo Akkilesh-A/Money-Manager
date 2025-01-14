@@ -12,7 +12,25 @@ const otpSchema = z.object({
   otp: z.string().min(6).max(6),
 });
 
+const signInSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8).max(20),
+});
+
+const forgotPasswordSchema = z.object({
+  email: z.string().email(),
+});
+
+const resetPasswordSchema = z.object({
+  otp: z.string().min(6).max(6),
+  userId: z.string(),
+  password: z.string().min(8).max(20),
+});
+
 export const authSchemas = {
   signUpSchema,
   otpSchema,
+  signInSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
 };
