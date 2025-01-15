@@ -64,7 +64,7 @@ const SignInPage = () => {
         toast.success(response.message);
         localStorage.setItem("money-manager-token", response.data.token);
         dispatch(setUser(response.data.user));
-        navigate("/");
+        navigate("/dashboard");
       }
     } catch (error: unknown) {
       if (error && typeof error === "object" && "data" in error) {

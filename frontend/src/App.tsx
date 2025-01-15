@@ -1,5 +1,11 @@
 import { Route, Routes } from "react-router-dom";
-import { HomePage, SignUpPage, OtpPage, SignInPage } from "./pages";
+import {
+  HomePage,
+  SignUpPage,
+  OtpPage,
+  SignInPage,
+  DashboardPage,
+} from "./pages";
 
 const App = () => {
   return (
@@ -8,6 +14,7 @@ const App = () => {
       <Route path="/signup" element={<SignUpPage />} />
       <Route path="/otp" element={<OtpPage />} />
       <Route path="/signin" element={<SignInPage />} />
+      <Route path="/dashboard" element={<DashboardPage />} />
     </Routes>
   );
 };

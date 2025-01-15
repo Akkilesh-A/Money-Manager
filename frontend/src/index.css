@@ -1,6 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -62,6 +65,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: "Space Grotesk", serif;
   }
 }
 
@@ -77,4 +81,6 @@ body {
     radial-gradient(at 92% 1%, rgba(0, 0, 0, 0) 0, transparent 54%),
     radial-gradient(at 51% 49%, rgb(228, 228, 231) 0, transparent 47%),
     radial-gradient(at 31% 22%, rgb(91, 33, 182) 0, transparent 50%);
+  background-size: 100vw 100vh;
+  background-repeat: no-repeat;
 }
