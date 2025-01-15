@@ -32,10 +32,6 @@ interface InputFieldProps {
       value: number;
       message: string;
     };
-    validate?: {
-      value: (value: string) => boolean | string;
-      message: string;
-    };
   };
   autoComplete?: string;
   errors: any;
