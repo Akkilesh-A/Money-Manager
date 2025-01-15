@@ -1,12 +1,12 @@
 import { H1 } from "@/components/ui";
 import { SideBarWrapper } from "@/components";
 
-const DashboardPage = () => {
+const TagsPage = () => {
   return (
     <SideBarWrapper>
-      <H1>Dashboard</H1>
+      <H1>Tags</H1>
     </SideBarWrapper>
   );
 };
 
-export default DashboardPage;
+export default TagsPage;

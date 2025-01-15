@@ -22,6 +22,19 @@ import { H2 } from "./h2";
 import { H3 } from "./h3";
 import { H4 } from "./h4";
 import { P } from "./p";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./tooltip";
 
 export {
   Button,
@@ -45,4 +58,15 @@ export {
   H3,
   H4,
   P,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 };

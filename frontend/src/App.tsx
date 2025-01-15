@@ -5,6 +5,9 @@ import {
   OtpPage,
   SignInPage,
   DashboardPage,
+  TagsPage,
+  SendMoneyPage,
+  TransactionsPage,
 } from "./pages";
 
 const App = () => {
@@ -15,6 +18,9 @@ const App = () => {
       <Route path="/otp" element={<OtpPage />} />
       <Route path="/signin" element={<SignInPage />} />
       <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/tags" element={<TagsPage />} />
+      <Route path="/send-money" element={<SendMoneyPage />} />
+      <Route path="/transactions" element={<TransactionsPage />} />
     </Routes>
   );
 };

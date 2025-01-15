@@ -1,12 +1,12 @@
 import { H1 } from "@/components/ui";
 import { SideBarWrapper } from "@/components";
 
-const DashboardPage = () => {
+const SendMoneyPage = () => {
   return (
     <SideBarWrapper>
-      <H1>Dashboard</H1>
+      <H1>Send Money</H1>
     </SideBarWrapper>
   );
 };
 
-export default DashboardPage;
+export default SendMoneyPage;
