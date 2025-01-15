@@ -13,7 +13,7 @@ import {
   Label,
   Badge,
 } from "@/components/ui";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeClosed } from "lucide-react";
 import { useState } from "react";
 interface SignUpInputs {
@@ -23,6 +23,8 @@ interface SignUpInputs {
   confirmPassword: string;
   phoneNumber: string;
 }
+import { useSignUpMutation } from "@/app/service/rtk-queries";
+import { toast } from "sonner";
 
 const inputs = [
   {
@@ -84,6 +86,8 @@ const inputs = [
 
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [signUp, { isLoading }] = useSignUpMutation();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -92,8 +96,23 @@ const SignUpPage = () => {
     watch,
   } = useForm<SignUpInputs>();
 
-  function onSubmit(data: any) {
-    console.log(data);
+  async function onSubmit(formData: SignUpInputs) {
+    try {
+      const response = await signUp(formData).unwrap();
+      if (response.status === "success") {
+        toast.success(response.message);
+        localStorage.setItem("money-manager-token", response.data.token);
+        navigate("/otp");
+      }
+    } catch (error: unknown) {
+      if (error && typeof error === "object" && "data" in error) {
+        const { status, message } = error.data as {
+          status: string;
+          message: string;
+        };
+        toast[status === "info" ? "info" : "error"](message);
+      }
+    }
   }
 
   return (
@@ -181,7 +200,7 @@ const SignUpPage = () => {
                 </Badge>
               )}
             </div>
-            <Button type="submit" className="w-full">
+            <Button disabled={isLoading} type="submit" className="w-full">
               Sign Up
             </Button>
           </form>
