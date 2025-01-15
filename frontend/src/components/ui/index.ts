@@ -35,6 +35,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./tooltip";
+import { Skeleton } from "./skeleton";
 
 export {
   Button,
@@ -69,4 +70,5 @@ export {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
+  Skeleton,
 };
