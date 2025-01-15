@@ -22,6 +22,8 @@ interface SignInInputs {
 }
 import { useSignInMutation } from "@/app/service/rtk-queries";
 import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/app/features/userSlice";
 
 const inputs = [
   {
@@ -47,6 +49,7 @@ const SignInPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [signIn, { isLoading }] = useSignInMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -60,6 +63,7 @@ const SignInPage = () => {
       if (response.status === "success") {
         toast.success(response.message);
         localStorage.setItem("money-manager-token", response.data.token);
+        dispatch(setUser(response.data.user));
         navigate("/");
       }
     } catch (error: unknown) {
