@@ -15,7 +15,6 @@ import {
 import { useState } from "react";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthService } from "@/services/auth";
 
 const OtpPage = () => {
   const [otp, setOtp] = useState("");
@@ -24,16 +23,8 @@ const OtpPage = () => {
 
   async function handleVerify() {
     try {
-      const token = AuthService.getAuthHeader();
-      if (!token) {
-        toast.error("No authentication token found");
-        return;
-      }
-      console.log(token);
-
       const response = await verifyOtp({
         otp,
-        token,
       }).unwrap();
 
       if (response.status === "success") {

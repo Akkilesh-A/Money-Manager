@@ -1,3 +1,4 @@
+import { AuthService } from "@/services/auth";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const authApi = createApi({
@@ -17,19 +18,34 @@ export const authApi = createApi({
       }),
     }),
     otpVerification: builder.mutation({
-      query: ({ otp, token }) => ({
+      query: ({ otp }) => ({
         url: "/auth/verify-otp",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: token,
+          Authorization: AuthService.getAuthHeader(),
         },
         body: {
           otp,
         },
       }),
     }),
+    signIn: builder.mutation({
+      query: (body) => ({
+        url: "/auth/signin",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: AuthService.getAuthHeader(),
+        },
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useSignUpMutation, useOtpVerificationMutation } = authApi;
+export const {
+  useSignUpMutation,
+  useOtpVerificationMutation,
+  useSignInMutation,
+} = authApi;
