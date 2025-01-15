@@ -45,11 +45,18 @@ export function SideBar() {
   const location = useLocation();
   const { theme, setTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
+    const saved = localStorage.getItem("sidebar-expanded");
+    return saved !== null ? JSON.parse(saved) : true;
+  });
 
   useEffect(() => {
     setIsOpen(false);
   }, [location]);
+
+  useEffect(() => {
+    localStorage.setItem("sidebar-expanded", JSON.stringify(isSidebarOpen));
+  }, [isSidebarOpen]);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -67,7 +74,7 @@ export function SideBar() {
 
       <div
         className={cn(
-          "flex flex-col h-screen bg-background border-r transition-all duration-300 ease-in-out",
+          "flex flex-col h-screen bg-background/80 border-r transition-all duration-300 ease-in-out",
           isSidebarOpen ? "w-64" : "w-20",
           /* Mobile positioning */
           "fixed top-0 bottom-0 md:sticky md:top-0",
