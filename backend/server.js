@@ -5,6 +5,7 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { router } from "./routes/index.js";
 import connectDB from "./db/connection.js";
+import { swaggerOptions } from "./swagger/config.js";
 
 dotenv.config();
 
@@ -14,31 +15,9 @@ app.use(cors());
 
 const PORT = process.env.PORT || 8000;
 
-const options = {
-  definition: {
-    openapi: "3.1.0",
-    info: {
-      title: "Money Manager Express API with Swagger",
-      version: "1.0.0",
-      description:
-        "This is a simple CRUD API application made with Express and documented with Swagger",
-      license: {
-        name: "MIT",
-        url: "https://spdx.org/licenses/MIT.html",
-      },
-    },
-    servers: [
-      {
-        url: "http://localhost:8000",
-      },
-    ],
-  },
-  apis: ["./routes/*.js"],
-};
-
 connectDB();
 
-const specs = swaggerJSDoc(options);
+const specs = swaggerJSDoc(swaggerOptions);
 app.use(
   "/swagger",
   swaggerUi.serve,
