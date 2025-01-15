@@ -64,3 +64,17 @@
     @apply bg-background text-foreground;
   }
 }
+
+body {
+  background-color: rgb(245, 208, 254);
+  background-image: radial-gradient(
+      at 31% 84%,
+      rgb(96, 165, 250) 0,
+      transparent 58%
+    ),
+    radial-gradient(at 47% 40%, rgb(17, 24, 39) 0, transparent 53%),
+    radial-gradient(at 7% 94%, rgb(245, 245, 245) 0, transparent 3%),
+    radial-gradient(at 92% 1%, rgba(0, 0, 0, 0) 0, transparent 54%),
+    radial-gradient(at 51% 49%, rgb(228, 228, 231) 0, transparent 47%),
+    radial-gradient(at 31% 22%, rgb(91, 33, 182) 0, transparent 50%);
+}
