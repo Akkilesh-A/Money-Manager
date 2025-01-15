@@ -27,10 +27,16 @@ const resetPasswordSchema = z.object({
   password: z.string().min(8).max(20),
 });
 
+const changePasswordSchema = z.object({
+  password: z.string().min(8).max(20),
+  newPassword: z.string().min(8).max(20),
+});
+
 export const authSchemas = {
   signUpSchema,
   otpSchema,
   signInSchema,
   forgotPasswordSchema,
   resetPasswordSchema,
+  changePasswordSchema,
 };

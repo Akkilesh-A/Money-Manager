@@ -148,6 +148,7 @@ const signInController = async (req, res) => {
       {
         redirect: "/dashboard",
         token,
+        user: existingUser,
       },
     );
   } catch (error) {
@@ -218,10 +219,31 @@ const resetPasswordController = async (req, res) => {
   }
 };
 
+const changePasswordController = async (req, res) => {
+  const { userId, password, newPassword } = req.body;
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  const existingUser = await User.findById(userId);
+  const isPasswordCorrect = await bcrypt.compare(
+    password,
+    existingUser.password,
+  );
+  if (!isPasswordCorrect) {
+    return responseUtil.errorResponse(res, 400, "Invalid password!");
+  }
+  existingUser.password = hashedPassword;
+  await existingUser.save();
+  return responseUtil.successResponse(
+    res,
+    200,
+    "Password changed successfully!",
+  );
+};
+
 export const authControllers = {
   signUpController,
   verifyOtpController,
   signInController,
   forgotPasswordController,
   resetPasswordController,
+  changePasswordController,
 };

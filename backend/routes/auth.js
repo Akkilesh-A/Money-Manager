@@ -46,4 +46,12 @@ authRouter.post(
   authControllers.resetPasswordController,
 );
 
+//change password
+authRouter.post(
+  "/change-password",
+  jwtAuthorization,
+  validateRequest(authSchemas.changePasswordSchema),
+  authControllers.changePasswordController,
+);
+
 export default authRouter;

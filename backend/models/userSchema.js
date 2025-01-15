@@ -63,6 +63,10 @@ const userSchema = new mongoose.Schema(
       ],
       default: defaultTags,
     },
+    imgURL: {
+      type: String,
+      default: null,
+    },
   },
   { timestamps: true },
 );
