@@ -9,7 +9,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const uploadToCloudinary = async (file) => {
+const uploadProfilePhotoToCloudinary = async (file) => {
   const result = await cloudinary.v2.uploader.upload(file, {
     folder: "Money-Manager/Profile-Photos",
     use_filename: true,
@@ -18,4 +18,16 @@ const uploadToCloudinary = async (file) => {
   return result.secure_url;
 };
 
-export { uploadToCloudinary };
+const uploadTransactionPhotoToCloudinary = async (file) => {
+  const result = await cloudinary.v2.uploader.upload(file, {
+    folder: "Money-Manager/Transaction-Photos",
+    use_filename: true,
+  });
+  console.log("Upload successful:", result);
+  return result.secure_url;
+};
+
+export const uploadToCloudinary = {
+  uploadProfilePhotoToCloudinary,
+  uploadTransactionPhotoToCloudinary,
+};

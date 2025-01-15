@@ -62,6 +62,7 @@ const userSchema = new mongoose.Schema(
         },
       ],
       default: defaultTags,
+      unique: true,
     },
     imgURL: {
       type: String,

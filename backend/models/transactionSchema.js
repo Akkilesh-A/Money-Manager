@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 
 const transactionsSchema = new mongoose.Schema(
   {
@@ -15,16 +15,17 @@ const transactionsSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    date: {
-      type: Date,
-      required: true,
-    },
     tag: {
       type: String,
       required: true,
     },
     imgURL: {
       type: String,
+      default: null,
+    },
+    to: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       default: null,
     },
   },

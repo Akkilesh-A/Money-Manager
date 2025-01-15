@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { userControllers } from "../controllers/userControllers.js";
-import { jwtAuthorization } from "../middlewares/index.js";
+import { emailVerified, jwtAuthorization } from "../middlewares/index.js";
 import multer from "multer";
 import { validateRequest } from "../middlewares/index.js";
 import { userSchemas } from "../zodSchemas/index.js";
@@ -16,6 +16,7 @@ userRouter.patch(
   "/update-profile",
   upload.single("profileImage"),
   jwtAuthorization,
+  emailVerified,
   validateRequest(userSchemas.updateProfileSchema),
   userControllers.updateProfileController,
 );
@@ -23,20 +24,15 @@ userRouter.patch(
 userRouter.get(
   "/get-profile",
   jwtAuthorization,
+  emailVerified,
   userControllers.getProfileController,
 );
-
-// userRouter.patch(
-//   "/upload-profile-image",
-//   upload.single("profileImage"),
-//   jwtAuthorization,
-//   userControllers.uploadProfileImageController,
-// );
 
 userRouter.patch(
   "/upload-profile-image",
   upload.single("profileImage"),
   jwtAuthorization,
+  emailVerified,
   validateRequest(userSchemas.updateProfileSchema),
   userControllers.uploadProfileImageController,
 );

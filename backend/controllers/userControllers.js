@@ -17,7 +17,10 @@ const updateProfileController = async (req, res) => {
     existingUser.email = email || existingUser.email;
     existingUser.phoneNumber = phoneNumber || existingUser.phoneNumber;
     if (profileImage) {
-      const profileImageUrl = await uploadToCloudinary(profileImage.path);
+      const profileImageUrl =
+        await uploadToCloudinary.uploadProfilePhotoToCloudinary(
+          profileImage.path,
+        );
       existingUser.imgURL = profileImageUrl;
     }
     await existingUser.save();
@@ -62,7 +65,10 @@ const uploadProfileImageController = async (req, res) => {
       return responseUtil.errorResponse(res, 400, "User not found!");
     }
     if (profileImage) {
-      const profileImageUrl = await uploadToCloudinary(profileImage.path);
+      const profileImageUrl =
+        await uploadToCloudinary.uploadProfilePhotoToCloudinary(
+          profileImage.path,
+        );
       existingUser.imgURL = profileImageUrl;
     }
     await existingUser.save();
