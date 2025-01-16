@@ -23,7 +23,7 @@ interface SignUpInputs {
   confirmPassword: string;
   phoneNumber: string;
 }
-import { useSignUpMutation } from "@/app/service/rtk-queries";
+import { useSignUpMutation } from "@/redux/service/rtk-queries";
 import { toast } from "sonner";
 
 const inputs = [

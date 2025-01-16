@@ -20,10 +20,10 @@ interface SignInInputs {
   email: string;
   password: string;
 }
-import { useSignInMutation } from "@/app/service/rtk-queries";
+import { useSignInMutation } from "@/redux/service/rtk-queries";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
-import { setUser } from "@/app/features/userSlice";
+import { setUser } from "@/redux/features/userSlice";
 
 const inputs = [
   {

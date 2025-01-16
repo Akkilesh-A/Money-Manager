@@ -1,4 +1,4 @@
-import { useOtpVerificationMutation } from "@/app/service/rtk-queries";
+import { useOtpVerificationMutation } from "@/redux/service/rtk-queries";
 import {
   badgeVariants,
   Button,

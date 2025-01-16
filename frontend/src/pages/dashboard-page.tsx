@@ -1,4 +1,4 @@
-import { H1, Skeleton } from "@/components/ui";
+import { Button, H1, Skeleton } from "@/components/ui";
 import { SideBarWrapper } from "@/components";
 import { TagsCard, WalletCard } from "@/components/dashboard";
 import {
@@ -6,37 +6,55 @@ import {
   NoOfSpendsPerTagGraph,
   SpendsPerTagPieChart,
 } from "@/components/graphs";
-import { useSelector } from "react-redux";
-// import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RefreshCcw } from "lucide-react";
+import { useGetUserDataQuery } from "@/redux/service/rtk-queries";
+import { setUser } from "@/redux/features/userSlice";
+import { toast } from "sonner";
+import { useEffect } from "react";
 
 const DashboardPage = () => {
-  // const navigate= useNavigate()
-  let userData: any;
-  const [isLoading, setIsLoading] = useState(true);
-  // const [spendings,setSpendings]= useState(100)
-  const spendings = 100;
-  userData = useSelector((state: any) => state.user.value);
+  const userData = useSelector((state: any) => state.user.userData);
+  const dispatch = useDispatch();
+  const { data: newUserData, isLoading, refetch } = useGetUserDataQuery({});
+
+  function handleRefetch() {
+    try {
+      refetch();
+      toast.success(newUserData.message);
+      if (newUserData) {
+        dispatch(setUser(newUserData.data.user));
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  }
 
   useEffect(() => {
-    if (!userData) {
-      // navigate("/signin")
+    if (newUserData) {
+      dispatch(setUser(newUserData.data.user));
     }
-    setIsLoading(false);
-  }, []);
+  }, [newUserData]);
 
   return (
     <SideBarWrapper className="space-y-4">
-      <H1>Dashboard</H1>
+      <div className="flex justify-between items-center">
+        <H1>Dashboard</H1>
+        <Button onClick={() => handleRefetch()}>
+          <RefreshCcw className={isLoading ? "animate-spin" : ""} /> Refetch
+          Data
+        </Button>
+      </div>
       <div className="space-y-4">
         <div className="flex w-full md:flex-row flex-col justify-between gap-4">
-          {isLoading ? (
+          {!userData ? (
             <Skeleton className="w-96 h-64" />
           ) : (
             <WalletCard
+              handleRefetch={handleRefetch}
               walletBalance={userData.walletBalance}
               monthlyBudget={userData.monthlyBudget}
-              spendings={spendings}
+              spendings={userData.moneySpent}
             />
           )}
           <DailySpendsGraph className="flex-1" />

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
   Button,
@@ -30,7 +30,7 @@ import {
   SidebarClose,
 } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const navItems = [
   { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
@@ -40,7 +40,15 @@ const navItems = [
 ];
 
 export function SideBar() {
-  const user = useSelector((state: any) => state.user.value) || {};
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const userData = useSelector((state: any) => state.user.userData);
+
+  useEffect(() => {
+    if (!userData) {
+      navigate("/signin");
+    }
+  }, [userData, dispatch, navigate]);
 
   const location = useLocation();
   const { theme, setTheme } = useTheme();
@@ -172,10 +180,10 @@ export function SideBar() {
                     {isSidebarOpen && (
                       <div className="flex flex-col items-start ml-2">
                         <span className="text-sm font-medium">
-                          {user && user.name}
+                          {userData && userData.name}
                         </span>
                         <span className="text-xs text-muted-foreground">
-                          {user && user.email}
+                          {userData && userData.email}
                         </span>
                       </div>
                     )}
@@ -184,9 +192,9 @@ export function SideBar() {
               </TooltipTrigger>
               {!isSidebarOpen && (
                 <TooltipContent side="right">
-                  <p>{user && user.name}</p>
+                  <p>{userData && userData.name}</p>
                   <p className="text-xs text-muted-foreground">
-                    {user && user.email}
+                    {userData && userData.email}
                   </p>
                 </TooltipContent>
               )}
