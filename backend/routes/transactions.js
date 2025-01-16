@@ -43,4 +43,18 @@ transactionRouter.get(
   transactionControllers.getFilteredTransactionsController,
 );
 
+transactionRouter.post(
+  "/add-money",
+  jwtAuthorization,
+  emailVerified,
+  transactionControllers.addMoneyToWalletController,
+);
+
+transactionRouter.post(
+  "/withdraw-money",
+  jwtAuthorization,
+  emailVerified,
+  transactionControllers.withdrawMoneyFromWalletController,
+);
+
 export default transactionRouter;

@@ -72,7 +72,6 @@ const signUpController = async (req, res) => {
       200,
       "User created successfully!",
       {
-        newUser,
         redirect: "/verify-otp",
         token,
       },

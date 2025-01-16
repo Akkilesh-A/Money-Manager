@@ -209,10 +209,76 @@ const getFilteredTransactionsController = async (req, res) => {
   }
 };
 
+const addMoneyToWalletController = async (req, res) => {
+  const { userId, amount } = req.body;
+  if (!amount) {
+    return responseUtil.errorResponse(res, 400, "Amount is required");
+  }
+  try {
+    const user = await User.findById(userId);
+    user.walletBalance += Number(amount);
+    await user.save();
+    await Transaction.create({
+      userId,
+      amount,
+      description: "Added money to wallet",
+      tag: "Wallet",
+      imgURL: null,
+    });
+    return responseUtil.successResponse(
+      res,
+      200,
+      "Money added to wallet successfully",
+      { user },
+    );
+  } catch (error) {
+    return responseUtil.errorResponse(
+      res,
+      500,
+      responseMessages.InternalServerError,
+      { error: error.message },
+    );
+  }
+};
+
+const withdrawMoneyFromWalletController = async (req, res) => {
+  const { userId, amount } = req.body;
+  try {
+    const user = await User.findById(userId);
+    if (user.walletBalance < amount) {
+      return responseUtil.errorResponse(res, 400, "Insufficient balance");
+    }
+    user.walletBalance -= amount;
+    await user.save();
+    await Transaction.create({
+      userId,
+      amount,
+      description: "Withdrawn money from wallet",
+      tag: "Wallet",
+      imgURL: null,
+    });
+    return responseUtil.successResponse(
+      res,
+      200,
+      "Money withdrawn from wallet successfully",
+      { user },
+    );
+  } catch (error) {
+    return responseUtil.errorResponse(
+      res,
+      500,
+      responseMessages.InternalServerError,
+      { error: error.message },
+    );
+  }
+};
+
 export const transactionControllers = {
   createTransactionController,
   deleteTransactionController,
   updateTransactionController,
   getTransactionController,
   getFilteredTransactionsController,
+  addMoneyToWalletController,
+  withdrawMoneyFromWalletController,
 };

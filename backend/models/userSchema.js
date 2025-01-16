@@ -5,7 +5,7 @@ const defaultTags = [
   { name: "Transport", color: "#4ECDC4" }, // Turquoise
   { name: "Shopping", color: "#45B7D1" }, // Sky Blue
   { name: "Bills", color: "#96CEB4" }, // Sage Green
-  { name: "Others", color: "#FFEEAD" }, // Soft Yellow
+  { name: "Wallet", color: "#FFEEAD" }, // Soft Yellow
 ];
 
 const userSchema = new mongoose.Schema(
@@ -67,6 +67,10 @@ const userSchema = new mongoose.Schema(
     imgURL: {
       type: String,
       default: null,
+    },
+    moenySpent: {
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true },
