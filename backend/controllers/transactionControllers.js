@@ -8,6 +8,7 @@ import { Transaction, User } from "../models/index.js";
 const createTransactionController = async (req, res) => {
   const { userId, amount, description, tag, to } = req.body;
   const billImage = req.file;
+  console.log(req.file);
   try {
     const imgURL = billImage
       ? await uploadToCloudinary.uploadTransactionPhotoToCloudinary(
@@ -36,11 +37,24 @@ const createTransactionController = async (req, res) => {
             imgURL,
             to: toUser._id,
           });
+          const spendings = await User.updateOne(
+            { userId }, 
+            {
+              $inc: {
+                moneySpent: Number(amount),    
+                walletBalance: -Number(amount),
+              },
+            }
+          );
           return responseUtil.successResponse(
             res,
             200,
             "Transaction created successfully",
-            { transaction },
+            { 
+              transaction,
+              moneySpent:spendings.moneySpent,
+              walletBalance:spendings.walletBalance
+             },
           );
         }
       }
@@ -52,11 +66,24 @@ const createTransactionController = async (req, res) => {
         tag,
         imgURL,
       });
+      const spendings = await User.updateOne(
+        { userId },
+        {
+          $inc: {
+            moneySpent: Number(amount),
+            walletBalance: -Number(amount),
+          },
+        }
+      );
       return responseUtil.successResponse(
         res,
         200,
         "Transaction created successfully",
-        { transaction },
+        { 
+          transaction,
+          moneySpent:spendings.moneySpent,
+          walletBalance:spendings.walletBalance
+         },
       );
     }
   } catch (err) {
