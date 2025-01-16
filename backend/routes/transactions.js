@@ -57,4 +57,11 @@ transactionRouter.post(
   transactionControllers.withdrawMoneyFromWalletController,
 );
 
+transactionRouter.post(
+  "/set-budget",
+  jwtAuthorization,
+  emailVerified,
+  transactionControllers.setBudgetController,
+);
+
 export default transactionRouter;

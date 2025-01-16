@@ -28,6 +28,10 @@ const transactionsSchema = new mongoose.Schema(
       ref: "User",
       default: null,
     },
+    isCredit: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true },
 );

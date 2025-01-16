@@ -218,18 +218,22 @@ const addMoneyToWalletController = async (req, res) => {
     const user = await User.findById(userId);
     user.walletBalance += Number(amount);
     await user.save();
-    await Transaction.create({
+    const transaction = await Transaction.create({
       userId,
       amount,
       description: "Added money to wallet",
       tag: "Wallet",
+      isCredit: true,
       imgURL: null,
     });
     return responseUtil.successResponse(
       res,
       200,
       "Money added to wallet successfully",
-      { user },
+      {
+        walletBalance: user.walletBalance,
+        transaction: transaction,
+      },
     );
   } catch (error) {
     return responseUtil.errorResponse(
@@ -250,19 +254,49 @@ const withdrawMoneyFromWalletController = async (req, res) => {
     }
     user.walletBalance -= amount;
     await user.save();
-    await Transaction.create({
+    const transaction = await Transaction.create({
       userId,
       amount,
       description: "Withdrawn money from wallet",
       tag: "Wallet",
+      isCredit: false,
       imgURL: null,
     });
     return responseUtil.successResponse(
       res,
       200,
       "Money withdrawn from wallet successfully",
-      { user },
+      {
+        walletBalance: user.walletBalance,
+        transaction: transaction,
+      },
     );
+  } catch (error) {
+    return responseUtil.errorResponse(
+      res,
+      500,
+      responseMessages.InternalServerError,
+      { error: error.message },
+    );
+  }
+};
+
+const setBudgetController = async (req, res) => {
+  const { userId, amount, change } = req.body;
+  if (!amount || !change) {
+    return responseUtil.errorResponse(res, 400, "Amount is required");
+  }
+  try {
+    const user = await User.findById(userId);
+    if (change === "add") {
+      user.monthlyBudget += Number(amount);
+    } else {
+      user.monthlyBudget -= Number(amount);
+    }
+    await user.save();
+    return responseUtil.successResponse(res, 200, "Budget set successfully", {
+      budget: user.monthlyBudget,
+    });
   } catch (error) {
     return responseUtil.errorResponse(
       res,
@@ -281,4 +315,5 @@ export const transactionControllers = {
   getFilteredTransactionsController,
   addMoneyToWalletController,
   withdrawMoneyFromWalletController,
+  setBudgetController,
 };
