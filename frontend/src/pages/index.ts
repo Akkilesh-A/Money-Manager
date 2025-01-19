@@ -6,6 +6,7 @@ import DashboardPage from "./dashboard-page";
 import SendMoneyPage from "./send-money-page";
 import TransactionsPage from "./transactions-page";
 import TagsPage from "./tags-page";
+import ProfilePage from "./profile-page";
 
 export {
   HomePage,
@@ -16,4 +17,5 @@ export {
   TagsPage,
   SendMoneyPage,
   TransactionsPage,
+  ProfilePage,
 };

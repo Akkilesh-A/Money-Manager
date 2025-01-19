@@ -8,6 +8,7 @@ import {
   TagsPage,
   SendMoneyPage,
   TransactionsPage,
+  ProfilePage,
 } from "./pages";
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
       <Route path="/tags" element={<TagsPage />} />
       <Route path="/send-money" element={<SendMoneyPage />} />
       <Route path="/transactions" element={<TransactionsPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
     </Routes>
   );
 };

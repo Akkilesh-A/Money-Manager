@@ -201,8 +201,10 @@ export function SideBar() {
             </Tooltip>
             <DropdownMenuContent className="w-56" align="end" forceMount>
               <DropdownMenuItem>
-                <User className="mr-2 h-4 w-4" />
-                <span>Account</span>
+                <Link to="/profile" className="flex items-center">
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Account</span>
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <LogOut className="mr-2 h-4 w-4" />
